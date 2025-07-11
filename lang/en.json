@@ -1,0 +1,30 @@
+{
+  "the-fourth-domain": {
+    "ActorSheet": {
+      "BioSection": "Bio Section",
+      "AISection": "AI Section",
+      "PrimaryAttributes": "Primary Attributes",
+      "SecondaryAttributes": "Secondary Attributes",
+      "HitPoints": "Hit Points",
+      "ManaPoints": "Mana Points",
+      "IntegrityPoints": "Integrity Points",
+      "ProcessingPower": "Processing Power",
+      "Skills": "Skills",
+      "Gear": "Gear",
+      "Weapons": "Weapons",
+      "Armor": "Armor",
+      "Items": "Items",
+      "NaniteTech": "Nanite Tech",
+      "Profile": "Profile",
+      "Wealth": "Wealth",
+      "Misc": "Miscellaneous"
+    },
+    "Rolls": {
+      "SkillRoll": "Skill Roll",
+      "WeaponRoll": "Weapon Roll",
+      "NaniteRoll": "Nanite Roll",
+      "SaveRoll": "Save Roll",
+      "InitiativeRoll": "Initiative Roll"
+    }
+  }
+}
