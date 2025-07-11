@@ -1,0 +1,1303 @@
+<form class="sheet actor t4d">
+  <div class="sheet-container">
+
+    <div class="sheet-toggle-wrapper">
+      <input type="checkbox" name="system.AIMode" class="sheet-toggle" id="AI_Mode_Toggle" />
+      <label for="AI_Mode_Toggle" class="sheet-toggle-label">
+        <span class="sheet-toggle-state">
+          <span class="sheet-toggle-ai">AI Mode</span>
+        </span>
+      </label>
+    </div>
+
+    <div class="sheet-section-block sheet-theme-bio">
+      <div class="sheet-group-title">
+        <h2 class="section-title">Bio Attributes</h2>
+      </div>
+
+      <div class="sheet-2colrow">
+
+        <!-- ===== BIO PRIMARY ATTRIBUTES ===== -->
+        <div class="sheet-col">
+          <div class="row sheet-primary-attributes-bio">
+            <h3 class="section-subtitle">Primary Attributes</h3>
+            <div class="sheet-attribute-wrapper">
+              <table class="sheet-attribute-table">
+                <thead>
+                  <tr>
+                    <th>Attribute</th>
+                    <th>Score</th>
+                    <th>Modifier</th>
+                    <th>AP to Next</th>
+                    <th>Total AP Spent</th>
+                    <th>Temporary Modifier</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {{#each system.attributes.primary}}
+                  <tr>
+                    <td>{{this.label}}</td>
+                    <td><input type="number" name="system.attributes.primary.{{@key}}.score" value="{{this.score}}" /></td>
+                    <td><input type="number" name="system.attributes.primary.{{@key}}.mod" value="{{this.mod}}" readonly /></td>
+                    <td><input type="number" name="system.attributes.primary.{{@key}}.apToNext" value="{{this.apToNext}}" readonly /></td>
+                    <td><input type="number" name="system.attributes.primary.{{@key}}.apTotal" value="{{this.apTotal}}" readonly /></td>
+                    <td><input type="number" name="system.attributes.primary.{{@key}}.temp" value="{{this.temp}}" /></td>
+                  </tr>
+                  {{/each}}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== BIO SECONDARY ATTRIBUTES ===== -->
+        <div class="sheet-col">
+          <div class="row sheet-secondary-attributes-bio">
+            <h3 class="section-subtitle">Secondary Attributes</h3>
+            <div class="sheet-attribute-wrapper">
+              <table class="sheet-attribute-table">
+                <thead>
+                  <tr>
+                    <th>Attribute</th>
+                    <th>Score</th>
+                    <th>Modifier</th>
+                    <th>Temporary Modifier</th>
+                    <th>Initiative Roll</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {{#each system.attributes.secondary}}
+                  <tr>
+                    <td>{{this.label}}</td>
+                    <td><input type="number" name="system.attributes.secondary.{{@key}}.score" value="{{this.score}}" readonly /></td>
+                    <td><input type="number" name="system.attributes.secondary.{{@key}}.mod" value="{{this.mod}}" readonly /></td>
+                    <td><input type="number" name="system.attributes.secondary.{{@key}}.temp" value="{{this.temp}}" /></td>
+                    <td>
+                      {{#if this.hasRoll}}
+                      <button type="button" class="roll-init" data-roll="{{this.rollFormula}}" data-label="{{this.label}}">
+                        Roll
+                      </button>
+                      {{/if}}
+                    </td>
+                  </tr>
+                  {{/each}}
+                  <tr>
+                    <td>Appearance</td>
+                    <td><input type="number" name="system.attributes.appearance.score" value="{{system.attributes.appearance.score}}" min="3" max="30" /></td>
+                    <td colspan="2">
+                      <input type="text" name="system.attributes.appearance.desc" value="{{system.attributes.appearance.desc}}" readonly />
+                    </td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="sheet-ap-summary">
+              <span class="sheet-ap-label">Total AP Spent:
+                <input type="number" name="system.ap.totalSpent" value="{{system.ap.totalSpent}}" readonly />
+              </span>
+              <span class="sheet-ap-label">Unspent AP:
+                <input type="number" name="system.ap.unspent" value="{{system.ap.unspent}}" />
+              </span>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
+<div class="sheet-section-block sheet-theme-bio">
+  <div class="sheet-group-title">
+    <h2 class="section-title">Bio Stability</h2>
+  </div>
+
+  <div class="sheet-3colrow sheet-stability-wrapper">
+
+    <!-- ===== Bio Saving Throws ===== -->
+    <div class="sheet-col">
+      <div class="row sheet-saves-block">
+        <h3 class="section-subtitle">Bio Saving Throws</h3>
+        <div class="sheet-save-wrapper">
+          <table class="sheet-save-table">
+            <thead>
+              <tr>
+                <th>Attribute</th>
+                <th>Score</th>
+                <th>Temporary Modifier</th>
+              </tr>
+            </thead>
+            <tbody>
+              {{#each system.saves}}
+              <tr>
+                <td>
+                  <button type="button"
+                          class="roll-save"
+                          data-roll="{{this.rollFormula}}"
+                          data-label="{{this.label}}">
+                    {{this.label}}
+                  </button>
+                </td>
+                <td><input type="number" name="system.saves.{{@key}}.score" value="{{this.score}}" readonly /></td>
+                <td><input type="number" name="system.saves.{{@key}}.temp" value="{{this.temp}}" /></td>
+              </tr>
+              {{/each}}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== Bio Status ===== -->
+    <div class="sheet-col">
+      <div class="row sheet-status-block">
+        <h3 class="section-subtitle">Bio Status</h3>
+        <div class="sheet-status-wrapper">
+          <table class="sheet-status-table">
+            <thead>
+              <tr>
+                <th></th>
+                <th>Max</th>
+                <th>Current</th>
+                <th>Min</th>
+                <th>Temp</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>HP</td>
+                <td><input type="number" name="system.status.hp.max" value="{{system.status.hp.max}}" readonly /></td>
+                <td><input type="number" name="system.status.hp.current" value="{{system.status.hp.current}}" /></td>
+                <td><input type="number" name="system.status.hp.min" value="{{system.status.hp.min}}" readonly /></td>
+                <td><input type="number" name="system.status.hp.temp" value="{{system.status.hp.temp}}" /></td>
+              </tr>
+              <tr>
+                <td>MP</td>
+                <td><input type="number" name="system.status.mp.max" value="{{system.status.mp.max}}" readonly /></td>
+                <td><input type="number" name="system.status.mp.current" value="{{system.status.mp.current}}" /></td>
+                <td><input type="number" name="system.status.mp.min" value="{{system.status.mp.min}}" readonly /></td>
+                <td><input type="number" name="system.status.mp.temp" value="{{system.status.mp.temp}}" /></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+<!-- ===== Bio Stress ===== -->
+<div class="sheet-col">
+  <div class="row sheet-stress-block">
+    <h3 class="section-subtitle">Stress</h3>
+    <div class="sheet-stress-wrapper">
+      <select class="sheet-stress-select" name="system.stress.level">
+        <option value="0" {{#if (eq system.stress.level 0)}}selected{{/if}}>No Stress</option>
+        <option value="-2" {{#if (eq system.stress.level -2)}}selected{{/if}}>1 Stress</option>
+        <option value="-5" {{#if (eq system.stress.level -5)}}selected{{/if}}>2 Stress</option>
+        <option value="-10" {{#if (eq system.stress.level -10)}}selected{{/if}}>3 Stress</option>
+        <option value="-15" {{#if (eq system.stress.level -15)}}selected{{/if}}>4 Stress</option>
+        <option value="2" {{#if (eq system.stress.level 2)}}selected{{/if}}>Inspired</option>
+      </select>
+      <div class="sheet-stress-penalty">
+        <label class="sheet-stress-label">Penalty:</label>
+        <input type="number" name="system.stress.penalty" value="{{system.stress.penalty}}" readonly />
+      </div>
+    </div>
+  </div>
+</div>
+
+</div> <!-- End .sheet-3colrow -->
+</div> <!-- End .sheet-section-block -->
+
+<div class="sheet-section-block sheet-theme-bio">
+  <div class="sheet-group-title">
+    <h2 class="section-title">Bio Skills</h2>
+  </div>
+
+  <div class="sheet-2colrow sheet-skills-wrapper">
+
+    <!-- ===== Bio Combat Skills Column ===== -->
+    <div class="sheet-col">
+      <div class="row sheet-skillgroup-combat">
+        <h3 class="section-subtitle">Bio Combat Skills</h3>
+
+        <div class="sheet-skill-header">
+          <span class="sheet-skill-spacer"></span>
+          <span class="sheet-skill-label">Skill</span>
+          <span class="sheet-skill-label">Level</span>
+          <span class="sheet-skill-label">XP</span>
+        </div>
+
+        {{#each system.skills.combat}}
+        <div class="sheet-skill-entry">
+          <button type="button"
+                  class="roll-skill"
+                  data-roll="{{this.rollFormula}}"
+                  data-label="{{this.label}}">
+            {{this.label}}
+          </button>
+          <input type="text" name="system.skills.combat.{{@index}}.label" value="{{this.label}}" readonly />
+          <input type="number" name="system.skills.combat.{{@index}}.level" value="{{this.level}}" min="0" />
+          <input type="number" name="system.skills.combat.{{@index}}.xp" value="{{this.xp}}" min="0" />
+        </div>
+        {{/each}}
+
+      </div>
+    </div>
+
+    <!-- ===== Bio Detection Skills Column ===== -->
+    <div class="sheet-col">
+      <div class="row sheet-skillgroup-detection">
+        <h3 class="section-subtitle">Bio Detection Skills</h3>
+
+        <div class="sheet-skill-header">
+          <span class="sheet-skill-spacer"></span>
+          <span class="sheet-skill-label">Skill</span>
+          <span class="sheet-skill-label">Level</span>
+          <span class="sheet-skill-label">XP</span>
+        </div>
+
+        {{#each system.skills.detection}}
+        <div class="sheet-skill-entry">
+          <button type="button"
+                  class="roll-skill"
+                  data-roll="{{this.rollFormula}}"
+                  data-label="{{this.label}}">
+            {{this.label}}
+          </button>
+          <input type="text" name="system.skills.detection.{{@index}}.label" value="{{this.label}}" readonly />
+          <input type="number" name="system.skills.detection.{{@index}}.level" value="{{this.level}}" min="0" />
+          <input type="number" name="system.skills.detection.{{@index}}.xp" value="{{this.xp}}" min="0" />
+        </div>
+        {{/each}}
+
+      </div>
+    </div>
+
+  </div> <!-- End .sheet-2colrow -->
+</div> <!-- End .sheet-section-block -->
+
+<!-- ===== BIO TRAINING PACKAGES BLOCK ===== -->
+<div class="sheet-section-block sheet-theme-bio">
+  <div class="sheet-group-title">
+    <h2 class="section-title">Bio Training Packages</h2>
+  </div>
+
+  <div class="sheet-skillgroup-training">
+    <div class="sheet-skill-header">
+      <span class="sheet-skill-label sheet-skill-spacer"></span>
+      <span class="sheet-skill-label">Skill</span>
+      <span class="sheet-skill-label">Level</span>
+      <span class="sheet-skill-label">XP</span>
+    </div>
+
+    {{#each system.skills.trainingPackages}}
+    <div class="sheet-skill-entry">
+      <button type="button"
+              class="roll-skill"
+              data-roll="{{this.rollFormula}}"
+              data-label="{{this.label}}">
+        {{this.label}}
+      </button>
+      <input type="text" name="system.skills.trainingPackages.{{@index}}.label" value="{{this.label}}" />
+      <input type="number" name="system.skills.trainingPackages.{{@index}}.level" value="{{this.level}}" min="0" />
+      <input type="number" name="system.skills.trainingPackages.{{@index}}.xp" value="{{this.xp}}" min="0" />
+      <textarea name="system.skills.trainingPackages.{{@index}}.notes">{{this.notes}}</textarea>
+    </div>
+    {{/each}}
+<!-- ===== BIO GEAR BLOCK ===== -->
+</div>
+</div>
+<div class="sheet-section-block sheet-theme-bio">
+  <div class="sheet-group-title">
+    <h2 class="section-title">Bio Gear</h2>
+  </div>
+
+  <div class="sheet-gear-wrapper sheet-gear-layout">
+
+    <div class="sheet-gear-block sheet-gear-summary">
+      <div class="sheet-gear-cell">
+        <span class="sheet-gear-label">Readied Items</span>
+        <input type="number" name="system.gear.readied.total" value="{{system.gear.readied.total}}" readonly />
+      </div>
+      <div class="sheet-gear-cell">
+        <span class="sheet-gear-label">Max Readied</span>
+        <input type="number" value="5" readonly />
+      </div>
+      <div class="sheet-gear-cell">
+        <span class="sheet-gear-label">Current Load</span>
+        <input type="number" name="system.gear.carriedWeight" value="{{system.gear.carriedWeight}}" readonly />
+      </div>
+      <div class="sheet-gear-cell">
+        <span class="sheet-gear-label" title="Add your total weapon and armor delay.">Init Penalty</span>
+        <input type="number" name="system.gear.initiativePenalty" value="{{system.gear.initiativePenalty}}" />
+      </div>
+    </div>
+
+    <div class="sheet-gear-block sheet-gear-tiers">
+      <div class="sheet-gear-cell">
+        <span class="sheet-gear-label">Light Load</span>
+        <input type="number" name="system.gear.encumbranceThresholds.light" value="{{system.gear.encumbranceThresholds.light}}" readonly />
+      </div>
+      <div class="sheet-gear-cell">
+        <span class="sheet-gear-label">Moderate Load (-2)</span>
+        <input type="number" name="system.gear.encumbranceThresholds.moderate" value="{{system.gear.encumbranceThresholds.moderate}}" readonly />
+      </div>
+      <div class="sheet-gear-cell">
+        <span class="sheet-gear-label">Heavy Load (-5)</span>
+        <input type="number" name="system.gear.encumbranceThresholds.heavy" value="{{system.gear.encumbranceThresholds.heavy}}" readonly />
+      </div>
+      <div class="sheet-gear-cell">
+        <span class="sheet-gear-label">Max Carry (-10)</span>
+        <input type="number" name="system.gear.encumbranceThresholds.max" value="{{system.gear.encumbranceThresholds.max}}" readonly />
+      </div>
+      <div class="sheet-gear-cell">
+        <span class="sheet-gear-label">Push/Drag (-15)</span>
+        <input type="number" name="system.gear.encumbranceThresholds.pushDrag" value="{{system.gear.encumbranceThresholds.pushDrag}}" readonly />
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===== BIO WEAPONS BLOCK ===== -->
+<div class="sheet-section-block sheet-theme-bio">
+  <div class="sheet-group-title">
+    <h2 class="section-title">Bio Weapons</h2>
+  </div>
+
+  <div class="sheet-weapon-wrapper sheet-weapons-layout">
+    <div class="sheet-weapon-header">
+      <span>Weapon</span>
+      <span>Skill</span>
+      <span>Atk Bonus</span>
+      <span>Damage</span>
+      <span>Spd</span>
+      <span>Ammo</span>
+      <span>Mag</span>
+      <span>Range</span>
+      <span>HP</span>
+      <span>Max HP</span>
+      <span>Enc</span>
+      <span>Cost</span>
+      <span>Readied</span>
+      <span>Carried</span>
+    </div>
+
+    {{#each system.weapons}}
+    <div class="sheet-weapon-entry">
+      <button type="button"
+              class="roll-weapon"
+              data-roll="{{this.rollFormula}}"
+              data-label="{{this.name}}">
+        {{this.name}}
+      </button>
+      <input type="text" name="system.weapons.{{@index}}.name" value="{{this.name}}" />
+      <select name="system.weapons.{{@index}}.skill">
+        <option value="Simple" {{#if (eq this.skill "Simple")}}selected{{/if}}>Simple</option>
+        <option value="Projectile" {{#if (eq this.skill "Projectile")}}selected{{/if}}>Projectile</option>
+      </select>
+      <input type="number" name="system.weapons.{{@index}}.atkBonus" value="{{this.atkBonus}}" />
+      <input type="text" name="system.weapons.{{@index}}.damage" value="{{this.damage}}" />
+      <input type="number" name="system.weapons.{{@index}}.spd" value="{{this.spd}}" />
+      <input type="number" name="system.weapons.{{@index}}.ammo" value="{{this.ammo}}" />
+      <input type="number" name="system.weapons.{{@index}}.mag" value="{{this.mag}}" />
+      <input type="text" name="system.weapons.{{@index}}.range" value="{{this.range}}" />
+      <input type="number" name="system.weapons.{{@index}}.hp" value="{{this.hp}}" />
+      <input type="number" name="system.weapons.{{@index}}.maxHp" value="{{this.maxHp}}" />
+      <input type="number" name="system.weapons.{{@index}}.weight" value="{{this.weight}}" />
+      <input type="number" name="system.weapons.{{@index}}.cost" value="{{this.cost}}" />
+      <input type="checkbox" name="system.weapons.{{@index}}.readied" {{#if this.readied}}checked{{/if}} />
+      <input type="checkbox" name="system.weapons.{{@index}}.carried" {{#if this.carried}}checked{{/if}} />
+      <textarea name="system.weapons.{{@index}}.notes">{{this.notes}}</textarea>
+    </div>
+    {{/each}}
+
+  </div>
+</div>
+
+<!-- ===== BIO ARMOR BLOCK ===== -->
+<div class="sheet-section-block sheet-theme-bio">
+  <div class="sheet-group-title">
+    <h2 class="section-title">Bio Armor</h2>
+  </div>
+
+  <div class="sheet-armor-wrapper sheet-armor-layout">
+    <div class="sheet-armor-header">
+      <span>Armor</span>
+      <span>Max</span>
+      <span>Current</span>
+      <span>Init Mod</span>
+      <span>Enc</span>
+      <span>Cost</span>
+      <span>Readied</span>
+      <span>Carried</span>
+    </div>
+
+    {{#each system.armor}}
+    <div class="sheet-armor-entry">
+      <input type="text" name="system.armor.{{@index}}.name" value="{{this.name}}" />
+      <input type="number" name="system.armor.{{@index}}.max" value="{{this.max}}" />
+      <input type="number" name="system.armor.{{@index}}.current" value="{{this.current}}" />
+      <input type="number" name="system.armor.{{@index}}.spdPenalty" value="{{this.spdPenalty}}" />
+      <input type="number" name="system.armor.{{@index}}.weight" value="{{this.weight}}" />
+      <input type="text" name="system.armor.{{@index}}.cost" value="{{this.cost}}" />
+      <input type="checkbox" name="system.armor.{{@index}}.readied" {{#if this.readied}}checked{{/if}} />
+      <input type="checkbox" name="system.armor.{{@index}}.carried" {{#if this.carried}}checked{{/if}} />
+      <textarea name="system.armor.{{@index}}.notes">{{this.notes}}</textarea>
+    </div>
+    {{/each}}
+
+  </div>
+</div>
+<!-- ===== BIO ITEMS BLOCK ===== -->
+<div class="sheet-section-block sheet-theme-bio">
+  <div class="sheet-group-title">
+    <h2 class="section-title">Bio Items</h2>
+  </div>
+
+  <div class="sheet-items-wrapper sheet-items-layout">
+    <div class="sheet-items-header">
+      <span>Item</span>
+      <span>#</span>
+      <span>Location</span>
+      <span>Enc</span>
+      <span>Readied</span>
+      <span>Carried</span>
+    </div>
+
+    {{#each system.items}}
+    <div class="sheet-items-entry">
+      <input type="text" name="system.items.{{@index}}.name" value="{{this.name}}" />
+      <input type="number" name="system.items.{{@index}}.quantity" value="{{this.quantity}}" />
+      <input type="text" name="system.items.{{@index}}.location" value="{{this.location}}" />
+      <input type="number" name="system.items.{{@index}}.weight" value="{{this.weight}}" />
+      <input type="checkbox" name="system.items.{{@index}}.readied" {{#if this.readied}}checked{{/if}} />
+      <input type="checkbox" name="system.items.{{@index}}.carried" {{#if this.carried}}checked{{/if}} />
+      <textarea name="system.items.{{@index}}.notes">{{this.notes}}</textarea>
+    </div>
+    {{/each}}
+  </div>
+</div>
+
+<!-- ===== BIO NANITE BLOCK ===== -->
+<div class="sheet-section-block sheet-theme-bio">
+  <div class="sheet-group-title">
+    <h2 class="section-title">Bio Nanite Tech</h2>
+  </div>
+
+  <!-- ===== Nanite Accelerators ===== -->
+  <div class="sheet-subsection-block sheet-nanite-group">
+    <h3 class="section-subtitle">Nanite Accelerators</h3>
+
+    <div class="sheet-nanite-header">
+      <span class="sheet-nanite-spacer"></span>
+      <span>Accelerator</span>
+      <span>Type</span>
+    </div>
+
+    {{#each system.nanite.catalysts}}
+    <div class="sheet-nanite-block">
+      <div class="sheet-nanite-entry sheet-nanite-accelerator">
+        <button type="button"
+                class="roll-nanite"
+                data-roll="{{this.rollFormula}}"
+                data-label="{{this.name}}">
+          {{this.name}}
+        </button>
+        <input type="text" name="system.nanite.catalysts.{{@index}}.name" value="{{this.name}}" />
+        <select name="system.nanite.catalysts.{{@index}}.type">
+          <option value="1d4" {{#if (eq this.type "1d4")}}selected{{/if}}>Minor</option>
+          <option value="5d4" {{#if (eq this.type "5d4")}}selected{{/if}}>Major</option>
+        </select>
+      </div>
+      <div class="sheet-nanite-notes-row">
+        <textarea name="system.nanite.catalysts.{{@index}}.notes">{{this.notes}}</textarea>
+      </div>
+    </div>
+    {{/each}}
+  </div>
+
+  <!-- ===== Basic Nanite Tech ===== -->
+  <div class="sheet-subsection-block sheet-nanite-group">
+    <h3 class="section-subtitle">Basic Nanite Tech</h3>
+
+    <div class="sheet-basic-nanite-header">
+      <span class="sheet-roll-spacer"></span>
+      <span>Reaction</span>
+      <span>MP</span>
+      <span>Speed</span>
+      <span>Level</span>
+      <span>XP</span>
+    </div>
+
+    {{#each system.nanite.basicReactions}}
+    <div class="sheet-nanite-block">
+      <div class="sheet-basic-nanite-entry">
+        <button type="button"
+                class="roll-nanite"
+                data-roll="{{this.rollFormula}}"
+                data-label="{{this.name}}">
+          {{this.name}}
+        </button>
+        <input type="text" name="system.nanite.basicReactions.{{@index}}.name" value="{{this.name}}" />
+        <input type="number" name="system.nanite.basicReactions.{{@index}}.mp" value="{{this.mp}}" />
+        <input type="number" name="system.nanite.basicReactions.{{@index}}.spd" value="{{this.spd}}" />
+        <input type="number" name="system.nanite.basicReactions.{{@index}}.level" value="{{this.level}}" />
+        <input type="number" name="system.nanite.basicReactions.{{@index}}.xp" value="{{this.xp}}" />
+      </div>
+      <div class="sheet-basic-nanite-notes-row">
+        <textarea name="system.nanite.basicReactions.{{@index}}.notes">{{this.notes}}</textarea>
+      </div>
+    </div>
+    {{/each}}
+  </div>
+
+  <!-- ===== Advanced Nanite Tech ===== -->
+  <div class="sheet-subsection-block sheet-nanite-group">
+    <h3 class="section-subtitle">Advanced Nanite Tech</h3>
+
+    <div class="sheet-advanced-nanite-header">
+      <span class="sheet-roll-spacer"></span>
+      <span>Reaction</span>
+      <span>MP</span>
+      <span>Speed</span>
+      <span>Level</span>
+      <span>XP</span>
+      <span>Components</span>
+    </div>
+
+    {{#each system.nanite.advancedReactions}}
+    <div class="sheet-nanite-block">
+      <div class="sheet-advanced-nanite-entry">
+        <button type="button"
+                class="roll-nanite"
+                data-roll="{{this.rollFormula}}"
+                data-label="{{this.name}}">
+          {{this.name}}
+        </button>
+        <input type="text" name="system.nanite.advancedReactions.{{@index}}.name" value="{{this.name}}" />
+        <input type="number" name="system.nanite.advancedReactions.{{@index}}.mp" value="{{this.mp}}" />
+        <input type="number" name="system.nanite.advancedReactions.{{@index}}.spd" value="{{this.spd}}" />
+        <input type="number" name="system.nanite.advancedReactions.{{@index}}.level" value="{{this.level}}" />
+        <input type="number" name="system.nanite.advancedReactions.{{@index}}.xp" value="{{this.xp}}" />
+        <input type="text" name="system.nanite.advancedReactions.{{@index}}.components" value="{{this.components}}" />
+      </div>
+      <div class="sheet-advanced-nanite-notes-row">
+        <textarea name="system.nanite.advancedReactions.{{@index}}.notes">{{this.notes}}</textarea>
+      </div>
+    </div>
+    {{/each}}
+  </div>
+</div>
+
+<div class="sheet-section-block sheet-theme-bio">
+  <div class="sheet-group-title">
+    <h2 class="section-title">Bio Profile</h2>
+  </div>
+
+  <!-- ===== Bio Description ===== -->
+  <div class="sheet-subsection-block sheet-profile-group sheet-profile-desc">
+    <h3 class="section-subtitle">Physical Description and Personality</h3>
+    <div class="sheet-profile-notes-row">
+      <textarea class="sheet-desc-box"
+                name="system.profile.physDescription"
+                placeholder="Describe the character’s physical features, mannerisms, and behavior.">{{system.profile.physDescription}}</textarea>
+    </div>
+  </div>
+
+  <!-- ===== Bio Background ===== -->
+  <div class="sheet-subsection-block sheet-profile-group sheet-profile-bg">
+    <h3 class="section-subtitle">Background</h3>
+    <div class="sheet-profile-notes-row">
+      <textarea class="sheet-bg-box"
+                name="system.profile.background"
+                placeholder="Character's history, origin, motivations...">{{system.profile.background}}</textarea>
+    </div>
+  </div>
+
+  <!-- ===== Bio Notes ===== -->
+  <div class="sheet-subsection-block sheet-profile-group sheet-profile-notes">
+    <h3 class="section-subtitle">Notes</h3>
+    <div class="sheet-profile-notes-row">
+      <textarea class="sheet-notes-box"
+                name="system.profile.genNotes"
+                placeholder="Miscellaneous notes, reminders, or session info.">{{system.profile.genNotes}}</textarea>
+    </div>
+  </div>
+</div>
+<div class="sheet-section-block sheet-theme-ai">
+  <div class="sheet-group-title">
+    <h2 class="section-title">AI Attributes</h2>
+  </div>
+
+  <div class="sheet-2colrow">
+
+    <!-- ===== AI PRIMARY ATTRIBUTES ===== -->
+    <div class="sheet-col">
+      <div class="row sheet-primary-attributes-ai">
+        <h3 class="section-subtitle">Primary Attributes</h3>
+        <div class="sheet-attribute-wrapper">
+          <table class="sheet-attribute-table">
+            <thead>
+              <tr>
+                <th>Attribute</th>
+                <th>Score</th>
+                <th>Modifier</th>
+                <th>AP to Next</th>
+                <th>Total AP Spent</th>
+                <th>Temporary Modifier</th>
+              </tr>
+            </thead>
+            <tbody>
+              {{#each system.attributesAI.primary}}
+              <tr>
+                <td>{{this.label}}</td>
+                <td><input type="number" name="system.attributesAI.primary.{{@key}}.score" value="{{this.score}}" /></td>
+                <td><input type="number" name="system.attributesAI.primary.{{@key}}.mod" value="{{this.mod}}" readonly /></td>
+                <td><input type="number" name="system.attributesAI.primary.{{@key}}.apToNext" value="{{this.apToNext}}" readonly /></td>
+                <td><input type="number" name="system.attributesAI.primary.{{@key}}.apTotal" value="{{this.apTotal}}" readonly /></td>
+                <td><input type="number" name="system.attributesAI.primary.{{@key}}.temp" value="{{this.temp}}" /></td>
+              </tr>
+              {{/each}}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== AI SECONDARY ATTRIBUTES ===== -->
+    <div class="sheet-col">
+      <div class="row sheet-secondary-attributes-ai">
+        <h3 class="section-subtitle">Secondary Attributes</h3>
+        <div class="sheet-attribute-wrapper">
+          <table class="sheet-attribute-table">
+            <thead>
+              <tr>
+                <th>Attribute</th>
+                <th>Score</th>
+                <th>Modifier</th>
+                <th>Temporary Modifier</th>
+                <th>Queue Roll</th>
+              </tr>
+            </thead>
+            <tbody>
+              {{#each system.attributesAI.secondary}}
+              <tr>
+                <td>{{this.label}}</td>
+                <td><input type="number" name="system.attributesAI.secondary.{{@key}}.score" value="{{this.score}}" readonly /></td>
+                <td>
+                  {{#if this.mod}}
+                  <input type="number" name="system.attributesAI.secondary.{{@key}}.mod" value="{{this.mod}}" readonly />
+                  {{/if}}
+                </td>
+                <td>
+                  {{#if this.temp}}
+                  <input type="number" name="system.attributesAI.secondary.{{@key}}.temp" value="{{this.temp}}" />
+                  {{/if}}
+                </td>
+                <td>
+                  {{#if this.hasRoll}}
+                  <button type="button"
+                          class="roll-ai"
+                          data-roll="{{this.rollFormula}}"
+                          data-label="{{this.label}}">
+                    Roll
+                  </button>
+                  {{/if}}
+                </td>
+              </tr>
+              {{/each}}
+              <tr>
+                <td>Likeness</td>
+                <td><input type="number" name="system.attributesAI.secondary.LIKE.score" value="{{system.attributesAI.secondary.LIKE.score}}" min="3" max="30" /></td>
+                <td colspan="2">
+                  <input type="text" name="system.attributesAI.secondary.LIKE.desc" value="{{system.attributesAI.secondary.LIKE.desc}}" readonly />
+                </td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- ===== AP Summary ===== -->
+        <div class="sheet-ap-summary">
+          <span class="sheet-ap-label">Total AP Spent:
+            <input type="number" name="system.attributesAI.ap.totalSpent" value="{{system.attributesAI.ap.totalSpent}}" readonly />
+          </span>
+          <span class="sheet-ap-label">Unspent AP:
+            <input type="number" name="system.attributesAI.ap.unspent" value="{{system.attributesAI.ap.unspent}}" />
+          </span>
+        </div>
+      </div>
+    </div>
+
+  </div> <!-- End .sheet-2colrow -->
+</div> <!-- End .sheet-section-block -->
+<div class="sheet-section-block sheet-theme-ai">
+  <div class="sheet-group-title">
+    <h2 class="section-title">AI Vital Systems</h2>
+  </div>
+
+  <div class="sheet-3colrow sheet-vitals-wrapper">
+
+    <!-- ===== AI SAVING THROWS ===== -->
+    <div class="sheet-col">
+      <div class="row sheet-saves-block-ai">
+        <h3 class="section-subtitle">AI Saving Throws</h3>
+        <div class="sheet-save-wrapper">
+          <table class="sheet-save-table">
+            <thead>
+              <tr>
+                <th>Attribute</th>
+                <th>Score</th>
+                <th>Temporary Modifier</th>
+              </tr>
+            </thead>
+            <tbody>
+              {{#each system.vitalsAI.saves}}
+              <tr>
+                <td>
+                  <button type="button"
+                          class="roll-ai"
+                          data-roll="{{this.rollFormula}}"
+                          data-label="{{this.label}}">
+                    {{this.label}}
+                  </button>
+                </td>
+                <td><input type="number" name="system.vitalsAI.saves.{{@key}}.score" value="{{this.score}}" readonly /></td>
+                <td><input type="number" name="system.vitalsAI.saves.{{@key}}.temp" value="{{this.temp}}" /></td>
+              </tr>
+              {{/each}}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== AI STATUS ===== -->
+    <div class="sheet-col">
+      <div class="row sheet-status-block-ai">
+        <h3 class="section-subtitle">AI Status</h3>
+        <div class="sheet-status-wrapper">
+          <table class="sheet-status-table">
+            <thead>
+              <tr>
+                <th></th>
+                <th>Max</th>
+                <th>Current</th>
+                <th>Min</th>
+                <th>Temp</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>IP</td>
+                <td><input type="number" name="system.vitalsAI.status.IP.max" value="{{system.vitalsAI.status.IP.max}}" readonly /></td>
+                <td><input type="number" name="system.vitalsAI.status.IP.current" value="{{system.vitalsAI.status.IP.current}}" /></td>
+                <td><input type="number" name="system.vitalsAI.status.IP.min" value="{{system.vitalsAI.status.IP.min}}" readonly /></td>
+                <td><input type="number" name="system.vitalsAI.status.IP.temp" value="{{system.vitalsAI.status.IP.temp}}" /></td>
+              </tr>
+              <tr>
+                <td>PP</td>
+                <td><input type="number" name="system.vitalsAI.status.PP.max" value="{{system.vitalsAI.status.PP.max}}" readonly /></td>
+                <td><input type="number" name="system.vitalsAI.status.PP.current" value="{{system.vitalsAI.status.PP.current}}" /></td>
+                <td><input type="number" name="system.vitalsAI.status.PP.min" value="{{system.vitalsAI.status.PP.min}}" readonly /></td>
+                <td><input type="number" name="system.vitalsAI.status.PP.temp" value="{{system.vitalsAI.status.PP.temp}}" /></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== AI FRAGMENTATION ===== -->
+    <div class="sheet-col">
+      <div class="row sheet-fragment-block">
+        <h3 class="section-subtitle">Fragmentation</h3>
+        <div class="sheet-fragment-wrapper">
+          <select class="sheet-fragment-select" name="system.vitalsAI.fragmentation.level">
+            <option value="0" {{#if (eq system.vitalsAI.fragmentation.level 0)}}selected{{/if}}>No Fragment</option>
+            <option value="-2" {{#if (eq system.vitalsAI.fragmentation.level -2)}}selected{{/if}}>1 Fragment</option>
+            <option value="-5" {{#if (eq system.vitalsAI.fragmentation.level -5)}}selected{{/if}}>2 Fragments</option>
+            <option value="-10" {{#if (eq system.vitalsAI.fragmentation.level -10)}}selected{{/if}}>3 Fragments</option>
+            <option value="-15" {{#if (eq system.vitalsAI.fragmentation.level -15)}}selected{{/if}}>4 Fragments</option>
+            <option value="2" {{#if (eq system.vitalsAI.fragmentation.level 2)}}selected{{/if}}>Overclocked</option>
+          </select>
+          <div class="sheet-fragment-penalty">
+            <label class="sheet-fragment-label">Penalty:</label>
+            <input type="number" name="system.vitalsAI.fragmentation.penalty" value="{{system.vitalsAI.fragmentation.penalty}}" readonly />
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div> <!-- End .sheet-3colrow -->
+</div> <!-- End .sheet-section-block -->
+
+<div class="sheet-section-block sheet-theme-ai">
+  <div class="sheet-group-title">
+    <h2 class="section-title">AI Skills</h2>
+  </div>
+
+  <div class="sheet-2colrow sheet-skills-wrapper">
+
+    <!-- ===== AI Combat Skills Column ===== -->
+    <div class="sheet-col">
+      <div class="row sheet-skillgroup-combat-ai">
+        <h3 class="section-subtitle">AI Combat Skills</h3>
+
+        <div class="sheet-skill-header">
+          <span class="sheet-skill-spacer"></span>
+          <span class="sheet-skill-label">Skill</span>
+          <span class="sheet-skill-label">Level</span>
+          <span class="sheet-skill-label">XP</span>
+        </div>
+
+        {{#each system.skillsAI.combat}}
+        <div class="sheet-skill-entry">
+          <button type="button"
+                  class="roll-ai-skill"
+                  data-roll="{{this.rollFormula}}"
+                  data-label="{{this.label}}">
+            {{this.label}}
+          </button>
+          <input type="text" value="{{this.label}}" readonly />
+          <input type="number" name="system.skillsAI.combat.{{@index}}.level" value="{{this.level}}" min="0" />
+          <input type="number" name="system.skillsAI.combat.{{@index}}.xp" value="{{this.xp}}" min="0" />
+        </div>
+        {{/each}}
+
+      </div>
+    </div>
+
+    <!-- ===== AI Detection Skills Column ===== -->
+    <div class="sheet-col">
+      <div class="row sheet-skillgroup-detection-ai">
+        <h3 class="section-subtitle">AI Detection Skills</h3>
+
+        <div class="sheet-skill-header">
+          <span class="sheet-skill-spacer"></span>
+          <span class="sheet-skill-label">Skill</span>
+          <span class="sheet-skill-label">Level</span>
+          <span class="sheet-skill-label">XP</span>
+        </div>
+
+        {{#each system.skillsAI.detection}}
+        <div class="sheet-skill-entry">
+          <button type="button"
+                  class="roll-ai-skill"
+                  data-roll="{{this.rollFormula}}"
+                  data-label="{{this.label}}">
+            {{this.label}}
+          </button>
+          <input type="text" value="{{this.label}}" readonly />
+          <input type="number" name="system.skillsAI.detection.{{@index}}.level" value="{{this.level}}" min="0" />
+          <input type="number" name="system.skillsAI.detection.{{@index}}.xp" value="{{this.xp}}" min="0" />
+        </div>
+        {{/each}}
+
+      </div>
+    </div>
+
+  </div> <!-- End .sheet-2colrow -->
+</div> <!-- End .sheet-section-block -->
+
+<div class="sheet-section-block sheet-theme-ai">
+  <div class="sheet-group-title">
+    <h2 class="section-title">AI Training Packages</h2>
+  </div>
+
+  <div class="sheet-subsection-block sheet-skillgroup-training-ai">
+    <div class="sheet-skill-header">
+      <span class="sheet-skill-spacer"></span>
+      <span class="sheet-skill-label">Skill</span>
+      <span class="sheet-skill-label">Level</span>
+      <span class="sheet-skill-label">XP</span>
+    </div>
+
+    {{#each system.skillsAI.trainingPackages}}
+    <div class="sheet-skill-entry">
+      <button type="button"
+              class="roll-ai-skill"
+              data-roll="{{this.rollFormula}}"
+              data-label="{{this.label}}">
+        {{this.label}}
+      </button>
+      <input type="text" name="system.skillsAI.trainingPackages.{{@index}}.label" value="{{this.label}}" placeholder="Skill" />
+      <input type="number" name="system.skillsAI.trainingPackages.{{@index}}.level" value="{{this.level}}" min="0" />
+      <input type="number" name="system.skillsAI.trainingPackages.{{@index}}.xp" value="{{this.xp}}" min="0" />
+      <textarea name="system.skillsAI.trainingPackages.{{@index}}.notes" class="sheet-training-notes" placeholder="Notes...">{{this.notes}}</textarea>
+    </div>
+    {{/each}}
+  </div>
+</div>
+
+<!-- ===== AI GEAR BLOCK ===== -->
+
+<div class="sheet-section-block sheet-theme-ai">
+  <div class="sheet-group-title">
+    <h2 class="section-title">AI Hardware</h2>
+  </div>
+
+  <div class="sheet-gear-wrapper sheet-gear-layout">
+
+    <div class="sheet-gear-block sheet-gear-summary">
+      <div class="sheet-gear-cell">
+        <span class="sheet-gear-label">Readied Items</span>
+        <input type="number" name="system.gearAI.readiedTotal" value="{{system.gearAI.readiedTotal}}" readonly />
+      </div>
+      <div class="sheet-gear-cell">
+        <span class="sheet-gear-label">Max Readied</span>
+        <input type="number" value="5" readonly />
+      </div>
+      <div class="sheet-gear-cell">
+        <span class="sheet-gear-label">Current Load</span>
+        <input type="number" name="system.gearAI.carriedWeight" value="{{system.gearAI.carriedWeight}}" readonly />
+      </div>
+      <div class="sheet-gear-cell">
+        <span class="sheet-gear-label">Init Penalty</span>
+        <input type="number" name="system.gearAI.initiativePenalty" value="{{system.gearAI.initiativePenalty}}" />
+      </div>
+    </div>
+
+    <div class="sheet-gear-block sheet-gear-tiers">
+      <div class="sheet-gear-cell">
+        <span class="sheet-gear-label">Light Load</span>
+        <input type="number" name="system.gearAI.thresholds.light" value="{{system.gearAI.thresholds.light}}" readonly />
+      </div>
+      <div class="sheet-gear-cell">
+        <span class="sheet-gear-label">Moderate Load (-2)</span>
+        <input type="number" name="system.gearAI.thresholds.moderate" value="{{system.gearAI.thresholds.moderate}}" readonly />
+      </div>
+      <div class="sheet-gear-cell">
+        <span class="sheet-gear-label">Heavy Load (-5)</span>
+        <input type="number" name="system.gearAI.thresholds.heavy" value="{{system.gearAI.thresholds.heavy}}" readonly />
+      </div>
+      <div class="sheet-gear-cell">
+        <span class="sheet-gear-label">Max Carry (-10)</span>
+        <input type="number" name="system.gearAI.thresholds.max" value="{{system.gearAI.thresholds.max}}" readonly />
+      </div>
+      <div class="sheet-gear-cell">
+        <span class="sheet-gear-label">Push/Drag (-15)</span>
+        <input type="number" name="system.gearAI.thresholds.pushDrag" value="{{system.gearAI.thresholds.pushDrag}}" readonly />
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== AI WEAPONS BLOCK ===== -->
+
+<div class="sheet-section-block sheet-theme-ai">
+  <div class="sheet-group-title">
+    <h2 class="section-title">AI Weapons</h2>
+  </div>
+
+  <div class="sheet-weapon-wrapper sheet-weapons-layout">
+    <div class="sheet-weapon-header">
+      <span class="sheet-weapon-spacer"></span>
+      <span>Weapon</span>
+      <span>Skill</span>
+      <span>Atk Bonus</span>
+      <span>Damage</span>
+      <span>Spd</span>
+      <span>Ammo</span>
+      <span>Mag</span>
+      <span>Range</span>
+      <span>HP</span>
+      <span>Max HP</span>
+      <span>Enc</span>
+      <span>Cost</span>
+      <span>Readied</span>
+      <span>Carried</span>
+    </div>
+
+    {{#each system.weaponsAI}}
+    <div class="sheet-weapon-entry">
+      <button type="button"
+              class="roll-ai-weapon"
+              data-roll="{{this.rollFormula}}"
+              data-label="{{this.name}}">
+        {{this.name}}
+      </button>
+      <input type="text" name="system.weaponsAI.{{@index}}.name" value="{{this.name}}" />
+      <select name="system.weaponsAI.{{@index}}.skill">
+        <option value="Simple" {{#if (eq this.skill "Simple")}}selected{{/if}}>Simple</option>
+        <option value="Projectile" {{#if (eq this.skill "Projectile")}}selected{{/if}}>Projectile</option>
+      </select>
+      <input type="number" name="system.weaponsAI.{{@index}}.atkBonus" value="{{this.atkBonus}}" />
+      <input type="text" name="system.weaponsAI.{{@index}}.damage" value="{{this.damage}}" />
+      <input type="number" name="system.weaponsAI.{{@index}}.spd" value="{{this.spd}}" />
+      <input type="number" name="system.weaponsAI.{{@index}}.ammo" value="{{this.ammo}}" />
+      <input type="number" name="system.weaponsAI.{{@index}}.mag" value="{{this.mag}}" />
+      <input type="text" name="system.weaponsAI.{{@index}}.range" value="{{this.range}}" />
+      <input type="number" name="system.weaponsAI.{{@index}}.hp" value="{{this.hp}}" />
+      <input type="number" name="system.weaponsAI.{{@index}}.maxHp" value="{{this.maxHp}}" />
+      <input type="number" name="system.weaponsAI.{{@index}}.weight" value="{{this.weight}}" />
+      <input type="number" name="system.weaponsAI.{{@index}}.cost" value="{{this.cost}}" />
+      <input type="checkbox" name="system.weaponsAI.{{@index}}.readied" {{#if this.readied}}checked{{/if}} />
+      <input type="checkbox" name="system.weaponsAI.{{@index}}.carried" {{#if this.carried}}checked{{/if}} />
+      <textarea name="system.weaponsAI.{{@index}}.notes">{{this.notes}}</textarea>
+    </div>
+    {{/each}}
+  </div>
+</div>
+
+<!-- ===== AI ARMOR BLOCK ===== -->
+
+<div class="sheet-section-block sheet-theme-ai">
+  <div class="sheet-group-title">
+    <h2 class="section-title">AI Armor</h2>
+  </div>
+
+  <div class="sheet-subsection-block">
+    <div class="sheet-armor-wrapper sheet-armor-layout">
+      <div class="sheet-armor-header">
+        <span>Armor</span>
+        <span>Max</span>
+        <span>Current</span>
+        <span>Cyc Mod</span>
+        <span>Enc</span>
+        <span>Cost</span>
+        <span>Readied</span>
+        <span>Carried</span>
+      </div>
+
+      {{#each system.armorAI}}
+      <div class="sheet-armor-entry">
+        <input type="text" name="system.armorAI.{{@index}}.name" value="{{this.name}}" />
+        <input type="number" name="system.armorAI.{{@index}}.max" value="{{this.max}}" />
+        <input type="number" name="system.armorAI.{{@index}}.current" value="{{this.current}}" />
+        <input type="number" name="system.armorAI.{{@index}}.cycMod" value="{{this.cycMod}}" />
+        <input type="number" name="system.armorAI.{{@index}}.weight" value="{{this.weight}}" />
+        <input type="text" name="system.armorAI.{{@index}}.cost" value="{{this.cost}}" />
+        <input type="checkbox" name="system.armorAI.{{@index}}.readied" {{#if this.readied}}checked{{/if}} />
+        <input type="checkbox" name="system.armorAI.{{@index}}.carried" {{#if this.carried}}checked{{/if}} />
+        <textarea name="system.armorAI.{{@index}}.notes">{{this.notes}}</textarea>
+      </div>
+      {{/each}}
+    </div>
+  </div>
+</div>
+<!-- ===== AI ITEMS BLOCK ===== -->
+<div class="sheet-section-block sheet-theme-ai">
+  <div class="sheet-group-title">
+    <h2 class="section-title">AI Items</h2>
+  </div>
+
+  <div class="sheet-items-wrapper sheet-items-layout">
+    <div class="sheet-items-header">
+      <span>Item</span>
+      <span>#</span>
+      <span>Location</span>
+      <span>Enc</span>
+      <span>Readied</span>
+      <span>Carried</span>
+    </div>
+
+    {{#each system.itemsAI}}
+    <div class="sheet-items-entry">
+      <input type="text" name="system.itemsAI.{{@index}}.name" value="{{this.name}}" placeholder="Item" />
+      <input type="number" name="system.itemsAI.{{@index}}.quantity" value="{{this.quantity}}" />
+      <input type="text" name="system.itemsAI.{{@index}}.location" value="{{this.location}}" />
+      <input type="number" name="system.itemsAI.{{@index}}.weight" value="{{this.weight}}" />
+      <input type="checkbox" name="system.itemsAI.{{@index}}.readied" {{#if this.readied}}checked{{/if}} />
+      <input type="checkbox" name="system.itemsAI.{{@index}}.carried" {{#if this.carried}}checked{{/if}} />
+      <textarea name="system.itemsAI.{{@index}}.notes">{{this.notes}}</textarea>
+    </div>
+    {{/each}}
+  </div>
+</div>
+
+<!-- ===== AI NANITE BLOCK ===== -->
+<div class="sheet-section-block sheet-theme-ai">
+  <div class="sheet-group-title">
+    <h2 class="section-title">AI Nanite Tech</h2>
+  </div>
+
+  <div class="sheet-subsection-block sheet-nanite-group-ai">
+    <h3 class="section-subtitle">Nanite Accelerators</h3>
+
+    <div class="sheet-nanite-header">
+      <span></span>
+      <span>Accelerator</span>
+      <span>Type</span>
+    </div>
+
+    {{#each system.naniteAI.catalysts}}
+    <div class="sheet-nanite-entry">
+      <button type="button"
+              class="roll-ai-nanite"
+              data-roll="{{this.rollFormula}}"
+              data-label="{{this.name}}">
+        {{this.name}}
+      </button>
+      <input type="text" name="system.naniteAI.catalysts.{{@index}}.name" value="{{this.name}}" />
+      <select name="system.naniteAI.catalysts.{{@index}}.type">
+        <option value="1d4" {{#if (eq this.type "1d4")}}selected{{/if}}>Minor</option>
+        <option value="5d4" {{#if (eq this.type "5d4")}}selected{{/if}}>Major</option>
+      </select>
+      <textarea name="system.naniteAI.catalysts.{{@index}}.notes">{{this.notes}}</textarea>
+    </div>
+    {{/each}}
+  </div>
+
+  <!-- ===== AI Basic NANITE BLOCK ===== -->
+  <div class="sheet-subsection-block sheet-nanite-group-ai">
+    <h3 class="section-subtitle">Basic Nanite Tech</h3>
+
+    <div class="sheet-basic-nanite-header">
+      <span></span>
+      <span>Reaction</span>
+      <span>PP</span>
+      <span>Cycles</span>
+      <span>Level</span>
+      <span>XP</span>
+    </div>
+
+    {{#each system.naniteAI.basicReactions}}
+    <div class="sheet-basic-nanite-entry">
+      <button type="button"
+              class="roll-ai-nanite"
+              data-roll="{{this.rollFormula}}"
+              data-label="{{this.name}}">
+        {{this.name}}
+      </button>
+      <input type="text" name="system.naniteAI.basicReactions.{{@index}}.name" value="{{this.name}}" />
+      <input type="number" name="system.naniteAI.basicReactions.{{@index}}.pp" value="{{this.pp}}" />
+      <input type="number" name="system.naniteAI.basicReactions.{{@index}}.cycles" value="{{this.cycles}}" />
+      <input type="number" name="system.naniteAI.basicReactions.{{@index}}.level" value="{{this.level}}" />
+      <input type="number" name="system.naniteAI.basicReactions.{{@index}}.xp" value="{{this.xp}}" />
+      <textarea name="system.naniteAI.basicReactions.{{@index}}.notes">{{this.notes}}</textarea>
+    </div>
+    {{/each}}
+  </div>
+
+  <!-- ===== AI ADV NANITE BLOCK ===== -->
+  <div class="sheet-subsection-block sheet-nanite-group-ai">
+    <h3 class="section-subtitle">Advanced Nanite Tech</h3>
+
+    <div class="sheet-advanced-nanite-header">
+      <span></span>
+      <span>Reaction</span>
+      <span>PP</span>
+      <span>Cycles</span>
+      <span>Level</span>
+      <span>XP</span>
+      <span>Components</span>
+    </div>
+
+    {{#each system.naniteAI.advancedReactions}}
+    <div class="sheet-advanced-nanite-entry">
+      <button type="button"
+              class="roll-ai-nanite"
+              data-roll="{{this.rollFormula}}"
+              data-label="{{this.name}}">
+        {{this.name}}
+      </button>
+      <input type="text" name="system.naniteAI.advancedReactions.{{@index}}.name" value="{{this.name}}" />
+      <input type="number" name="system.naniteAI.advancedReactions.{{@index}}.pp" value="{{this.pp}}" />
+      <input type="number" name="system.naniteAI.advancedReactions.{{@index}}.cycles" value="{{this.cycles}}" />
+      <input type="number" name="system.naniteAI.advancedReactions.{{@index}}.level" value="{{this.level}}" />
+      <input type="number" name="system.naniteAI.advancedReactions.{{@index}}.xp" value="{{this.xp}}" />
+      <input type="text" name="system.naniteAI.advancedReactions.{{@index}}.components" value="{{this.components}}" />
+      <textarea name="system.naniteAI.advancedReactions.{{@index}}.notes">{{this.notes}}</textarea>
+    </div>
+    {{/each}}
+  </div>
+</div>
+
+<!-- ===== AI DESCRIPTION BLOCK ===== -->
+<div class="sheet-section-block sheet-theme-ai">
+  <div class="sheet-group-title">
+    <h2 class="section-title">AI Profile</h2>
+  </div>
+
+  <div class="sheet-subsection-block sheet-profile-group sheet-profile-desc-ai">
+    <h3 class="section-subtitle">Physical Description and Personality</h3>
+    <div class="sheet-profile-notes-row">
+      <textarea class="sheet-desc-box"
+                name="system.profileAI.physDescription"
+                placeholder="Describe the character’s physical features, mannerisms, and behavior.">{{system.profileAI.physDescription}}</textarea>
+    </div>
+  </div>
+
+  <div class="sheet-subsection-block sheet-profile-group sheet-profile-bg-ai">
+    <h3 class="section-subtitle">Background</h3>
+    <div class="sheet-profile-notes-row">
+      <textarea class="sheet-bg-box"
+                name="system.profileAI.background"
+                placeholder="Character's history, origin, motivations...">{{system.profileAI.background}}</textarea>
+    </div>
+  </div>
+
+  <div class="sheet-subsection-block sheet-profile-group sheet-profile-notes-ai">
+    <h3 class="section-subtitle">Notes</h3>
+    <div class="sheet-profile-notes-row">
+      <textarea class="sheet-notes-box"
+                name="system.profileAI.notes"
+                placeholder="Miscellaneous notes, reminders, or session info.">{{system.profileAI.notes}}</textarea>
+    </div>
+  </div>
+</div>
+
+<div class="sheet-section-block sheet-theme-shared">
+  <div class="sheet-group-title">
+    <h2 class="section-title">Shared Section</h2>
+  </div>
+
+  <div class="sheet-2colrow sheet-shared-wrapper">
+<!-- ===== Misc Section ===== -->
+<div class="sheet-col">
+  <div class="row sheet-shared-misc-group">
+    <h3 class="section-subtitle">Misc</h3>
+    <div class="sheet-misc-wrapper">
+      <table class="sheet-misc-table">
+        <thead>
+          <tr>
+            <th>Attribute</th>
+            <th>Value</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Luck</td>
+            <td><input type="number" name="system.shared.luck" value="{{system.shared.luck}}" /></td>
+          </tr>
+          <tr>
+            <td>Influence</td>
+            <td><input type="number" name="system.shared.influence" value="{{system.shared.influence}}" /></td>
+          </tr>
+          <tr>
+            <td>Interim</td>
+            <td><input type="number" name="system.shared.interim" value="{{system.shared.interim}}" /></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Wealth Section ===== -->
+<div class="sheet-col">
+  <div class="row sheet-shared-wealth-group">
+    <h3 class="section-subtitle">Wealth</h3>
+    <div class="sheet-wealth-wrapper">
+      <div class="sheet-wealth-input-group">
+        <label for="system.shared.wealth">Wealth</label>
+        <input type="number" name="system.shared.wealth" value="{{system.shared.wealth}}" min="0" class="sheet-wealth-input" />
+      </div>
+
+      <div class="sheet-wealth-input-group">
+        <label for="system.shared.income">Income</label>
+        <input type="number" name="system.shared.income" value="{{system.shared.income}}" min="0" class="sheet-wealth-input" />
+      </div>
+    </div>
+
+    <div class="sheet-wealth-notes-row">
+      <textarea name="system.shared.wealthNotes"
+                class="sheet-wealth-notes"
+                placeholder="Describe income streams, digital assets, or notes.">{{system.shared.wealthNotes}}</textarea>
+    </div>
+  </div>
+</div>

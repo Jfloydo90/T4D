@@ -1,0 +1,35 @@
+{
+  "id": "the-fourth-domain",
+  "title": "The Fourth Domain",
+  "description": "A custom Foundry VTT system for The Fourth Domain RPG.",
+  "version": "1.0.0",
+  "compatibility": {
+    "minimum": "13",
+    "verified": "13"
+  },
+  "url": "https://github.com/Jfloydo90/T4D",
+  "manifest": "https://raw.githubusercontent.com/Jfloydo90/T4D/main/system.json",
+  "download": "https://github.com/Jfloydo90/T4D/archive/refs/heads/main.zip",
+  "authors": [
+    {
+      "name": "James Floyd",
+      "url": "https://github.com/Jfloydo90"
+    }
+  ],
+  "esmodules": ["module.mjs"],
+"styles": ["styles/foundryAIBIO.css"],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    }
+  ],
+  "packs": [],
+  "documentTypes": {
+    "Actor": {
+      "character": {},
+      "npc": {}
+    }
+  }
+}
