@@ -1,6 +1,6 @@
-Actors.registerSheet("the-fourth-domain", FourthDomainAIBIOSheet, {
-  types: ["Character", "NPC"],
+Actors.registerSheet("T4D", FourthDomainAIBIOSheet, {
+  types: ["character", "npc"],
   makeDefault: true
 });
 
-Actors.unregisterSheet("core", ActorSheet, { types: ["Character", "NPC"] });
+Actors.unregisterSheet("core", ActorSheet, { types: ["character", "npc"] });
