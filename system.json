@@ -28,8 +28,8 @@
   "packs": [],
   "documentTypes": {
     "Actor": {
-      "character": {},
-      "npc": {}
+      "Character": {},
+      "NPC": {}
     }
   }
 }

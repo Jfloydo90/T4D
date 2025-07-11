@@ -225,7 +225,6 @@ export class FourthDomainAIBIOSheet extends ActorSheet {
     system.vitalsAI = system.vitalsAI || {};
     system.vitalsAI.saves = system.vitalsAI.saves || {};
 
-    const prcA = parseInt(system.attributesAI.primary?.PRC?.score || 1);
     const sen = parseInt(system.attributesAI.primary?.SEN?.score || 1);
     const arc = parseInt(system.attributesAI.primary?.ARC?.score || 1);
     const log = parseInt(system.attributesAI.primary?.LOG?.score || 1);
