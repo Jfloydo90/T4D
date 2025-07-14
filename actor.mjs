@@ -252,7 +252,7 @@ export class T4DActor extends Actor {
     // === Movement ===
     {
       const mvmtTemp = parseInt(system.attributes.secondary?.MVMT?.temp || 0);
-      const mvmtScore = spd * 2;
+      const mvmtScore = spdScore * 2;
       system.attributes.secondary.MVMT.score = mvmtScore;
       system.attributes.secondary.MVMT.mod = mvmtTemp;
     }
@@ -575,7 +575,7 @@ export class T4DActor extends Actor {
   ];
 }
 
-export class T4DActorSheet extends foundry.applications.sheets.ActorSheet {
+export class T4DActorSheet extends foundry.documents.api.DocumentSheet {
   static get defaultOptions() {
     return foundry.utils.mergeObject(super.defaultOptions, {
       classes: ["t4d", "sheet", "actor"],
