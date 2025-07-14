@@ -289,21 +289,17 @@ export class T4DActor extends Actor {
     }
 
     // Cycles
-    {
-      const cycScore = Math.floor((prcA + sen) / 2);
-      const cycTemp = parseInt(system.attributesAI.secondary?.CYC?.temp || 0);
-      const cycMod = Math.floor(cycScore / 5) - 2 + cycTemp;
-      system.attributesAI.secondary.CYC.score = cycScore;
-      system.attributesAI.secondary.CYC.mod = cycMod;
-    }
+    const cycScore = Math.floor((prcA + sen) / 2);
+    const cycTemp = parseInt(system.attributesAI.secondary?.CYC?.temp || 0);
+    const cycMod = Math.floor(cycScore / 5) - 2 + cycTemp;
+    system.attributesAI.secondary.CYC.score = cycScore;
+    system.attributesAI.secondary.CYC.mod = cycMod;
 
     // Latency
-    {
-      const latnTemp = parseInt(system.attributesAI.secondary?.LATN?.temp || 0);
-      const latnScore = cycScore * 2;
-      system.attributesAI.secondary.LATN.score = latnScore;
-      system.attributesAI.secondary.LATN.mod = latnTemp;
-    }
+    const latnTemp = parseInt(system.attributesAI.secondary?.LATN?.temp || 0);
+    const latnScore = cycScore * 2;
+    system.attributesAI.secondary.LATN.score = latnScore;
+    system.attributesAI.secondary.LATN.mod = latnTemp;
 
     // === BIO Saving Throws ===
     system.saves = system.saves || {};
@@ -575,7 +571,7 @@ export class T4DActor extends Actor {
   ];
 }
 
-export class T4DActorSheet extends foundry.applications.api.DocumentSheetV2 {
+export class T4DActorSheet extends ActorSheet {
   static get defaultOptions() {
     return foundry.utils.mergeObject(super.defaultOptions, {
       classes: ["t4d", "sheet", "actor"],
