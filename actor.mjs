@@ -29,17 +29,16 @@ export class T4DActor extends Actor {
       }
     }
 
-    // BIO Secondary
+    // BIO Secondary (ONLY mechanical)
     if (!system.attributes.secondary) {
       system.attributes.secondary = {
-        APPEAR: { score: 3 },
         INIT: { score: 0 },
         EDU: { score: 0 },
         SPD: { score: 0 },
         MVMT: { score: 0 },
       };
     }
-    const bioSecondaryKeys = ["INIT", "EDU", "SPD", "MVMT", "APPEAR"];
+    const bioSecondaryKeys = ["INIT", "EDU", "SPD", "MVMT"];
     for (let attr of bioSecondaryKeys) {
       const data = system.attributes.secondary[attr];
       if (data) {
@@ -49,14 +48,14 @@ export class T4DActor extends Actor {
       }
     }
 
-    // Appearance
-    // Appearance Descriptor
-    {
-      const appScore = parseInt(system.attributes.secondary.APPEAR.score || 3);
-      const appIndex = Math.max(0, appScore - 3);
-      system.attributes.secondary.APPEAR.desc =
-        this.constructor.HumanAppTable?.[appIndex] || "Unknown";
+    // Appearance decoupled
+    if (!system.attributes.appearance) {
+      system.attributes.appearance = { score: 3 };
     }
+    const appScore = parseInt(system.attributes.appearance.score || 3);
+    const appIndex = Math.max(0, appScore - 3);
+    system.attributes.appearance.desc =
+      this.constructor.HumanAppTable?.[appIndex] || "Unknown";
 
     // === AI ATTRIBUTES ===
     if (!system.attributesAI) system.attributesAI = {};
@@ -84,17 +83,16 @@ export class T4DActor extends Actor {
       }
     }
 
-    // AI Secondary (mirroring BIO Secondary)
+    // AI Secondary
     if (!system.attributesAI.secondary) {
       system.attributesAI.secondary = {
-        LIKE: { score: 3 },
         QUEUE: { score: 0 },
         LEA: { score: 0 },
         CYC: { score: 0 },
         LATN: { score: 0 },
       };
     }
-    const aiSecondaryKeys = ["LIKE", "QUEUE", "LEA", "CYC", "LATN"];
+    const aiSecondaryKeys = ["QUEUE", "LEA", "CYC", "LATN"];
     for (let attr of aiSecondaryKeys) {
       const data = system.attributesAI.secondary[attr];
       if (data) {
@@ -104,10 +102,13 @@ export class T4DActor extends Actor {
       }
     }
 
-    // Likeness Descriptor (if you still want it)
-    const likeScore = parseInt(system.attributesAI.secondary.LIKE.score || 3);
+    // Likeness decoupled
+    if (!system.attributesAI.likeness) {
+      system.attributesAI.likeness = { score: 3 };
+    }
+    const likeScore = parseInt(system.attributesAI.likeness.score || 3);
     const likeIndex = Math.max(0, likeScore - 3);
-    system.attributesAI.secondary.LIKE.desc =
+    system.attributesAI.likeness.desc =
       this.constructor.LikeTable?.[likeIndex] || "Unknown";
 
     // === Compute BIO AP thresholds ===
