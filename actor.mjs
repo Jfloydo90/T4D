@@ -575,7 +575,7 @@ export class T4DActor extends Actor {
   ];
 }
 
-export class T4DActorSheet extends foundry.documents.api.DocumentSheet {
+export class T4DActorSheet extends foundry.applications.api.DocumentSheetV2 {
   static get defaultOptions() {
     return foundry.utils.mergeObject(super.defaultOptions, {
       classes: ["t4d", "sheet", "actor"],
