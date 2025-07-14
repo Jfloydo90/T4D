@@ -4,17 +4,66 @@ export class T4DActor extends Actor {
     const system = this.system;
 
     // Initial Attirbute Setup
+    // Ensure attributes
     if (!system.attributes) system.attributes = {};
+
+    // Primary attributes
     if (!system.attributes.primary) {
       system.attributes.primary = {
-        STR: { score: 10, temp: 0 },
-        DEX: { score: 10, temp: 0 },
-        CON: { score: 10, temp: 0 },
-        INT: { score: 10, temp: 0 },
-        FOC: { score: 10, temp: 0 },
-        CHA: { score: 10, temp: 0 },
+        STR: { score: 10 },
+        DEX: { score: 10 },
+        CON: { score: 10 },
+        INT: { score: 10 },
+        FOC: { score: 10 },
+        CHA: { score: 10 },
       };
     }
+    const primaryKeys = ["STR", "DEX", "CON", "INT", "FOC", "CHA"];
+    for (let attr of primaryKeys) {
+      const data = system.attributes.primary[attr];
+      if (data) {
+        if (data.label === undefined) data.label = attr;
+        if (data.mod === undefined) data.mod = 0;
+        if (data.apToNext === undefined) data.apToNext = 0;
+        if (data.apTotal === undefined) data.apTotal = 0;
+        if (data.temp === undefined) data.temp = 0;
+      }
+    }
+
+    // Secondary attributes
+    if (!system.attributes.secondary) {
+      system.attributes.secondary = {
+        INIT: { score: 0 },
+        EDU: { score: 0 },
+        SPD: { score: 0 },
+        MVMT: { score: 0 },
+      };
+    }
+    const secondaryKeys = ["INIT", "EDU", "SPD", "MVMT"];
+    for (let attr of secondaryKeys) {
+      const data = system.attributes.secondary[attr];
+      if (data) {
+        if (data.label === undefined) data.label = attr;
+        if (data.mod === undefined) data.mod = 0;
+        if (data.temp === undefined) data.temp = 0;
+      }
+    }
+
+    // Appearance
+    if (!system.attributes.appearance) {
+      system.attributes.appearance = { score: 3 };
+    }
+    system.attributes.appearance.desc =
+      this.constructor.HumanAppTable?.[appIndex] || "Unknown";
+
+    // AI attributes
+    if (!system.attributesAI) system.attributesAI = {};
+    if (!system.attributesAI.secondary) system.attributesAI.secondary = {};
+    if (!system.attributesAI.secondary.LIKE) {
+      system.attributesAI.secondary.LIKE = { score: 3 };
+    }
+    system.attributesAI.secondary.LIKE.desc =
+      this.constructor.LikeTable?.[likeIndex] || "Unknown";
 
     // Initialize appearance if missing
     if (!system.attributes.appearance) {
