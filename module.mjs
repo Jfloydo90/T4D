@@ -11,7 +11,7 @@ Hooks.once("init", () => {
     npc: "NPC",
   };
 
-  Actors.registerSheet("t4d", FourthDomainAIBIOSheet, {
+  Actors.registerSheet("T4D", FourthDomainAIBIOSheet, {
     types: ["character", "npc"],
     makeDefault: true,
   });
