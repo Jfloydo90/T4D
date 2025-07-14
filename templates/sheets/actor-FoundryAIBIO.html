@@ -74,7 +74,7 @@
                     <td><input type="number" name="system.attributes.secondary.{{@key}}.temp" value="{{this.temp}}" /></td>
                     <td>
                       {{#if this.hasRoll}}
-                      <button type="button" class="roll-init" data-roll="{{this.rollFormula}}" data-label="{{this.label}}">
+                      <button type="button" class="roll-init" data-label="{{this.label}}">
                         Roll
                       </button>
                       {{/if}}
@@ -135,7 +135,6 @@
                 <td>
                   <button type="button"
                           class="roll-save"
-                          data-roll="{{this.rollFormula}}"
                           data-label="{{this.label}}">
                     {{this.label}}
                   </button>
@@ -226,19 +225,28 @@
           <span class="sheet-skill-label">Skill</span>
           <span class="sheet-skill-label">Level</span>
           <span class="sheet-skill-label">XP</span>
+          <span class="sheet-skill-label">Attribute</span>
         </div>
 
         {{#each system.skills.combat}}
         <div class="sheet-skill-entry">
           <button type="button"
                   class="roll-skill"
-                  data-roll="{{this.rollFormula}}"
-                  data-label="{{this.label}}">
+                  data-group="skills.combat"
+                  data-index="{{@index}}">
             {{this.label}}
           </button>
           <input type="text" name="system.skills.combat.{{@index}}.label" value="{{this.label}}" readonly />
           <input type="number" name="system.skills.combat.{{@index}}.level" value="{{this.level}}" min="0" />
           <input type="number" name="system.skills.combat.{{@index}}.xp" value="{{this.xp}}" min="0" />
+          <select name="system.skills.combat.{{@index}}.attribute">
+            <option value="STR" {{#if (eq this.attribute "STR")}}selected{{/if}}>STR</option>
+            <option value="DEX" {{#if (eq this.attribute "DEX")}}selected{{/if}}>DEX</option>
+            <option value="CON" {{#if (eq this.attribute "CON")}}selected{{/if}}>CON</option>
+            <option value="INT" {{#if (eq this.attribute "INT")}}selected{{/if}}>INT</option>
+            <option value="FOC" {{#if (eq this.attribute "FOC")}}selected{{/if}}>FOC</option>
+            <option value="CHA" {{#if (eq this.attribute "CHA")}}selected{{/if}}>CHA</option>
+          </select>
         </div>
         {{/each}}
 
@@ -255,19 +263,28 @@
           <span class="sheet-skill-label">Skill</span>
           <span class="sheet-skill-label">Level</span>
           <span class="sheet-skill-label">XP</span>
+          <span class="sheet-skill-label">Attribute</span>
         </div>
 
         {{#each system.skills.detection}}
         <div class="sheet-skill-entry">
           <button type="button"
                   class="roll-skill"
-                  data-roll="{{this.rollFormula}}"
-                  data-label="{{this.label}}">
+                  data-group="skills.detection"
+                  data-index="{{@index}}">
             {{this.label}}
           </button>
           <input type="text" name="system.skills.detection.{{@index}}.label" value="{{this.label}}" readonly />
           <input type="number" name="system.skills.detection.{{@index}}.level" value="{{this.level}}" min="0" />
           <input type="number" name="system.skills.detection.{{@index}}.xp" value="{{this.xp}}" min="0" />
+          <select name="system.skills.detection.{{@index}}.attribute">
+            <option value="STR" {{#if (eq this.attribute "STR")}}selected{{/if}}>STR</option>
+            <option value="DEX" {{#if (eq this.attribute "DEX")}}selected{{/if}}>DEX</option>
+            <option value="CON" {{#if (eq this.attribute "CON")}}selected{{/if}}>CON</option>
+            <option value="INT" {{#if (eq this.attribute "INT")}}selected{{/if}}>INT</option>
+            <option value="FOC" {{#if (eq this.attribute "FOC")}}selected{{/if}}>FOC</option>
+            <option value="CHA" {{#if (eq this.attribute "CHA")}}selected{{/if}}>CHA</option>
+          </select>
         </div>
         {{/each}}
 
@@ -278,33 +295,29 @@
 </div> <!-- End .sheet-section-block -->
 
 <!-- ===== BIO TRAINING PACKAGES BLOCK ===== -->
-<div class="sheet-section-block sheet-theme-bio">
-  <div class="sheet-group-title">
-    <h2 class="section-title">Bio Training Packages</h2>
-  </div>
+{{#each system.skills.trainingPackages}}
+<div class="sheet-skill-entry">
+  <button type="button"
+          class="roll-skill"
+          data-group="skills.trainingPackages"
+          data-index="{{@index}}">
+    {{this.label}}
+  </button>
+  <input type="text" name="system.skills.trainingPackages.{{@index}}.label" value="{{this.label}}" />
+  <input type="number" name="system.skills.trainingPackages.{{@index}}.level" value="{{this.level}}" min="0" />
+  <input type="number" name="system.skills.trainingPackages.{{@index}}.xp" value="{{this.xp}}" min="0" />
+  <select name="system.skills.trainingPackages.{{@index}}.attribute">
+    <option value="STR" {{#if (eq this.attribute "STR")}}selected{{/if}}>STR</option>
+    <option value="DEX" {{#if (eq this.attribute "DEX")}}selected{{/if}}>DEX</option>
+    <option value="CON" {{#if (eq this.attribute "CON")}}selected{{/if}}>CON</option>
+    <option value="INT" {{#if (eq this.attribute "INT")}}selected{{/if}}>INT</option>
+    <option value="FOC" {{#if (eq this.attribute "FOC")}}selected{{/if}}>FOC</option>
+    <option value="CHA" {{#if (eq this.attribute "CHA")}}selected{{/if}}>CHA</option>
+  </select>
+  <textarea name="system.skills.trainingPackages.{{@index}}.notes">{{this.notes}}</textarea>
+</div>
+{{/each}}
 
-  <div class="sheet-skillgroup-training">
-    <div class="sheet-skill-header">
-      <span class="sheet-skill-label sheet-skill-spacer"></span>
-      <span class="sheet-skill-label">Skill</span>
-      <span class="sheet-skill-label">Level</span>
-      <span class="sheet-skill-label">XP</span>
-    </div>
-
-    {{#each system.skills.trainingPackages}}
-    <div class="sheet-skill-entry">
-      <button type="button"
-              class="roll-skill"
-              data-roll="{{this.rollFormula}}"
-              data-label="{{this.label}}">
-        {{this.label}}
-      </button>
-      <input type="text" name="system.skills.trainingPackages.{{@index}}.label" value="{{this.label}}" />
-      <input type="number" name="system.skills.trainingPackages.{{@index}}.level" value="{{this.level}}" min="0" />
-      <input type="number" name="system.skills.trainingPackages.{{@index}}.xp" value="{{this.xp}}" min="0" />
-      <textarea name="system.skills.trainingPackages.{{@index}}.notes">{{this.notes}}</textarea>
-    </div>
-    {{/each}}
 <!-- ===== BIO GEAR BLOCK ===== -->
 </div>
 </div>
@@ -384,34 +397,35 @@
       <span>Carried</span>
     </div>
 
-    {{#each system.weapons}}
-    <div class="sheet-weapon-entry">
-      <button type="button"
-              class="roll-weapon"
-              data-roll="{{this.rollFormula}}"
-              data-label="{{this.name}}">
-        {{this.name}}
-      </button>
-      <input type="text" name="system.weapons.{{@index}}.name" value="{{this.name}}" />
-      <select name="system.weapons.{{@index}}.skill">
-        <option value="Simple" {{#if (eq this.skill "Simple")}}selected{{/if}}>Simple</option>
-        <option value="Projectile" {{#if (eq this.skill "Projectile")}}selected{{/if}}>Projectile</option>
-      </select>
-      <input type="number" name="system.weapons.{{@index}}.atkBonus" value="{{this.atkBonus}}" />
-      <input type="text" name="system.weapons.{{@index}}.damage" value="{{this.damage}}" />
-      <input type="number" name="system.weapons.{{@index}}.spd" value="{{this.spd}}" />
-      <input type="number" name="system.weapons.{{@index}}.ammo" value="{{this.ammo}}" />
-      <input type="number" name="system.weapons.{{@index}}.mag" value="{{this.mag}}" />
-      <input type="text" name="system.weapons.{{@index}}.range" value="{{this.range}}" />
-      <input type="number" name="system.weapons.{{@index}}.hp" value="{{this.hp}}" />
-      <input type="number" name="system.weapons.{{@index}}.maxHp" value="{{this.maxHp}}" />
-      <input type="number" name="system.weapons.{{@index}}.weight" value="{{this.weight}}" />
-      <input type="number" name="system.weapons.{{@index}}.cost" value="{{this.cost}}" />
-      <input type="checkbox" name="system.weapons.{{@index}}.readied" {{#if this.readied}}checked{{/if}} />
-      <input type="checkbox" name="system.weapons.{{@index}}.carried" {{#if this.carried}}checked{{/if}} />
-      <textarea name="system.weapons.{{@index}}.notes">{{this.notes}}</textarea>
-    </div>
-    {{/each}}
+{{#each system.weapons}}
+<div class="sheet-weapon-entry">
+  <button type="button"
+          class="roll-weapon"
+          data-group="weapons"
+          data-index="{{@index}}">
+    {{this.name}}
+  </button>
+  <input type="text" name="system.weapons.{{@index}}.name" value="{{this.name}}" />
+  <select name="system.weapons.{{@index}}.skill">
+    <option value="Simple" {{#if (eq this.skill "Simple")}}selected{{/if}}>Simple</option>
+    <option value="Projectile" {{#if (eq this.skill "Projectile")}}selected{{/if}}>Projectile</option>
+  </select>
+  <input type="number" name="system.weapons.{{@index}}.atkBonus" value="{{this.atkBonus}}" />
+  <input type="text" name="system.weapons.{{@index}}.damage" value="{{this.damage}}" />
+  <input type="number" name="system.weapons.{{@index}}.spd" value="{{this.spd}}" />
+  <input type="number" name="system.weapons.{{@index}}.ammo" value="{{this.ammo}}" />
+  <input type="number" name="system.weapons.{{@index}}.mag" value="{{this.mag}}" />
+  <input type="text" name="system.weapons.{{@index}}.range" value="{{this.range}}" />
+  <input type="number" name="system.weapons.{{@index}}.hp" value="{{this.hp}}" />
+  <input type="number" name="system.weapons.{{@index}}.maxHp" value="{{this.maxHp}}" />
+  <input type="number" name="system.weapons.{{@index}}.weight" value="{{this.weight}}" />
+  <input type="number" name="system.weapons.{{@index}}.cost" value="{{this.cost}}" />
+  <input type="checkbox" name="system.weapons.{{@index}}.readied" {{#if this.readied}}checked{{/if}} />
+  <input type="checkbox" name="system.weapons.{{@index}}.carried" {{#if this.carried}}checked{{/if}} />
+  <textarea name="system.weapons.{{@index}}.notes">{{this.notes}}</textarea>
+</div>
+{{/each}}
+
 
   </div>
 </div>
@@ -496,26 +510,26 @@
       <span>Type</span>
     </div>
 
-    {{#each system.nanite.catalysts}}
-    <div class="sheet-nanite-block">
-      <div class="sheet-nanite-entry sheet-nanite-accelerator">
-        <button type="button"
-                class="roll-nanite"
-                data-roll="{{this.rollFormula}}"
-                data-label="{{this.name}}">
-          {{this.name}}
-        </button>
-        <input type="text" name="system.nanite.catalysts.{{@index}}.name" value="{{this.name}}" />
-        <select name="system.nanite.catalysts.{{@index}}.type">
-          <option value="1d4" {{#if (eq this.type "1d4")}}selected{{/if}}>Minor</option>
-          <option value="5d4" {{#if (eq this.type "5d4")}}selected{{/if}}>Major</option>
-        </select>
-      </div>
-      <div class="sheet-nanite-notes-row">
-        <textarea name="system.nanite.catalysts.{{@index}}.notes">{{this.notes}}</textarea>
-      </div>
-    </div>
-    {{/each}}
+{{#each system.nanite.catalysts}}
+<div class="sheet-nanite-block">
+  <div class="sheet-nanite-entry sheet-nanite-accelerator">
+    <button type="button"
+            class="roll-nanite"
+            data-group="nanite.catalysts"
+            data-index="{{@index}}">
+      {{this.name}}
+    </button>
+    <input type="text" name="system.nanite.catalysts.{{@index}}.name" value="{{this.name}}" />
+    <select name="system.nanite.catalysts.{{@index}}.type">
+      <option value="1d4" {{#if (eq this.type "1d4")}}selected{{/if}}>Minor</option>
+      <option value="5d4" {{#if (eq this.type "5d4")}}selected{{/if}}>Major</option>
+    </select>
+  </div>
+  <div class="sheet-nanite-notes-row">
+    <textarea name="system.nanite.catalysts.{{@index}}.notes">{{this.notes}}</textarea>
+  </div>
+</div>
+{{/each}}
   </div>
 
   <!-- ===== Basic Nanite Tech ===== -->
@@ -531,26 +545,26 @@
       <span>XP</span>
     </div>
 
-    {{#each system.nanite.basicReactions}}
-    <div class="sheet-nanite-block">
-      <div class="sheet-basic-nanite-entry">
-        <button type="button"
-                class="roll-nanite"
-                data-roll="{{this.rollFormula}}"
-                data-label="{{this.name}}">
-          {{this.name}}
-        </button>
-        <input type="text" name="system.nanite.basicReactions.{{@index}}.name" value="{{this.name}}" />
-        <input type="number" name="system.nanite.basicReactions.{{@index}}.mp" value="{{this.mp}}" />
-        <input type="number" name="system.nanite.basicReactions.{{@index}}.spd" value="{{this.spd}}" />
-        <input type="number" name="system.nanite.basicReactions.{{@index}}.level" value="{{this.level}}" />
-        <input type="number" name="system.nanite.basicReactions.{{@index}}.xp" value="{{this.xp}}" />
-      </div>
-      <div class="sheet-basic-nanite-notes-row">
-        <textarea name="system.nanite.basicReactions.{{@index}}.notes">{{this.notes}}</textarea>
-      </div>
-    </div>
-    {{/each}}
+{{#each system.nanite.basicReactions}}
+<div class="sheet-nanite-block">
+  <div class="sheet-basic-nanite-entry">
+    <button type="button"
+            class="roll-nanite"
+            data-group="nanite.basicReactions"
+            data-index="{{@index}}">
+      {{this.name}}
+    </button>
+    <input type="text" name="system.nanite.basicReactions.{{@index}}.name" value="{{this.name}}" />
+    <input type="number" name="system.nanite.basicReactions.{{@index}}.mp" value="{{this.mp}}" />
+    <input type="number" name="system.nanite.basicReactions.{{@index}}.spd" value="{{this.spd}}" />
+    <input type="number" name="system.nanite.basicReactions.{{@index}}.level" value="{{this.level}}" />
+    <input type="number" name="system.nanite.basicReactions.{{@index}}.xp" value="{{this.xp}}" />
+  </div>
+  <div class="sheet-basic-nanite-notes-row">
+    <textarea name="system.nanite.basicReactions.{{@index}}.notes">{{this.notes}}</textarea>
+  </div>
+</div>
+{{/each}}
   </div>
 
   <!-- ===== Advanced Nanite Tech ===== -->
@@ -567,27 +581,27 @@
       <span>Components</span>
     </div>
 
-    {{#each system.nanite.advancedReactions}}
-    <div class="sheet-nanite-block">
-      <div class="sheet-advanced-nanite-entry">
-        <button type="button"
-                class="roll-nanite"
-                data-roll="{{this.rollFormula}}"
-                data-label="{{this.name}}">
-          {{this.name}}
-        </button>
-        <input type="text" name="system.nanite.advancedReactions.{{@index}}.name" value="{{this.name}}" />
-        <input type="number" name="system.nanite.advancedReactions.{{@index}}.mp" value="{{this.mp}}" />
-        <input type="number" name="system.nanite.advancedReactions.{{@index}}.spd" value="{{this.spd}}" />
-        <input type="number" name="system.nanite.advancedReactions.{{@index}}.level" value="{{this.level}}" />
-        <input type="number" name="system.nanite.advancedReactions.{{@index}}.xp" value="{{this.xp}}" />
-        <input type="text" name="system.nanite.advancedReactions.{{@index}}.components" value="{{this.components}}" />
-      </div>
-      <div class="sheet-advanced-nanite-notes-row">
-        <textarea name="system.nanite.advancedReactions.{{@index}}.notes">{{this.notes}}</textarea>
-      </div>
-    </div>
-    {{/each}}
+ {{#each system.nanite.advancedReactions}}
+<div class="sheet-nanite-block">
+  <div class="sheet-advanced-nanite-entry">
+    <button type="button"
+            class="roll-nanite"
+            data-group="nanite.advancedReactions"
+            data-index="{{@index}}">
+      {{this.name}}
+    </button>
+    <input type="text" name="system.nanite.advancedReactions.{{@index}}.name" value="{{this.name}}" />
+    <input type="number" name="system.nanite.advancedReactions.{{@index}}.mp" value="{{this.mp}}" />
+    <input type="number" name="system.nanite.advancedReactions.{{@index}}.spd" value="{{this.spd}}" />
+    <input type="number" name="system.nanite.advancedReactions.{{@index}}.level" value="{{this.level}}" />
+    <input type="number" name="system.nanite.advancedReactions.{{@index}}.xp" value="{{this.xp}}" />
+    <input type="text" name="system.nanite.advancedReactions.{{@index}}.components" value="{{this.components}}" />
+  </div>
+  <div class="sheet-advanced-nanite-notes-row">
+    <textarea name="system.nanite.advancedReactions.{{@index}}.notes">{{this.notes}}</textarea>
+  </div>
+</div>
+{{/each}}
   </div>
 </div>
 
@@ -758,12 +772,11 @@
               {{#each system.vitalsAI.saves}}
               <tr>
                 <td>
-                  <button type="button"
-                          class="roll-ai"
-                          data-roll="{{this.rollFormula}}"
-                          data-label="{{this.label}}">
-                    {{this.label}}
-                  </button>
+                <button type="button"
+                        class="roll-ai"
+                        data-label="{{this.label}}">
+                  {{this.label}}
+                </button>
                 </td>
                 <td><input type="number" name="system.vitalsAI.saves.{{@key}}.score" value="{{this.score}}" readonly /></td>
                 <td><input type="number" name="system.vitalsAI.saves.{{@key}}.temp" value="{{this.temp}}" /></td>
@@ -854,19 +867,27 @@
           <span class="sheet-skill-label">XP</span>
         </div>
 
-        {{#each system.skillsAI.combat}}
-        <div class="sheet-skill-entry">
-          <button type="button"
-                  class="roll-ai-skill"
-                  data-roll="{{this.rollFormula}}"
-                  data-label="{{this.label}}">
-            {{this.label}}
-          </button>
-          <input type="text" value="{{this.label}}" readonly />
-          <input type="number" name="system.skillsAI.combat.{{@index}}.level" value="{{this.level}}" min="0" />
-          <input type="number" name="system.skillsAI.combat.{{@index}}.xp" value="{{this.xp}}" min="0" />
-        </div>
-        {{/each}}
+{{#each system.skillsAI.combat}}
+<div class="sheet-skill-entry">
+  <button type="button"
+          class="roll-ai-skill"
+          data-group="skillsAI.combat"
+          data-index="{{@index}}">
+    {{this.label}}
+  </button>
+  <input type="text" value="{{this.label}}" readonly />
+  <input type="number" name="system.skillsAI.combat.{{@index}}.level" value="{{this.level}}" min="0" />
+  <input type="number" name="system.skillsAI.combat.{{@index}}.xp" value="{{this.xp}}" min="0" />
+  <select name="system.skillsAI.combat.{{@index}}.attribute">
+    <option value="PRC" {{#if (eq this.attribute "PRC")}}selected{{/if}}>PRC</option>
+    <option value="SEN" {{#if (eq this.attribute "SEN")}}selected{{/if}}>SEN</option>
+    <option value="ARC" {{#if (eq this.attribute "ARC")}}selected{{/if}}>ARC</option>
+    <option value="LOG" {{#if (eq this.attribute "LOG")}}selected{{/if}}>LOG</option>
+    <option value="COR" {{#if (eq this.attribute "COR")}}selected{{/if}}>COR</option>
+    <option value="SOCIAL" {{#if (eq this.attribute "SOCIAL")}}selected{{/if}}>SOCIAL</option>
+  </select>
+</div>
+{{/each}}
 
       </div>
     </div>
@@ -883,19 +904,27 @@
           <span class="sheet-skill-label">XP</span>
         </div>
 
-        {{#each system.skillsAI.detection}}
-        <div class="sheet-skill-entry">
-          <button type="button"
-                  class="roll-ai-skill"
-                  data-roll="{{this.rollFormula}}"
-                  data-label="{{this.label}}">
-            {{this.label}}
-          </button>
-          <input type="text" value="{{this.label}}" readonly />
-          <input type="number" name="system.skillsAI.detection.{{@index}}.level" value="{{this.level}}" min="0" />
-          <input type="number" name="system.skillsAI.detection.{{@index}}.xp" value="{{this.xp}}" min="0" />
-        </div>
-        {{/each}}
+{{#each system.skillsAI.detection}}
+<div class="sheet-skill-entry">
+  <button type="button"
+          class="roll-ai-skill"
+          data-group="skillsAI.detection"
+          data-index="{{@index}}">
+    {{this.label}}
+  </button>
+  <input type="text" value="{{this.label}}" readonly />
+  <input type="number" name="system.skillsAI.detection.{{@index}}.level" value="{{this.level}}" min="0" />
+  <input type="number" name="system.skillsAI.detection.{{@index}}.xp" value="{{this.xp}}" min="0" />
+  <select name="system.skillsAI.detection.{{@index}}.attribute">
+    <option value="PRC" {{#if (eq this.attribute "PRC")}}selected{{/if}}>PRC</option>
+    <option value="SEN" {{#if (eq this.attribute "SEN")}}selected{{/if}}>SEN</option>
+    <option value="ARC" {{#if (eq this.attribute "ARC")}}selected{{/if}}>ARC</option>
+    <option value="LOG" {{#if (eq this.attribute "LOG")}}selected{{/if}}>LOG</option>
+    <option value="COR" {{#if (eq this.attribute "COR")}}selected{{/if}}>COR</option>
+    <option value="SOCIAL" {{#if (eq this.attribute "SOCIAL")}}selected{{/if}}>SOCIAL</option>
+  </select>
+</div>
+{{/each}}
 
       </div>
     </div>
@@ -916,20 +945,28 @@
       <span class="sheet-skill-label">XP</span>
     </div>
 
-    {{#each system.skillsAI.trainingPackages}}
-    <div class="sheet-skill-entry">
-      <button type="button"
-              class="roll-ai-skill"
-              data-roll="{{this.rollFormula}}"
-              data-label="{{this.label}}">
-        {{this.label}}
-      </button>
-      <input type="text" name="system.skillsAI.trainingPackages.{{@index}}.label" value="{{this.label}}" placeholder="Skill" />
-      <input type="number" name="system.skillsAI.trainingPackages.{{@index}}.level" value="{{this.level}}" min="0" />
-      <input type="number" name="system.skillsAI.trainingPackages.{{@index}}.xp" value="{{this.xp}}" min="0" />
-      <textarea name="system.skillsAI.trainingPackages.{{@index}}.notes" class="sheet-training-notes" placeholder="Notes...">{{this.notes}}</textarea>
-    </div>
-    {{/each}}
+{{#each system.skillsAI.trainingPackages}}
+<div class="sheet-skill-entry">
+  <button type="button"
+          class="roll-ai-skill"
+          data-group="skillsAI.trainingPackages"
+          data-index="{{@index}}">
+    {{this.label}}
+  </button>
+  <input type="text" name="system.skillsAI.trainingPackages.{{@index}}.label" value="{{this.label}}" placeholder="Skill" />
+  <input type="number" name="system.skillsAI.trainingPackages.{{@index}}.level" value="{{this.level}}" min="0" />
+  <input type="number" name="system.skillsAI.trainingPackages.{{@index}}.xp" value="{{this.xp}}" min="0" />
+  <select name="system.skillsAI.trainingPackages.{{@index}}.attribute">
+    <option value="PRC" {{#if (eq this.attribute "PRC")}}selected{{/if}}>PRC</option>
+    <option value="SEN" {{#if (eq this.attribute "SEN")}}selected{{/if}}>SEN</option>
+    <option value="ARC" {{#if (eq this.attribute "ARC")}}selected{{/if}}>ARC</option>
+    <option value="LOG" {{#if (eq this.attribute "LOG")}}selected{{/if}}>LOG</option>
+    <option value="COR" {{#if (eq this.attribute "COR")}}selected{{/if}}>COR</option>
+    <option value="SOCIAL" {{#if (eq this.attribute "SOCIAL")}}selected{{/if}}>SOCIAL</option>
+  </select>
+  <textarea name="system.skillsAI.trainingPackages.{{@index}}.notes" class="sheet-training-notes" placeholder="Notes...">{{this.notes}}</textarea>
+</div>
+{{/each}}
   </div>
 </div>
 
@@ -1012,34 +1049,34 @@
       <span>Carried</span>
     </div>
 
-    {{#each system.weaponsAI}}
-    <div class="sheet-weapon-entry">
-      <button type="button"
-              class="roll-ai-weapon"
-              data-roll="{{this.rollFormula}}"
-              data-label="{{this.name}}">
-        {{this.name}}
-      </button>
-      <input type="text" name="system.weaponsAI.{{@index}}.name" value="{{this.name}}" />
-      <select name="system.weaponsAI.{{@index}}.skill">
-        <option value="Simple" {{#if (eq this.skill "Simple")}}selected{{/if}}>Simple</option>
-        <option value="Projectile" {{#if (eq this.skill "Projectile")}}selected{{/if}}>Projectile</option>
-      </select>
-      <input type="number" name="system.weaponsAI.{{@index}}.atkBonus" value="{{this.atkBonus}}" />
-      <input type="text" name="system.weaponsAI.{{@index}}.damage" value="{{this.damage}}" />
-      <input type="number" name="system.weaponsAI.{{@index}}.spd" value="{{this.spd}}" />
-      <input type="number" name="system.weaponsAI.{{@index}}.ammo" value="{{this.ammo}}" />
-      <input type="number" name="system.weaponsAI.{{@index}}.mag" value="{{this.mag}}" />
-      <input type="text" name="system.weaponsAI.{{@index}}.range" value="{{this.range}}" />
-      <input type="number" name="system.weaponsAI.{{@index}}.hp" value="{{this.hp}}" />
-      <input type="number" name="system.weaponsAI.{{@index}}.maxHp" value="{{this.maxHp}}" />
-      <input type="number" name="system.weaponsAI.{{@index}}.weight" value="{{this.weight}}" />
-      <input type="number" name="system.weaponsAI.{{@index}}.cost" value="{{this.cost}}" />
-      <input type="checkbox" name="system.weaponsAI.{{@index}}.readied" {{#if this.readied}}checked{{/if}} />
-      <input type="checkbox" name="system.weaponsAI.{{@index}}.carried" {{#if this.carried}}checked{{/if}} />
-      <textarea name="system.weaponsAI.{{@index}}.notes">{{this.notes}}</textarea>
-    </div>
-    {{/each}}
+{{#each system.weaponsAI}}
+<div class="sheet-weapon-entry">
+  <button type="button"
+          class="roll-ai-weapon"
+          data-group="weaponsAI"
+          data-index="{{@index}}">
+    {{this.name}}
+  </button>
+  <input type="text" name="system.weaponsAI.{{@index}}.name" value="{{this.name}}" />
+  <select name="system.weaponsAI.{{@index}}.skill">
+    <option value="Simple" {{#if (eq this.skill "Simple")}}selected{{/if}}>Simple</option>
+    <option value="Projectile" {{#if (eq this.skill "Projectile")}}selected{{/if}}>Projectile</option>
+  </select>
+  <input type="number" name="system.weaponsAI.{{@index}}.atkBonus" value="{{this.atkBonus}}" />
+  <input type="text" name="system.weaponsAI.{{@index}}.damage" value="{{this.damage}}" />
+  <input type="number" name="system.weaponsAI.{{@index}}.spd" value="{{this.spd}}" />
+  <input type="number" name="system.weaponsAI.{{@index}}.ammo" value="{{this.ammo}}" />
+  <input type="number" name="system.weaponsAI.{{@index}}.mag" value="{{this.mag}}" />
+  <input type="text" name="system.weaponsAI.{{@index}}.range" value="{{this.range}}" />
+  <input type="number" name="system.weaponsAI.{{@index}}.hp" value="{{this.hp}}" />
+  <input type="number" name="system.weaponsAI.{{@index}}.maxHp" value="{{this.maxHp}}" />
+  <input type="number" name="system.weaponsAI.{{@index}}.weight" value="{{this.weight}}" />
+  <input type="number" name="system.weaponsAI.{{@index}}.cost" value="{{this.cost}}" />
+  <input type="checkbox" name="system.weaponsAI.{{@index}}.readied" {{#if this.readied}}checked{{/if}} />
+  <input type="checkbox" name="system.weaponsAI.{{@index}}.carried" {{#if this.carried}}checked{{/if}} />
+  <textarea name="system.weaponsAI.{{@index}}.notes">{{this.notes}}</textarea>
+</div>
+{{/each}}
   </div>
 </div>
 
@@ -1124,22 +1161,22 @@
       <span>Type</span>
     </div>
 
-    {{#each system.naniteAI.catalysts}}
-    <div class="sheet-nanite-entry">
-      <button type="button"
-              class="roll-ai-nanite"
-              data-roll="{{this.rollFormula}}"
-              data-label="{{this.name}}">
-        {{this.name}}
-      </button>
-      <input type="text" name="system.naniteAI.catalysts.{{@index}}.name" value="{{this.name}}" />
-      <select name="system.naniteAI.catalysts.{{@index}}.type">
-        <option value="1d4" {{#if (eq this.type "1d4")}}selected{{/if}}>Minor</option>
-        <option value="5d4" {{#if (eq this.type "5d4")}}selected{{/if}}>Major</option>
-      </select>
-      <textarea name="system.naniteAI.catalysts.{{@index}}.notes">{{this.notes}}</textarea>
-    </div>
-    {{/each}}
+{{#each system.naniteAI.catalysts}}
+<div class="sheet-nanite-entry">
+  <button type="button"
+          class="roll-ai-nanite"
+          data-group="naniteAI.catalysts"
+          data-index="{{@index}}">
+    {{this.name}}
+  </button>
+  <input type="text" name="system.naniteAI.catalysts.{{@index}}.name" value="{{this.name}}" />
+  <select name="system.naniteAI.catalysts.{{@index}}.type">
+    <option value="1d4" {{#if (eq this.type "1d4")}}selected{{/if}}>Minor</option>
+    <option value="5d4" {{#if (eq this.type "5d4")}}selected{{/if}}>Major</option>
+  </select>
+  <textarea name="system.naniteAI.catalysts.{{@index}}.notes">{{this.notes}}</textarea>
+</div>
+{{/each}}
   </div>
 
   <!-- ===== AI Basic NANITE BLOCK ===== -->
@@ -1155,22 +1192,22 @@
       <span>XP</span>
     </div>
 
-    {{#each system.naniteAI.basicReactions}}
-    <div class="sheet-basic-nanite-entry">
-      <button type="button"
-              class="roll-ai-nanite"
-              data-roll="{{this.rollFormula}}"
-              data-label="{{this.name}}">
-        {{this.name}}
-      </button>
-      <input type="text" name="system.naniteAI.basicReactions.{{@index}}.name" value="{{this.name}}" />
-      <input type="number" name="system.naniteAI.basicReactions.{{@index}}.pp" value="{{this.pp}}" />
-      <input type="number" name="system.naniteAI.basicReactions.{{@index}}.cycles" value="{{this.cycles}}" />
-      <input type="number" name="system.naniteAI.basicReactions.{{@index}}.level" value="{{this.level}}" />
-      <input type="number" name="system.naniteAI.basicReactions.{{@index}}.xp" value="{{this.xp}}" />
-      <textarea name="system.naniteAI.basicReactions.{{@index}}.notes">{{this.notes}}</textarea>
-    </div>
-    {{/each}}
+{{#each system.naniteAI.basicReactions}}
+<div class="sheet-basic-nanite-entry">
+  <button type="button"
+          class="roll-ai-nanite"
+          data-group="naniteAI.basicReactions"
+          data-index="{{@index}}">
+    {{this.name}}
+  </button>
+  <input type="text" name="system.naniteAI.basicReactions.{{@index}}.name" value="{{this.name}}" />
+  <input type="number" name="system.naniteAI.basicReactions.{{@index}}.pp" value="{{this.pp}}" />
+  <input type="number" name="system.naniteAI.basicReactions.{{@index}}.cycles" value="{{this.cycles}}" />
+  <input type="number" name="system.naniteAI.basicReactions.{{@index}}.level" value="{{this.level}}" />
+  <input type="number" name="system.naniteAI.basicReactions.{{@index}}.xp" value="{{this.xp}}" />
+  <textarea name="system.naniteAI.basicReactions.{{@index}}.notes">{{this.notes}}</textarea>
+</div>
+{{/each}}
   </div>
 
   <!-- ===== AI ADV NANITE BLOCK ===== -->
@@ -1187,23 +1224,23 @@
       <span>Components</span>
     </div>
 
-    {{#each system.naniteAI.advancedReactions}}
-    <div class="sheet-advanced-nanite-entry">
-      <button type="button"
-              class="roll-ai-nanite"
-              data-roll="{{this.rollFormula}}"
-              data-label="{{this.name}}">
-        {{this.name}}
-      </button>
-      <input type="text" name="system.naniteAI.advancedReactions.{{@index}}.name" value="{{this.name}}" />
-      <input type="number" name="system.naniteAI.advancedReactions.{{@index}}.pp" value="{{this.pp}}" />
-      <input type="number" name="system.naniteAI.advancedReactions.{{@index}}.cycles" value="{{this.cycles}}" />
-      <input type="number" name="system.naniteAI.advancedReactions.{{@index}}.level" value="{{this.level}}" />
-      <input type="number" name="system.naniteAI.advancedReactions.{{@index}}.xp" value="{{this.xp}}" />
-      <input type="text" name="system.naniteAI.advancedReactions.{{@index}}.components" value="{{this.components}}" />
-      <textarea name="system.naniteAI.advancedReactions.{{@index}}.notes">{{this.notes}}</textarea>
-    </div>
-    {{/each}}
+{{#each system.naniteAI.advancedReactions}}
+<div class="sheet-advanced-nanite-entry">
+  <button type="button"
+          class="roll-ai-nanite"
+          data-group="naniteAI.advancedReactions"
+          data-index="{{@index}}">
+    {{this.name}}
+  </button>
+  <input type="text" name="system.naniteAI.advancedReactions.{{@index}}.name" value="{{this.name}}" />
+  <input type="number" name="system.naniteAI.advancedReactions.{{@index}}.pp" value="{{this.pp}}" />
+  <input type="number" name="system.naniteAI.advancedReactions.{{@index}}.cycles" value="{{this.cycles}}" />
+  <input type="number" name="system.naniteAI.advancedReactions.{{@index}}.level" value="{{this.level}}" />
+  <input type="number" name="system.naniteAI.advancedReactions.{{@index}}.xp" value="{{this.xp}}" />
+  <input type="text" name="system.naniteAI.advancedReactions.{{@index}}.components" value="{{this.components}}" />
+  <textarea name="system.naniteAI.advancedReactions.{{@index}}.notes">{{this.notes}}</textarea>
+</div>
+{{/each}}
   </div>
 </div>
 

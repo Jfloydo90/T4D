@@ -203,6 +203,43 @@ export class T4DActor extends Actor {
 
     system.vitalsAI.status.PP.max = Math.floor((arc + cor) / 2) + parseInt(system.vitalsAI.status.PP?.temp || 0);
     system.vitalsAI.status.PP.min = (system.vitalsAI.saves.INTE || 0) * -1;
+
+    // Add hasRoll
+    system.attributes.secondary = system.attributes.secondary || {};
+    system.attributes.secondary.INIT = system.attributes.secondary.INIT || {};
+    system.attributes.secondary.INIT.hasRoll = true;
+
+    system.attributesAI.secondary = system.attributesAI.secondary || {};
+    system.attributesAI.secondary.QUEUE = system.attributesAI.secondary.QUEUE || {};
+    system.attributesAI.secondary.QUEUE.hasRoll = true;
+
+    // Populate labels for Bio Skills
+    const bioSkillGroups = [
+      system.skills?.combat,
+      system.skills?.detection,
+      system.skills?.trainingPackages
+    ];
+    for (let group of bioSkillGroups) {
+      if (!group) continue;
+      for (let skill of group) {
+        skill.label = skill.label || skill.name || "Skill";
+        skill.attribute = skill.attribute || "DEX"; // Default attribute for new skills
+      }
+    }
+
+    // Populate labels for AI Skills
+    const aiSkillGroups = [
+      system.skillsAI?.combat,
+      system.skillsAI?.detection,
+      system.skillsAI?.trainingPackages
+    ];
+    for (let group of aiSkillGroups) {
+      if (!group) continue;
+      for (let skill of group) {
+        skill.label = skill.label || skill.name || "Skill";
+        skill.attribute = skill.attribute || "PRC"; // Default attribute for AI skills
+      }
+    }
   }
 
   // Static lookup tables
@@ -253,112 +290,649 @@ export class FourthDomainAIBIOSheet extends ActorSheet {
   activateListeners(html) {
     super.activateListeners(html);
 
-    // Skill rolls
-    html.find(".roll-skill").click(async ev => {
-      const dataset = ev.currentTarget.dataset;
-      const roll = await new Roll(dataset.roll).roll({ async: true });
-      await roll.toMessage({
-        speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-        flavor: `${dataset.label}`
-      });
-    });
+// Roll Listeners
+html.find(".roll-skill").click(this._onSkillRoll.bind(this));
+html.find(".roll-ai-skill").click(this._onAISkillRoll.bind(this));
+html.find(".roll-save").click(this._onSaveRoll.bind(this));
+html.find(".roll-ai").click(this._onAISaveRoll.bind(this));
+html.find(".roll-init").click(this._onInitRoll.bind(this));
+html.find(".roll-ai-init").click(this._onQueueRoll.bind(this));
+html.find(".roll-weapon").click(this._onWeaponRoll.bind(this));
+html.find(".roll-ai-weapon").click(this._onAIWeaponRoll.bind(this));
+html.find(".roll-nanite, .roll-ai-nanite").click(this._onNaniteRoll.bind(this));
+html.find(".roll-nanite-reaction").click(this._onNaniteReactionRoll.bind(this));
+html.find(".roll-ai-nanite").click(this._onAINaniteReactionRoll.bind(this));
 
-    // Weapon rolls
-    html.find(".roll-weapon").click(async ev => {
-      const dataset = ev.currentTarget.dataset;
-      const roll = await new Roll(dataset.roll).roll({ async: true });
-      await roll.toMessage({
-        speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-        flavor: `${dataset.label}`
-      });
-    });
+// Skill rolls
+//Handle rolling a Bio skill
+async _onSkillRoll(event) {
+  event.preventDefault();
+  const button = event.currentTarget;
+  const group = button.dataset.group;
+  const index = parseInt(button.dataset.index);
+  const actor = this.actor;
 
-    // Save rolls
-    html.find(".roll-save").click(async ev => {
-      const dataset = ev.currentTarget.dataset;
-      const roll = await new Roll(dataset.roll).roll({ async: true });
-      await roll.toMessage({
-        speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-        flavor: `${dataset.label}`
-      });
-    });
+  const skill = getProperty(actor.system, group)?.[index];
+  if (!skill) {
+    ui.notifications.error(`Could not find skill in ${group} at index ${index}.`);
+    return;
+  }
 
-    // Nanite rolls
-    html.find(".roll-nanite").click(async ev => {
-      const dataset = ev.currentTarget.dataset;
-      const roll = await new Roll(dataset.roll).roll({ async: true });
-      await roll.toMessage({
-        speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-        flavor: `${dataset.label}`
-      });
-    });
+  const attribute = skill.attribute || "DEX";
+  const attrMod = getProperty(actor.system.attributes.primary, attribute + "Mod") || 0;
+  const stressPenalty = actor.system.stress?.penalty || 0;
 
-    // Bio Initiative roll
-    html.find(".roll-init").click(async ev => {
-      const actionSpeed = await new Promise(resolve => {
-        new Dialog({
-          title: "Action Speed",
-          content: `
-            <div>
-              <label>Enter Action Speed modifier:</label>
-              <input id="actionSpeed" type="number" value="0"/>
-            </div>`,
-          buttons: {
-            ok: {
-              label: "OK",
-              callback: html => resolve(Number(html.find("#actionSpeed").val() || 0))
-            }
-          },
-          default: "ok"
-        }).render(true);
-      });
+  const otherMod = await new Promise(resolve => {
+    new Dialog({
+      title: `Other Modifiers: ${skill.label}`,
+      content: `<p>Enter any other modifiers:</p>
+                <input type="number" name="otherMod" value="0"/>`,
+      buttons: {
+        ok: {
+          label: "Roll",
+          callback: html => {
+            resolve(parseInt(html.find("[name=otherMod]").val()) || 0);
+          }
+        },
+        cancel: {
+          label: "Cancel",
+          callback: () => resolve(null)
+        }
+      },
+      default: "ok"
+    }).render(true);
+  });
 
-      const initMod = getProperty(this.actor.system, "attributes.secondary.INITMod") || 0;
-      const rollFormula = `2d4 - ${initMod} + ${actionSpeed}`;
-      const roll = await new Roll(rollFormula).roll({ async: true });
+  if (otherMod === null) return;
 
-      await roll.toMessage({
-        speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-        flavor: "Initiative Roll"
-      });
+  const formula = `1d20 + ${skill.level} + ${attrMod} + ${stressPenalty} + ${otherMod}`;
 
-      if (this.actor.combat) {
-        this.actor.combat.setInitiative(roll.total);
-      }
-    });
+  const roll = await new Roll(formula).roll({ async: true });
+  await roll.toMessage({
+    speaker: ChatMessage.getSpeaker({ actor }),
+    flavor: `${skill.label} Skill Check`
+  });
+}
 
-    // AI Initiative roll
-    html.find(".roll-ai-init").click(async ev => {
-      const actionCycles = await new Promise(resolve => {
-        new Dialog({
-          title: "Action Cycles",
-          content: `
-            <div>
-              <label>Enter Action Cycles modifier:</label>
-              <input id="actionCycles" type="number" value="0"/>
-            </div>`,
-          buttons: {
-            ok: {
-              label: "OK",
-              callback: html => resolve(Number(html.find("#actionCycles").val() || 0))
-            }
-          },
-          default: "ok"
-        }).render(true);
-      });
+//Handle rolling an AI skill
+async _onAISkillRoll(event) {
+  event.preventDefault();
+  const button = event.currentTarget;
+  const group = button.dataset.group;
+  const index = parseInt(button.dataset.index);
+  const actor = this.actor;
 
-      const queueMod = getProperty(this.actor.system, "attributesAI.secondary.QUEUEMod") || 0;
-      const rollFormula = `2d4 - ${queueMod} + ${actionCycles}`;
-      const roll = await new Roll(rollFormula).roll({ async: true });
+  const skill = getProperty(actor.system, group)?.[index];
+  if (!skill) {
+    ui.notifications.error(`Could not find AI skill in ${group} at index ${index}.`);
+    return;
+  }
 
-      await roll.toMessage({
-        speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-        flavor: "AI Initiative Roll"
-      });
+  const attribute = skill.attribute || "PRC"; // Default AI attribute
+  const attrMod = getProperty(actor.system.attributesAI.primary, attribute + "Mod") || 0;
+  const fragmentPenalty = actor.system.vitalsAI?.fragmentation?.penalty || 0;
 
-      if (this.actor.combat) {
-        this.actor.combat.setInitiative(roll.total);
-      }
-    });
+  const otherMod = await new Promise(resolve => {
+    new Dialog({
+      title: `Other Modifiers: ${skill.label}`,
+      content: `<p>Enter any other modifiers:</p>
+                <input type="number" name="otherMod" value="0"/>`,
+      buttons: {
+        ok: {
+          label: "Roll",
+          callback: html => {
+            resolve(parseInt(html.find("[name=otherMod]").val()) || 0);
+          }
+        },
+        cancel: {
+          label: "Cancel",
+          callback: () => resolve(null);
+        }
+      },
+      default: "ok"
+    }).render(true);
+  });
+
+  if (otherMod === null) return;
+
+  const formula = `1d20 + ${skill.level} + ${attrMod} + ${fragmentPenalty} + ${otherMod}`;
+
+  const roll = await new Roll(formula).roll({ async: true });
+  await roll.toMessage({
+    speaker: ChatMessage.getSpeaker({ actor }),
+    flavor: `${skill.label} AI Skill Check`
+  });
+}
+
+//Handle rolling a Bio save
+async _onSaveRoll(event) {
+  event.preventDefault();
+  const button = event.currentTarget;
+  const label = button.dataset.label;
+  const actor = this.actor;
+
+  // Convert label to uppercase property (e.g., "PHYS")
+  const saveKey = label?.toUpperCase();
+  const saveValue = actor.system.saves?.[saveKey];
+
+  if (saveValue === undefined) {
+    ui.notifications.error(`Could not find Bio save: ${label}`);
+    return;
+  }
+
+  const stressPenalty = actor.system.stress?.penalty || 0;
+
+  const otherMod = await new Promise(resolve => {
+    new Dialog({
+      title: `Other Modifiers: ${label} Save`,
+      content: `<p>Enter any other modifiers:</p>
+                <input type="number" name="otherMod" value="0"/>`,
+      buttons: {
+        ok: {
+          label: "Roll",
+          callback: html => {
+            resolve(parseInt(html.find("[name=otherMod]").val()) || 0);
+          }
+        },
+        cancel: {
+          label: "Cancel",
+          callback: () => resolve(null);
+        }
+      },
+      default: "ok"
+    }).render(true);
+  });
+
+  if (otherMod === null) return;
+
+  const formula = `1d20 + ${saveValue} + ${stressPenalty} + ${otherMod}`;
+
+  const roll = await new Roll(formula).roll({ async: true });
+  await roll.toMessage({
+    speaker: ChatMessage.getSpeaker({ actor }),
+    flavor: `${label} Save`
+  });
+}
+
+//Handle rolling an AI save
+async _onAISaveRoll(event) {
+  event.preventDefault();
+  const button = event.currentTarget;
+  const label = button.dataset.label;
+  const actor = this.actor;
+
+  // Convert label to uppercase property (e.g., "OVER")
+  const saveKey = label?.toUpperCase();
+  const saveValue = actor.system.vitalsAI.saves?.[saveKey];
+
+  if (saveValue === undefined) {
+    ui.notifications.error(`Could not find AI save: ${label}`);
+    return;
+  }
+
+  const fragmentPenalty = actor.system.vitalsAI?.fragmentation?.penalty || 0;
+
+  const otherMod = await new Promise(resolve => {
+    new Dialog({
+      title: `Other Modifiers: ${label} Save`,
+      content: `<p>Enter any other modifiers:</p>
+                <input type="number" name="otherMod" value="0"/>`,
+      buttons: {
+        ok: {
+          label: "Roll",
+          callback: html => {
+            resolve(parseInt(html.find("[name=otherMod]").val()) || 0);
+          }
+        },
+        cancel: {
+          label: "Cancel",
+          callback: () => resolve(null);
+        }
+      },
+      default: "ok"
+    }).render(true);
+  });
+
+  if (otherMod === null) return;
+
+  const formula = `1d20 + ${saveValue} + ${fragmentPenalty} + ${otherMod}`;
+
+  const roll = await new Roll(formula).roll({ async: true });
+  await roll.toMessage({
+    speaker: ChatMessage.getSpeaker({ actor }),
+    flavor: `${label} AI Save`
+  });
+}
+
+//Handle rolling a Bio Weapon attack
+async _onWeaponRoll(event) {
+  event.preventDefault();
+  const button = event.currentTarget;
+  const group = button.dataset.group;
+  const index = parseInt(button.dataset.index);
+  const actor = this.actor;
+
+  const weapon = getProperty(actor.system, group)?.[index];
+  if (!weapon) {
+    ui.notifications.error(`Could not find weapon in ${group} at index ${index}.`);
+    return;
+  }
+
+  // Determine attribute based on weapon.skill
+  let attribute = "DEX";
+  if (weapon.skill === "Projectile") attribute = "DEX";
+  else if (weapon.skill === "Simple") attribute = "STR";
+
+  const attrMod = getProperty(actor.system.attributes.primary, attribute + "Mod") || 0;
+  const stressPenalty = actor.system.stress?.penalty || 0;
+
+  const otherMod = await new Promise(resolve => {
+    new Dialog({
+      title: `Other Modifiers: ${weapon.name}`,
+      content: `<p>Enter any other modifiers:</p>
+                <input type="number" name="otherMod" value="0"/>`,
+      buttons: {
+        ok: {
+          label: "Roll",
+          callback: html => {
+            resolve(parseInt(html.find("[name=otherMod]").val()) || 0);
+          }
+        },
+        cancel: {
+          label: "Cancel",
+          callback: () => resolve(null);
+        }
+      },
+      default: "ok"
+    }).render(true);
+  });
+
+  if (otherMod === null) return;
+
+  const formula = `1d20 + ${weapon.atkBonus} + ${attrMod} + ${stressPenalty} + ${otherMod}`;
+
+  const roll = await new Roll(formula).roll({ async: true });
+  await roll.toMessage({
+    speaker: ChatMessage.getSpeaker({ actor }),
+    flavor: `${weapon.name} Attack`
+  });
+}
+
+//Handle rolling an AI Weapon attack
+async _onAIWeaponRoll(event) {
+  event.preventDefault();
+  const button = event.currentTarget;
+  const group = button.dataset.group;
+  const index = parseInt(button.dataset.index);
+  const actor = this.actor;
+
+  const weapon = getProperty(actor.system, group)?.[index];
+  if (!weapon) {
+    ui.notifications.error(`Could not find AI weapon in ${group} at index ${index}.`);
+    return;
+  }
+
+  // Determine attribute based on weapon.skill
+  let attribute = "DEX";
+  if (weapon.skill === "Projectile") attribute = "DEX";
+  else if (weapon.skill === "Simple") attribute = "STR";
+
+  const attrMod = getProperty(actor.system.attributesAI.primary, attribute + "Mod") || 0;
+  const fragmentationPenalty = actor.system.vitalsAI?.fragmentation?.penalty || 0;
+
+  const otherMod = await new Promise(resolve => {
+    new Dialog({
+      title: `Other Modifiers: ${weapon.name}`,
+      content: `<p>Enter any other modifiers:</p>
+                <input type="number" name="otherMod" value="0"/>`,
+      buttons: {
+        ok: {
+          label: "Roll",
+          callback: html => {
+            resolve(parseInt(html.find("[name=otherMod]").val()) || 0);
+          }
+        },
+        cancel: {
+          label: "Cancel",
+          callback: () => resolve(null);
+        }
+      },
+      default: "ok"
+    }).render(true);
+  });
+
+  if (otherMod === null) return;
+
+  const formula = `1d20 + ${weapon.atkBonus} + ${attrMod} + ${fragmentationPenalty} + ${otherMod}`;
+
+  const roll = await new Roll(formula).roll({ async: true });
+  await roll.toMessage({
+    speaker: ChatMessage.getSpeaker({ actor }),
+    flavor: `${weapon.name} AI Attack`
+  });
+}
+
+//Handle rolling a Nanite Roll
+async _onNaniteRoll(event) {
+  event.preventDefault();
+  const button = event.currentTarget;
+  const dataset = button.dataset;
+  const actor = this.actor;
+
+  // Prompt for base die type
+  const dieType = await new Promise(resolve => {
+    new Dialog({
+      title: `Choose Die Type for ${dataset.label}`,
+      content: `
+        <p>Select Nanite potency:</p>
+        <select name="die">
+          <option value="1d4">Minor (1d4)</option>
+          <option value="5d4">Major (5d4)</option>
+        </select>`,
+      buttons: {
+        ok: {
+          label: "OK",
+          callback: html => resolve(html.find("[name=die]").val())
+        },
+        cancel: {
+          label: "Cancel",
+          callback: () => resolve(null)
+        }
+      },
+      default: "ok"
+    }).render(true);
+  });
+
+  if (!dieType) return;
+
+  // Prompt for other modifiers
+  const otherMod = await new Promise(resolve => {
+    new Dialog({
+      title: `Other Modifiers: ${dataset.label}`,
+      content: `<p>Enter any additional modifiers:</p>
+                <input type="number" name="otherMod" value="0"/>`,
+      buttons: {
+        ok: {
+          label: "Roll",
+          callback: html => resolve(parseInt(html.find("[name=otherMod]").val()) || 0)
+        },
+        cancel: {
+          label: "Cancel",
+          callback: () => resolve(null)
+        }
+      },
+      default: "ok"
+    }).render(true);
+  });
+
+  if (otherMod === null) return;
+
+  const formula = `${dieType} + ${otherMod}`;
+  const roll = await new Roll(formula).roll({ async: true });
+
+  await roll.toMessage({
+    speaker: ChatMessage.getSpeaker({ actor }),
+    flavor: `${dataset.label} Nanite Roll`
+  });
+}
+
+// Handle rolling a Nanite Reaction (Bio)
+async _onNaniteReactionRoll(event) {
+  event.preventDefault();
+  const button = event.currentTarget;
+  const group = button.dataset.group;
+  const index = parseInt(button.dataset.index);
+  const actor = this.actor;
+
+  const reaction = getProperty(actor.system, group)?.[index];
+  if (!reaction) {
+    ui.notifications.error(`Could not find reaction in ${group} at index ${index}.`);
+    return;
+  }
+
+  // Prompt user to select attribute
+  const attribute = await new Promise(resolve => {
+    new Dialog({
+      title: `Select Attribute for ${reaction.name}`,
+      content: `
+        <p>Choose which attribute applies:</p>
+        <select name="attrSelect">
+          <option value="STR">Strength</option>
+          <option value="DEX">Dexterity</option>
+          <option value="CON">Constitution</option>
+          <option value="INT">Intelligence</option>
+          <option value="FOC">Focus</option>
+          <option value="CHA">Charisma</option>
+        </select>
+      `,
+      buttons: {
+        ok: {
+          label: "OK",
+          callback: html => resolve(html.find("[name=attrSelect]").val())
+        },
+        cancel: {
+          label: "Cancel",
+          callback: () => resolve(null)
+        }
+      },
+      default: "ok"
+    }).render(true);
+  });
+  if (!attribute) return;
+
+  // Prompt for Other Modifiers
+  const otherMod = await new Promise(resolve => {
+    new Dialog({
+      title: `Other Modifiers: ${reaction.name}`,
+      content: `<p>Enter any other modifiers:</p>
+                <input type="number" name="otherMod" value="0"/>`,
+      buttons: {
+        ok: {
+          label: "OK",
+          callback: html => resolve(parseInt(html.find("[name=otherMod]").val()) || 0)
+        },
+        cancel: {
+          label: "Cancel",
+          callback: () => resolve(null)
+        }
+      },
+      default: "ok"
+    }).render(true);
+  });
+  if (otherMod === null) return;
+
+  // Attribute mod
+  const attrMod = getProperty(actor.system.attributes.primary, attribute + "Mod") || 0;
+
+  // Stress penalty
+  const stressPenalty = actor.system.stress?.penalty || 0;
+
+  const formula = `1d20 + ${reaction.level} + ${attrMod} + ${stressPenalty} + ${otherMod}`;
+  const roll = await new Roll(formula).roll({ async: true });
+
+  await roll.toMessage({
+    speaker: ChatMessage.getSpeaker({ actor }),
+    flavor: `${reaction.name} Nanite Reaction`
+  });
+}
+
+// Handle rolling an AI Nanite Reaction
+async _onAINaniteReactionRoll(event) {
+  event.preventDefault();
+  const button = event.currentTarget;
+  const group = button.dataset.group; // e.g., "naniteAI.basicReactions" or "naniteAI.advancedReactions"
+  const index = parseInt(button.dataset.index);
+  const actor = this.actor;
+
+  // Retrieve the reaction
+  const reaction = getProperty(actor.system, group)?.[index];
+  if (!reaction) {
+    ui.notifications.error(`Could not find AI reaction in ${group} at index ${index}.`);
+    return;
+  }
+
+  // Prompt user for which attribute modifier to use
+  const attributeChoices = {
+    PRC: "Perception",
+    SEN: "Sentience",
+    ARC: "Arcanum",
+    LOG: "Logic",
+    COR: "Core",
+    SOCIAL: "Social"
+  };
+
+  const attribute = await new Promise(resolve => {
+    new Dialog({
+      title: `Select Attribute Modifier: ${reaction.name}`,
+      content: `
+        <p>Choose the attribute modifier to use:</p>
+        <select name="attribute">
+          ${Object.entries(attributeChoices)
+            .map(([key, label]) => `<option value="${key}">${label}</option>`)
+            .join("")}
+        </select>
+      `,
+      buttons: {
+        ok: {
+          label: "OK",
+          callback: html => resolve(html.find("[name=attribute]").val())
+        },
+        cancel: {
+          label: "Cancel",
+          callback: () => resolve(null)
+        }
+      },
+      default: "ok"
+    }).render(true);
+  });
+
+  if (attribute === null) return;
+
+  const attrMod = getProperty(actor.system.attributesAI.primary, `${attribute}Mod`) || 0;
+  const fragmentationPenalty = actor.system.vitalsAI?.fragmentation?.penalty || 0;
+
+  // Prompt for other modifiers
+  const otherMod = await new Promise(resolve => {
+    new Dialog({
+      title: `Other Modifiers: ${reaction.name}`,
+      content: `<p>Enter any other modifiers:</p>
+                <input type="number" name="otherMod" value="0"/>`,
+      buttons: {
+        ok: {
+          label: "Roll",
+          callback: html => {
+            resolve(parseInt(html.find("[name=otherMod]").val()) || 0);
+          }
+        },
+        cancel: {
+          label: "Cancel",
+          callback: () => resolve(null)
+        }
+      },
+      default: "ok"
+    }).render(true);
+  });
+
+  if (otherMod === null) return;
+
+  // Build formula and roll
+  const formula = `1d20 + ${reaction.level} + ${attrMod} + ${fragmentationPenalty} + ${otherMod}`;
+  const roll = await new Roll(formula).roll({ async: true });
+
+  await roll.toMessage({
+    speaker: ChatMessage.getSpeaker({ actor }),
+    flavor: `${reaction.name} Nanite Reaction`
+  });
+}
+
+//Handle rolling Bio Initiative
+async _onInitRoll(event) {
+  event.preventDefault();
+  const actor = this.actor;
+
+  const actionSpeed = await new Promise(resolve => {
+    new Dialog({
+      title: "Action Speed Modifier",
+      content: `<p>Enter any action speed modifier:</p>
+                <input type="number" name="actionSpeed" value="0"/>`,
+      buttons: {
+        ok: {
+          label: "Roll",
+          callback: html => {
+            resolve(parseInt(html.find("[name=actionSpeed]").val()) || 0);
+          }
+        },
+        cancel: {
+          label: "Cancel",
+          callback: () => resolve(null);
+        }
+      },
+      default: "ok"
+    }).render(true);
+  });
+
+  if (actionSpeed === null) return;
+
+  const initMod = getProperty(actor.system, "attributes.secondary.INITMod") || 0;
+
+  // Lower is better, so subtract INITMod, add action speed penalty
+  const formula = `2d4 - ${initMod} + ${actionSpeed}`;
+
+  const roll = await new Roll(formula).roll({ async: true });
+  await roll.toMessage({
+    speaker: ChatMessage.getSpeaker({ actor }),
+    flavor: "Initiative Roll"
+  });
+
+  // Optionally set initiative if in combat
+  const combatant = game.combat?.combatants?.find(c => c.actorId === actor.id);
+  if (combatant) {
+    await combatant.update({ initiative: roll.total });
+  }
+}
+
+//Handle rolling AI Initiative (Queue Roll)
+async _onQueueRoll(event) {
+  event.preventDefault();
+  const actor = this.actor;
+
+  const actionCycles = await new Promise(resolve => {
+    new Dialog({
+      title: "Action Cycles Modifier",
+      content: `<p>Enter any action cycles modifier:</p>
+                <input type="number" name="actionCycles" value="0"/>`,
+      buttons: {
+        ok: {
+          label: "Roll",
+          callback: html => {
+            resolve(parseInt(html.find("[name=actionCycles]").val()) || 0);
+          }
+        },
+        cancel: {
+          label: "Cancel",
+          callback: () => resolve(null);
+        }
+      },
+      default: "ok"
+    }).render(true);
+  });
+
+  if (actionCycles === null) return;
+
+  const queueMod = getProperty(actor.system, "attributesAI.secondary.QUEUEMod") || 0;
+
+  // Lower is better: subtract QUEUEMod, add action cycles penalty
+  const formula = `2d4 - ${queueMod} + ${actionCycles}`;
+
+  const roll = await new Roll(formula).roll({ async: true });
+  await roll.toMessage({
+    speaker: ChatMessage.getSpeaker({ actor }),
+    flavor: "AI Initiative (Queue) Roll"
+  });
+
+  // Optionally set initiative if in combat
+  const combatant = game.combat?.combatants?.find(c => c.actorId === actor.id);
+  if (combatant) {
+    await combatant.update({ initiative: roll.total });
   }
 }
