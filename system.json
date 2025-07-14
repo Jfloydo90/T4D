@@ -1,5 +1,5 @@
 {
-  "id": "T4D",
+  "id": "t4d",
   "title": "The Fourth Domain",
   "description": "A custom Foundry VTT system for The Fourth Domain RPG.",
   "version": "1.0.0",
@@ -17,7 +17,7 @@
     }
   ],
   "esmodules": ["module.mjs"],
-"styles": ["styles/foundryAIBIO.css"],
+  "styles": ["styles/foundryAIBIO.css"],
   "languages": [
     {
       "lang": "en",

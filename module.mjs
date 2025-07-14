@@ -8,12 +8,12 @@ Hooks.once("init", () => {
 
   CONFIG.Actor.typeLabels = {
     character: "Character",
-    npc: "NPC"
+    npc: "NPC",
   };
 
-  Actors.registerSheet("T4D", FourthDomainAIBIOSheet, {
+  Actors.registerSheet("t4d", FourthDomainAIBIOSheet, {
     types: ["character", "npc"],
-    makeDefault: true
+    makeDefault: true,
   });
 
   Actors.unregisterSheet("core", ActorSheet, { types: ["character", "npc"] });
