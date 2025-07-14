@@ -3,7 +3,6 @@ export class T4DActor extends Actor {
     super.prepareData();
     const system = this.system;
 
-    // Initial Attirbute Setup
     // Ensure attributes
     if (!system.attributes) system.attributes = {};
 
@@ -49,40 +48,29 @@ export class T4DActor extends Actor {
       }
     }
 
-    // Appearance
-    if (!system.attributes.appearance) {
-      system.attributes.appearance = { score: 3 };
-    }
-    system.attributes.appearance.desc =
-      this.constructor.HumanAppTable?.[appIndex] || "Unknown";
-
-    // AI attributes
-    if (!system.attributesAI) system.attributesAI = {};
-    if (!system.attributesAI.secondary) system.attributesAI.secondary = {};
-    if (!system.attributesAI.secondary.LIKE) {
-      system.attributesAI.secondary.LIKE = { score: 3 };
-    }
-    system.attributesAI.secondary.LIKE.desc =
-      this.constructor.LikeTable?.[likeIndex] || "Unknown";
-
     // Initialize appearance if missing
     if (!system.attributes.appearance) {
       system.attributes.appearance = { score: 3 };
     }
 
     // Compute Appearance Descriptor
-    const appScore = parseInt(system.attributes?.appearance?.score || 3);
+    const appScore = parseInt(system.attributes.appearance.score || 3);
     const appIndex = Math.max(0, appScore - 3);
     system.attributes.appearance.desc =
-      this.constructor.HumanAppTable[appIndex] || "Unknown";
+      this.constructor.HumanAppTable?.[appIndex] || "Unknown";
+
+    // Initialize AI attributes safely (ONE TIME)
+    if (!system.attributesAI) system.attributesAI = {};
+    if (!system.attributesAI.secondary) system.attributesAI.secondary = {};
+    if (!system.attributesAI.secondary.LIKE) {
+      system.attributesAI.secondary.LIKE = { score: 3 };
+    }
 
     // Compute Likeness Descriptor
-    const likeScore = parseInt(
-      system.attributesAI?.secondary?.LIKE?.score || 3
-    );
+    const likeScore = parseInt(system.attributesAI.secondary.LIKE.score || 3);
     const likeIndex = Math.max(0, likeScore - 3);
     system.attributesAI.secondary.LIKE.desc =
-      this.constructor.LikeTable[likeIndex] || "Unknown";
+      this.constructor.LikeTable?.[likeIndex] || "Unknown";
 
     // Compute AP thresholds
     const statToAPT = {
@@ -103,7 +91,7 @@ export class T4DActor extends Actor {
     for (let [stat, field] of Object.entries(statToAPT)) {
       const val = parseInt(system.attributes?.primary?.[stat]?.score || 1);
       system.attributes.primary[field] =
-        this.constructor.ApTable[val - 1] || "1";
+        this.constructor.ApTable?.[val - 1] || "1";
     }
 
     // Compute Bio Modifiers and APN
@@ -527,7 +515,7 @@ export class T4DActor extends Actor {
   ];
 }
 
-export class T4DActorSheet extends ActorSheet {
+export class T4DActorSheet extends foundry.applications.sheets.ActorSheet {
   static get defaultOptions() {
     return foundry.utils.mergeObject(super.defaultOptions, {
       classes: ["t4d", "sheet", "actor"],
