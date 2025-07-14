@@ -16,6 +16,11 @@ export class T4DActor extends Actor {
       };
     }
 
+    // Initialize appearance if missing
+    if (!system.attributes.appearance) {
+      system.attributes.appearance = { score: 3 };
+    }
+
     // Compute Appearance Descriptor
     const appScore = parseInt(system.attributes?.appearance?.score || 3);
     const appIndex = Math.max(0, appScore - 3);
