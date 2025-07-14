@@ -473,41 +473,6 @@ export class T4DActor extends Actor {
   ];
 }
 
-// Ensure primary attributes have labels and default AP fields
-const attributeLabels = {
-  STR: "Strength",
-  DEX: "Dexterity",
-  CON: "Constitution",
-  INT: "Intelligence",
-  FOC: "Focus",
-  CHA: "Charisma",
-};
-
-for (let [attr, label] of Object.entries(attributeLabels)) {
-  let data = system.attributes.primary[attr];
-  if (data) {
-    data.label = label;
-    if (data.apToNext === undefined) data.apToNext = 0;
-    if (data.apTotal === undefined) data.apTotal = 0;
-  }
-}
-
-// Same for secondary attributes
-const secondaryLabels = {
-  INIT: "Initiative",
-  EDU: "Education",
-  SPD: "Speed",
-  MVMT: "Movement",
-};
-
-for (let [attr, label] of Object.entries(secondaryLabels)) {
-  let data = system.attributes.secondary[attr];
-  if (data) {
-    data.label = label;
-    if (data.temp === undefined) data.temp = 0;
-  }
-}
-
 export class FourthDomainAIBIOSheet extends ActorSheet {
   static get defaultOptions() {
     return mergeObject(super.defaultOptions, {
