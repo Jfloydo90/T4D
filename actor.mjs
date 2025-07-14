@@ -478,9 +478,9 @@ export class T4DActor extends Actor {
   ];
 }
 
-export class FourthDomainAIBIOSheet extends ActorSheet {
+export class T4DActorSheet extends ActorSheet {
   static get defaultOptions() {
-    return mergeObject(super.defaultOptions, {
+    return foundry.utils.mergeObject(super.defaultOptions, {
       classes: ["t4d", "sheet", "actor"],
       template: "systems/T4D/templates/sheets/actor-FoundryAIBIO.html",
       width: 800,
