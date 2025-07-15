@@ -1,0 +1,109 @@
+{
+  "attributes": {
+    "primary": {
+      "STR": { "score": 10, "mod": 0, "temp": 0, "apToNext": 0, "apTotal": 0 },
+      "DEX": { "score": 10, "mod": 0, "temp": 0, "apToNext": 0, "apTotal": 0 }
+    },
+    "secondary": {},
+    "appearance": { "score": 10, "desc": "" }
+  },
+  "attributesAI": {
+    "primary": {},
+    "secondary": {},
+    "likeness": { "score": 10, "desc": "" },
+    "ap": { "totalSpent": 0, "unspent": 0 }
+  },
+  "skills": {
+    "combat": [],
+    "detection": [],
+    "trainingPackages": []
+  },
+  "skillsAI": {
+    "combat": [],
+    "detection": [],
+    "trainingPackages": []
+  },
+  "nanite": {
+    "catalysts": [],
+    "basicReactions": [],
+    "advancedReactions": []
+  },
+  "naniteAI": {
+    "catalysts": [],
+    "basicReactions": [],
+    "advancedReactions": []
+  },
+  "profile": {
+    "physDescription": "",
+    "background": "",
+    "genNotes": ""
+  },
+  "profileAI": {
+    "physDescription": "",
+    "background": "",
+    "notes": ""
+  },
+  "weapons": [],
+  "weaponsAI": [],
+  "armor": [],
+  "armorAI": [],
+  "items": [],
+  "itemsAI": [],
+  "gear": {
+    "itemTotal": 0,
+    "weaponTotal": 0,
+    "armorTotal": 0,
+    "carriedWeight": 0,
+    "initiativePenalty": 0,
+    "encumbranceThresholds": {
+      "light": 0,
+      "moderate": 0,
+      "heavy": 0,
+      "max": 0,
+      "pushDrag": 0
+    }
+  },
+  "gearAI": {
+    "itemTotal": 0,
+    "weaponTotal": 0,
+    "armorTotal": 0,
+    "carriedWeight": 0,
+    "initiativePenalty": 0,
+    "thresholds": {
+      "light": 0,
+      "moderate": 0,
+      "heavy": 0,
+      "max": 0,
+      "pushDrag": 0
+    }
+  },
+  "saves": {
+    "PHYS": { "score": 0, "temp": 0 },
+    "MENT": { "score": 0, "temp": 0 },
+    "EVAS": { "score": 0, "temp": 0 },
+    "SOC": { "score": 0, "temp": 0 }
+  },
+  "status": {
+    "hp": { "max": 10, "current": 10, "min": 0, "temp": 0 },
+    "mp": { "max": 10, "current": 10, "min": 0, "temp": 0 }
+  },
+  "vitalsAI": {
+    "saves": {},
+    "status": {
+      "IP": { "max": 10, "current": 10, "min": 0, "temp": 0 },
+      "PP": { "max": 10, "current": 10, "min": 0, "temp": 0 }
+    },
+    "fragmentation": {
+      "level": 0,
+      "penalty": 0
+    }
+  },
+  "shared": {
+    "luck": 0,
+    "influence": 0,
+    "interim": 0,
+    "wealth": 0,
+    "income": 0,
+    "wealthNotes": ""
+  }
+}
