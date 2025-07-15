@@ -2,6 +2,8 @@ export class T4DActor extends Actor {
   prepareData() {
     super.prepareData();
     const system = this.system;
+    console.log("==== T4DActor prepareData ====");
+    console.log(this.system);
 
     // === BIO ATTRIBUTES ===
     if (!system.attributes) system.attributes = {};
