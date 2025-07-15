@@ -1,13 +1,28 @@
-/* Placeholder stylesheet for FoundryAIBIO. */
+body {
+  background: pink !important;
+}
+
+/* Make sure the table rows are visible */
 .sheet-attribute-table {
+  display: table;
   border-collapse: collapse;
   width: 100%;
 }
+
+/* Ensure table cells have visible borders and spacing */
 .sheet-attribute-table th,
 .sheet-attribute-table td {
-  border: 1px solid #999;
-  padding: 4px;
+  border: 1px solid #999 !important;
+  padding: 6px !important;
+  background: #222 !important;
+  color: #eee !important;
 }
-.sheet-attribute-table input {
-  width: 100%;
+
+/* Make inputs occupy the full cell width and be visible */
+.sheet-attribute-table input[type="number"] {
+  width: 100% !important;
+  min-height: 24px !important;
+  background: #444 !important;
+  color: #fff !important;
+  border: 1px solid #888 !important;
 }
