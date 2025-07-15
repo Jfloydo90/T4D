@@ -1,10 +1,10 @@
 export class T4DActor extends Actor {
   prepareData() {
     super.prepareData();
-    const system = this.system;
+    const system = this.system ?? this.data.data;
 
     console.log("==== T4DActor prepareData ====");
-    console.log(this.system);
+    console.log("System:", system);
 
     // === BIO ATTRIBUTES ===
     if (!system.attributes) system.attributes = {};
@@ -69,6 +69,8 @@ export class T4DActor extends Actor {
     ).map(([key, data]) => {
       return { key, ...data };
     });
+
+    console.log("Primary Array:", system.attributes.primaryArray);
 
     const bioPrimaryKeys = ["STR", "DEX", "CON", "INT", "FOC", "CHA"];
     for (let attr of bioPrimaryKeys) {
