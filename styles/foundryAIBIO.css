@@ -1,1 +1,13 @@
 /* Placeholder stylesheet for FoundryAIBIO. */
+.sheet-attribute-table {
+  border-collapse: collapse;
+  width: 100%;
+}
+.sheet-attribute-table th,
+.sheet-attribute-table td {
+  border: 1px solid #999;
+  padding: 4px;
+}
+.sheet-attribute-table input {
+  width: 100%;
+}
