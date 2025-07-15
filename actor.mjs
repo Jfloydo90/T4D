@@ -2,6 +2,7 @@ export class T4DActor extends Actor {
   prepareData() {
     super.prepareData();
     const system = this.system;
+
     console.log("==== T4DActor prepareData ====");
     console.log(this.system);
 
@@ -11,14 +12,64 @@ export class T4DActor extends Actor {
     // BIO Primary
     if (!system.attributes.primary) {
       system.attributes.primary = {
-        STR: { score: 10 },
-        DEX: { score: 10 },
-        CON: { score: 10 },
-        INT: { score: 10 },
-        FOC: { score: 10 },
-        CHA: { score: 10 },
+        STR: {
+          score: 10,
+          label: "STR",
+          mod: 0,
+          temp: 0,
+          apToNext: 0,
+          apTotal: 0,
+        },
+        DEX: {
+          score: 10,
+          label: "DEX",
+          mod: 0,
+          temp: 0,
+          apToNext: 0,
+          apTotal: 0,
+        },
+        CON: {
+          score: 10,
+          label: "CON",
+          mod: 0,
+          temp: 0,
+          apToNext: 0,
+          apTotal: 0,
+        },
+        INT: {
+          score: 10,
+          label: "INT",
+          mod: 0,
+          temp: 0,
+          apToNext: 0,
+          apTotal: 0,
+        },
+        FOC: {
+          score: 10,
+          label: "FOC",
+          mod: 0,
+          temp: 0,
+          apToNext: 0,
+          apTotal: 0,
+        },
+        CHA: {
+          score: 10,
+          label: "CHA",
+          mod: 0,
+          temp: 0,
+          apToNext: 0,
+          apTotal: 0,
+        },
       };
     }
+
+    // Make a safe array for Handlebars iteration
+    system.attributes.primaryArray = Object.entries(
+      system.attributes.primary
+    ).map(([key, data]) => {
+      return { key, ...data };
+    });
+
     const bioPrimaryKeys = ["STR", "DEX", "CON", "INT", "FOC", "CHA"];
     for (let attr of bioPrimaryKeys) {
       const data = system.attributes.primary[attr];
