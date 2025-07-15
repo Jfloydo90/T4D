@@ -2,6 +2,62 @@ body {
   background: pink !important;
 }
 
+/* Container for the toggle */
+.sheet-toggle-wrapper {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1em;
+}
+
+/* Hide the default checkbox */
+.sheet-toggle {
+  display: none;
+}
+
+/* Style the label to look like a switch background */
+.sheet-toggle-label {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 30px;
+  background-color: #666;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+/* The circle (knob) of the toggle */
+.sheet-toggle-label::before {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 24px;
+  height: 24px;
+  background-color: #eee;
+  border-radius: 50%;
+  transition: transform 0.3s ease;
+}
+
+/* When the checkbox is checked, move the knob and change background */
+.sheet-toggle:checked + .sheet-toggle-label {
+  background-color: #2a9d8f;
+}
+.sheet-toggle:checked + .sheet-toggle-label::before {
+  transform: translateX(30px);
+}
+
+/* Optional text next to the switch */
+.sheet-toggle-state {
+  margin-left: 10px;
+  font-size: 1rem;
+  color: #ccc;
+  user-select: none;
+}
+.sheet-toggle:checked + .sheet-toggle-label + .sheet-toggle-state {
+  color: #2a9d8f;
+}
+
 /* Make sure the table rows are visible */
 .sheet-attribute-table {
   display: table;
