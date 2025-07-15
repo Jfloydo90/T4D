@@ -17,49 +17,64 @@
 
       <div class="sheet-2colrow">
 
- {{#each system.attributes.primaryArray}}
-<tr>
-  <td>{{label}}</td>
-  <td>
-    <input
-      type="number"
-      name="system.attributes.primary.{{key}}.score"
-      value="{{score}}"
-    />
-  </td>
-  <td>
-    <input
-      type="number"
-      name="system.attributes.primary.{{key}}.mod"
-      value="{{mod}}"
-      readonly
-    />
-  </td>
-  <td>
-    <input
-      type="number"
-      name="system.attributes.primary.{{key}}.apToNext"
-      value="{{apToNext}}"
-      readonly
-    />
-  </td>
-  <td>
-    <input
-      type="number"
-      name="system.attributes.primary.{{key}}.apTotal"
-      value="{{apTotal}}"
-      readonly
-    />
-  </td>
-  <td>
-    <input
-      type="number"
-      name="system.attributes.primary.{{key}}.temp"
-      value="{{temp}}"
-    />
-  </td>
-</tr>
-{{/each}}
+<!--Primary Attributes BIO-->
+<table class="sheet-attribute-table">
+  <thead>
+    <tr>
+      <th>Attribute</th>
+      <th>Score</th>
+      <th>Modifier</th>
+      <th>AP to Next</th>
+      <th>Total AP Spent</th>
+      <th>Temporary Modifier</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each system.attributes.primaryArray}}
+    <tr>
+      <td>{{label}}</td>
+      <td>
+        <input
+          type="number"
+          name="system.attributes.primary.{{key}}.score"
+          value="{{score}}"
+        />
+      </td>
+      <td>
+        <input
+          type="number"
+          name="system.attributes.primary.{{key}}.mod"
+          value="{{mod}}"
+          readonly
+        />
+      </td>
+      <td>
+        <input
+          type="number"
+          name="system.attributes.primary.{{key}}.apToNext"
+          value="{{apToNext}}"
+          readonly
+        />
+      </td>
+      <td>
+        <input
+          type="number"
+          name="system.attributes.primary.{{key}}.apTotal"
+          value="{{apTotal}}"
+          readonly
+        />
+      </td>
+      <td>
+        <input
+          type="number"
+          name="system.attributes.primary.{{key}}.temp"
+          value="{{temp}}"
+        />
+      </td>
+    </tr>
+    {{/each}}
+  </tbody>
+</table>
 
         <!-- ===== BIO SECONDARY ATTRIBUTES ===== -->
         <div class="sheet-col">
