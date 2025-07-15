@@ -17,90 +17,135 @@
 
       <div class="sheet-2colrow">
 
-        <!--Primary Attributes BIO-->
-        <h3>Primary Attributes</h3>
-        <table class="sheet-attribute-table">
-          <thead>
-            <tr>
-              <th>Attribute</th>
-              <th>Score</th>
-              <th>Modifier</th>
-              <th>AP to Next</th>
-              <th>Total AP Spent</th>
-              <th>Temporary Modifier</th>
-            </tr>
-          </thead>
-          <tbody>
-            {{#each actor.system.attributes.primaryArray}}
-            <tr>
-              <td>{{label}}</td>
-              <td><input type="number" name="system.attributes.primary.{{key}}.score" value="{{score}}" /></td>
-              <td><input type="number" name="system.attributes.primary.{{key}}.mod" value="{{mod}}" /></td>
-              <td><input type="number" name="system.attributes.primary.{{key}}.apToNext" value="{{apToNext}}" /></td>
-              <td><input type="number" name="system.attributes.primary.{{key}}.apTotal" value="{{apTotal}}" /></td>
-              <td><input type="number" name="system.attributes.primary.{{key}}.temp" value="{{temp}}" /></td>
-            </tr>
-            {{/each}}
-          </tbody>
-        </table>
+<!--Primary Attributes-->
+   <h3>Primary Attributes</h3>
+<table class="sheet-attribute-table">
+  <thead>
+    <tr>
+      <th>Attribute</th>
+      <th>Score</th>
+      <th>Modifier</th>
+      <th>AP to Next</th>
+      <th>Total AP Spent</th>
+      <th>Temporary Modifier</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Strength</td>
+      <td><input type="number" name="system.attributes.primary.STR.score" value="{{system.attributes.primary.STR.score}}" /></td>
+      <td><input type="number" name="system.attributes.primary.STR.mod" value="{{system.attributes.primary.STR.mod}}" /></td>
+      <td><input type="number" name="system.attributes.primary.STR.apToNext" value="{{system.attributes.primary.STR.apToNext}}" /></td>
+      <td><input type="number" name="system.attributes.primary.STR.apTotal" value="{{system.attributes.primary.STR.apTotal}}" /></td>
+      <td><input type="number" name="system.attributes.primary.STR.temp" value="{{system.attributes.primary.STR.temp}}" /></td>
+    </tr>
+    <tr>
+      <td>Dexterity</td>
+      <td><input type="number" name="system.attributes.primary.DEX.score" value="{{system.attributes.primary.DEX.score}}" /></td>
+      <td><input type="number" name="system.attributes.primary.DEX.mod" value="{{system.attributes.primary.DEX.mod}}" /></td>
+      <td><input type="number" name="system.attributes.primary.DEX.apToNext" value="{{system.attributes.primary.DEX.apToNext}}" /></td>
+      <td><input type="number" name="system.attributes.primary.DEX.apTotal" value="{{system.attributes.primary.DEX.apTotal}}" /></td>
+      <td><input type="number" name="system.attributes.primary.DEX.temp" value="{{system.attributes.primary.DEX.temp}}" /></td>
+    </tr>
+    <tr>
+      <td>Constitution</td>
+      <td><input type="number" name="system.attributes.primary.CON.score" value="{{system.attributes.primary.CON.score}}" /></td>
+      <td><input type="number" name="system.attributes.primary.CON.mod" value="{{system.attributes.primary.CON.mod}}" /></td>
+      <td><input type="number" name="system.attributes.primary.CON.apToNext" value="{{system.attributes.primary.CON.apToNext}}" /></td>
+      <td><input type="number" name="system.attributes.primary.CON.apTotal" value="{{system.attributes.primary.CON.apTotal}}" /></td>
+      <td><input type="number" name="system.attributes.primary.CON.temp" value="{{system.attributes.primary.CON.temp}}" /></td>
+    </tr>
+    <tr>
+      <td>Intelligence</td>
+      <td><input type="number" name="system.attributes.primary.INT.score" value="{{system.attributes.primary.INT.score}}" /></td>
+      <td><input type="number" name="system.attributes.primary.INT.mod" value="{{system.attributes.primary.INT.mod}}" /></td>
+      <td><input type="number" name="system.attributes.primary.INT.apToNext" value="{{system.attributes.primary.INT.apToNext}}" /></td>
+      <td><input type="number" name="system.attributes.primary.INT.apTotal" value="{{system.attributes.primary.INT.apTotal}}" /></td>
+      <td><input type="number" name="system.attributes.primary.INT.temp" value="{{system.attributes.primary.INT.temp}}" /></td>
+    </tr>
+    <tr>
+      <td>Focus</td>
+      <td><input type="number" name="system.attributes.primary.FOC.score" value="{{system.attributes.primary.FOC.score}}" /></td>
+      <td><input type="number" name="system.attributes.primary.FOC.mod" value="{{system.attributes.primary.FOC.mod}}" /></td>
+      <td><input type="number" name="system.attributes.primary.FOC.apToNext" value="{{system.attributes.primary.FOC.apToNext}}" /></td>
+      <td><input type="number" name="system.attributes.primary.FOC.apTotal" value="{{system.attributes.primary.FOC.apTotal}}" /></td>
+      <td><input type="number" name="system.attributes.primary.FOC.temp" value="{{system.attributes.primary.FOC.temp}}" /></td>
+    </tr>
+    <tr>
+      <td>Charisma</td>
+      <td><input type="number" name="system.attributes.primary.CHA.score" value="{{system.attributes.primary.CHA.score}}" /></td>
+      <td><input type="number" name="system.attributes.primary.CHA.mod" value="{{system.attributes.primary.CHA.mod}}" /></td>
+      <td><input type="number" name="system.attributes.primary.CHA.apToNext" value="{{system.attributes.primary.CHA.apToNext}}" /></td>
+      <td><input type="number" name="system.attributes.primary.CHA.apTotal" value="{{system.attributes.primary.CHA.apTotal}}" /></td>
+      <td><input type="number" name="system.attributes.primary.CHA.temp" value="{{system.attributes.primary.CHA.temp}}" /></td>
+    </tr>
+  </tbody>
+</table>
+<!--Secondary Attributes-->
+    <h3 class="section-subtitle">Secondary Attributes</h3>
+<div class="sheet-attribute-wrapper">
+  <table class="sheet-attribute-table">
+    <thead>
+      <tr>
+        <th>Attribute</th>
+        <th>Score</th>
+        <th>Modifier</th>
+        <th>Temporary Modifier</th>
+        <th>Initiative Roll</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Initiative</td>
+        <td><input type="number" name="system.attributes.secondary.INIT.score" value="{{system.attributes.secondary.INIT.score}}" readonly /></td>
+        <td><input type="number" name="system.attributes.secondary.INIT.mod" value="{{system.attributes.secondary.INIT.mod}}" readonly /></td>
+        <td><input type="number" name="system.attributes.secondary.INIT.temp" value="{{system.attributes.secondary.INIT.temp}}" /></td>
+        <td>
+          <button type="button" class="roll-init" data-label="Initiative">Roll</button>
+        </td>
+      </tr>
+      <tr>
+        <td>Education</td>
+        <td><input type="number" name="system.attributes.secondary.EDU.score" value="{{system.attributes.secondary.EDU.score}}" readonly /></td>
+        <td><input type="number" name="system.attributes.secondary.EDU.mod" value="{{system.attributes.secondary.EDU.mod}}" readonly /></td>
+        <td><input type="number" name="system.attributes.secondary.EDU.temp" value="{{system.attributes.secondary.EDU.temp}}" /></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>Speed</td>
+        <td><input type="number" name="system.attributes.secondary.SPD.score" value="{{system.attributes.secondary.SPD.score}}" readonly /></td>
+        <td><input type="number" name="system.attributes.secondary.SPD.mod" value="{{system.attributes.secondary.SPD.mod}}" readonly /></td>
+        <td><input type="number" name="system.attributes.secondary.SPD.temp" value="{{system.attributes.secondary.SPD.temp}}" /></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>Movement</td>
+        <td><input type="number" name="system.attributes.secondary.MVMT.score" value="{{system.attributes.secondary.MVMT.score}}" readonly /></td>
+        <td><input type="number" name="system.attributes.secondary.MVMT.mod" value="{{system.attributes.secondary.MVMT.mod}}" readonly /></td>
+        <td><input type="number" name="system.attributes.secondary.MVMT.temp" value="{{system.attributes.secondary.MVMT.temp}}" /></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>Appearance</td>
+        <td><input type="number" name="system.attributes.appearance.score" value="{{system.attributes.appearance.score}}" min="3" max="30" /></td>
+        <td colspan="2">
+          <input type="text" name="system.attributes.appearance.desc" value="{{system.attributes.appearance.desc}}" readonly />
+        </td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
-        <!--Secondary Attributes BIO-->
-        <div class="sheet-col">
-          <div class="row sheet-secondary-attributes-bio">
-            <h3 class="section-subtitle">Secondary Attributes</h3>
-            <div class="sheet-attribute-wrapper">
-              <table class="sheet-attribute-table">
-                <thead>
-                  <tr>
-                    <th>Attribute</th>
-                    <th>Score</th>
-                    <th>Modifier</th>
-                    <th>Temporary Modifier</th>
-                    <th>Initiative Roll</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {{#each actor.system.attributes.secondary}}
-                  <tr>
-                    <td>{{this.label}}</td>
-                    <td><input type="number" name="system.attributes.secondary.{{@key}}.score" value="{{this.score}}" readonly /></td>
-                    <td><input type="number" name="system.attributes.secondary.{{@key}}.mod" value="{{this.mod}}" readonly /></td>
-                    <td><input type="number" name="system.attributes.secondary.{{@key}}.temp" value="{{this.temp}}" /></td>
-                    <td>
-                      {{#if this.hasRoll}}
-                      <button type="button" class="roll-init" data-label="{{this.label}}">
-                        Roll
-                      </button>
-                      {{/if}}
-                    </td>
-                  </tr>
-                  {{/each}}
-                  <tr>
-                    <td>Appearance</td>
-                    <td><input type="number" name="system.attributes.appearance.score" value="{{actor.system.attributes.appearance.score}}" min="3" max="30" /></td>
-                    <td colspan="2">
-                      <input type="text" name="system.attributes.appearance.desc" value="{{actor.system.attributes.appearance.desc}}" readonly />
-                    </td>
-                    <td></td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+<div class="sheet-ap-summary">
+  <span class="sheet-ap-label">Total AP Spent:
+    <input type="number" name="system.ap.totalSpent" value="{{system.ap.totalSpent}}" readonly />
+  </span>
+  <span class="sheet-ap-label">Unspent AP:
+    <input type="number" name="system.ap.unspent" value="{{system.ap.unspent}}" />
+  </span>
+</div>
 
-            <div class="sheet-ap-summary">
-              <span class="sheet-ap-label">Total AP Spent:
-                <input type="number" name="system.ap.totalSpent" value="{{actor.system.ap.totalSpent}}" readonly />
-              </span>
-              <span class="sheet-ap-label">Unspent AP:
-                <input type="number" name="system.ap.unspent" value="{{actor.system.ap.unspent}}" />
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</form>
 
 <div class="sheet-section-block sheet-theme-bio">
   <div class="sheet-group-title">
@@ -109,7 +154,7 @@
 
   <div class="sheet-3colrow sheet-stability-wrapper">
 
-  <!-- ===== Bio Saving Throws ===== -->
+    <!--BioSaving Throws-->
 <div class="sheet-col">
   <div class="row sheet-saves-block">
     <h3 class="section-subtitle">Bio Saving Throws</h3>
@@ -123,19 +168,34 @@
           </tr>
         </thead>
         <tbody>
-          {{#each actor.system.saves}}
           <tr>
             <td>
-              <button type="button"
-                      class="roll-save"
-                      data-label="{{this.label}}">
-                {{this.label}}
-              </button>
+              <button type="button" class="roll-save" data-label="Physical">Physical</button>
             </td>
-            <td><input type="number" name="system.saves.{{@key}}.score" value="{{this.score}}" readonly /></td>
-            <td><input type="number" name="system.saves.{{@key}}.temp" value="{{this.temp}}" /></td>
+            <td><input type="number" name="system.saves.PHYSICAL.score" value="{{actor.system.saves.PHYSICAL.score}}" readonly /></td>
+            <td><input type="number" name="system.saves.PHYSICAL.temp" value="{{actor.system.saves.PHYSICAL.temp}}" /></td>
           </tr>
-          {{/each}}
+          <tr>
+            <td>
+              <button type="button" class="roll-save" data-label="Mental">Mental</button>
+            </td>
+            <td><input type="number" name="system.saves.MENTAL.score" value="{{actor.system.saves.MENTAL.score}}" readonly /></td>
+            <td><input type="number" name="system.saves.MENTAL.temp" value="{{actor.system.saves.MENTAL.temp}}" /></td>
+          </tr>
+          <tr>
+            <td>
+              <button type="button" class="roll-save" data-label="Evasion">Evasion</button>
+            </td>
+            <td><input type="number" name="system.saves.EVASION.score" value="{{actor.system.saves.EVASION.score}}" readonly /></td>
+            <td><input type="number" name="system.saves.EVASION.temp" value="{{actor.system.saves.EVASION.temp}}" /></td>
+          </tr>
+          <tr>
+            <td>
+              <button type="button" class="roll-save" data-label="Social">Social</button>
+            </td>
+            <td><input type="number" name="system.saves.SOCIAL.score" value="{{actor.system.saves.SOCIAL.score}}" readonly /></td>
+            <td><input type="number" name="system.saves.SOCIAL.temp" value="{{actor.system.saves.SOCIAL.temp}}" /></td>
+          </tr>
         </tbody>
       </table>
     </div>
@@ -209,84 +269,117 @@
 
   <div class="sheet-2colrow sheet-skills-wrapper">
 
-    <!-- ===== Bio Combat Skills Column ===== -->
-    <div class="sheet-col">
-      <div class="row sheet-skillgroup-combat">
-        <h3 class="section-subtitle">Bio Combat Skills</h3>
+  <!-- ===== Bio Combat Skills Column ===== -->
+<div class="sheet-col">
+  <div class="row sheet-skillgroup-combat">
+    <h3 class="section-subtitle">Bio Combat Skills</h3>
 
-        <div class="sheet-skill-header">
-          <span class="sheet-skill-spacer"></span>
-          <span class="sheet-skill-label">Skill</span>
-          <span class="sheet-skill-label">Level</span>
-          <span class="sheet-skill-label">XP</span>
-          <span class="sheet-skill-label">Attribute</span>
-        </div>
-
-        {{#each actor.system.skills.combat}}
-        <div class="sheet-skill-entry">
-          <button type="button"
-                  class="roll-skill"
-                  data-group="skills.combat"
-                  data-index="{{@index}}">
-            {{this.label}}
-          </button>
-          <input type="text" name="system.skills.combat.{{@index}}.label" value="{{this.label}}" readonly />
-          <input type="number" name="system.skills.combat.{{@index}}.level" value="{{this.level}}" min="0" />
-          <input type="number" name="system.skills.combat.{{@index}}.xp" value="{{this.xp}}" min="0" />
-          <select name="system.skills.combat.{{@index}}.attribute">
-            <option value="STR" {{#if (eq this.attribute "STR")}}selected{{/if}}>STR</option>
-            <option value="DEX" {{#if (eq this.attribute "DEX")}}selected{{/if}}>DEX</option>
-            <option value="CON" {{#if (eq this.attribute "CON")}}selected{{/if}}>CON</option>
-            <option value="INT" {{#if (eq this.attribute "INT")}}selected{{/if}}>INT</option>
-            <option value="FOC" {{#if (eq this.attribute "FOC")}}selected{{/if}}>FOC</option>
-            <option value="CHA" {{#if (eq this.attribute "CHA")}}selected{{/if}}>CHA</option>
-          </select>
-        </div>
-        {{/each}}
-
-      </div>
+    <div class="sheet-skill-header">
+      <span class="sheet-skill-spacer"></span>
+      <span class="sheet-skill-label">Skill</span>
+      <span class="sheet-skill-label">Level</span>
+      <span class="sheet-skill-label">XP</span>
+      <span class="sheet-skill-label">Attribute</span>
     </div>
 
-    <!-- ===== Bio Detection Skills Column ===== -->
-    <div class="sheet-col">
-      <div class="row sheet-skillgroup-detection">
-        <h3 class="section-subtitle">Bio Detection Skills</h3>
-
-        <div class="sheet-skill-header">
-          <span class="sheet-skill-spacer"></span>
-          <span class="sheet-skill-label">Skill</span>
-          <span class="sheet-skill-label">Level</span>
-          <span class="sheet-skill-label">XP</span>
-          <span class="sheet-skill-label">Attribute</span>
-        </div>
-
-        {{#each actor.system.skills.detection}}
-        <div class="sheet-skill-entry">
-          <button type="button"
-                  class="roll-skill"
-                  data-group="skills.detection"
-                  data-index="{{@index}}">
-            {{this.label}}
-          </button>
-          <input type="text" name="system.skills.detection.{{@index}}.label" value="{{this.label}}" readonly />
-          <input type="number" name="system.skills.detection.{{@index}}.level" value="{{this.level}}" min="0" />
-          <input type="number" name="system.skills.detection.{{@index}}.xp" value="{{this.xp}}" min="0" />
-          <select name="system.skills.detection.{{@index}}.attribute">
-            <option value="STR" {{#if (eq this.attribute "STR")}}selected{{/if}}>STR</option>
-            <option value="DEX" {{#if (eq this.attribute "DEX")}}selected{{/if}}>DEX</option>
-            <option value="CON" {{#if (eq this.attribute "CON")}}selected{{/if}}>CON</option>
-            <option value="INT" {{#if (eq this.attribute "INT")}}selected{{/if}}>INT</option>
-            <option value="FOC" {{#if (eq this.attribute "FOC")}}selected{{/if}}>FOC</option>
-            <option value="CHA" {{#if (eq this.attribute "CHA")}}selected{{/if}}>CHA</option>
-          </select>
-        </div>
-        {{/each}}
-
-      </div>
+    <div class="sheet-skill-entry">
+      <button type="button"
+              class="roll-skill"
+              data-group="skills.combat"
+              data-key="simpleWeapons">
+        Simple Weapons
+      </button>
+      <input type="text" name="system.skills.combat.simpleWeapons.label" value="Simple Weapons" readonly />
+      <input type="number" name="system.skills.combat.simpleWeapons.level" value="{{actor.system.skills.combat.simpleWeapons.level}}" min="0" />
+      <input type="number" name="system.skills.combat.simpleWeapons.xp" value="{{actor.system.skills.combat.simpleWeapons.xp}}" min="0" />
+      <select name="system.skills.combat.simpleWeapons.attribute">
+        <option value="STR" {{#if (eq actor.system.skills.combat.simpleWeapons.attribute "STR")}}selected{{/if}}>STR</option>
+        <option value="DEX" {{#if (eq actor.system.skills.combat.simpleWeapons.attribute "DEX")}}selected{{/if}}>DEX</option>
+        <option value="CON" {{#if (eq actor.system.skills.combat.simpleWeapons.attribute "CON")}}selected{{/if}}>CON</option>
+        <option value="INT" {{#if (eq actor.system.skills.combat.simpleWeapons.attribute "INT")}}selected{{/if}}>INT</option>
+        <option value="FOC" {{#if (eq actor.system.skills.combat.simpleWeapons.attribute "FOC")}}selected{{/if}}>FOC</option>
+        <option value="CHA" {{#if (eq actor.system.skills.combat.simpleWeapons.attribute "CHA")}}selected{{/if}}>CHA</option>
+      </select>
     </div>
 
-  </div> <!-- End .sheet-2colrow -->
-</div> <!-- End .sheet-section-block -->
+    <div class="sheet-skill-entry">
+      <button type="button"
+              class="roll-skill"
+              data-group="skills.combat"
+              data-key="projectileWeapons">
+        Projectile Weapons
+      </button>
+      <input type="text" name="system.skills.combat.projectileWeapons.label" value="Projectile Weapons" readonly />
+      <input type="number" name="system.skills.combat.projectileWeapons.level" value="{{actor.system.skills.combat.projectileWeapons.level}}" min="0" />
+      <input type="number" name="system.skills.combat.projectileWeapons.xp" value="{{actor.system.skills.combat.projectileWeapons.xp}}" min="0" />
+      <select name="system.skills.combat.projectileWeapons.attribute">
+        <option value="STR" {{#if (eq actor.system.skills.combat.projectileWeapons.attribute "STR")}}selected{{/if}}>STR</option>
+        <option value="DEX" {{#if (eq actor.system.skills.combat.projectileWeapons.attribute "DEX")}}selected{{/if}}>DEX</option>
+        <option value="CON" {{#if (eq actor.system.skills.combat.projectileWeapons.attribute "CON")}}selected{{/if}}>CON</option>
+        <option value="INT" {{#if (eq actor.system.skills.combat.projectileWeapons.attribute "INT")}}selected{{/if}}>INT</option>
+        <option value="FOC" {{#if (eq actor.system.skills.combat.projectileWeapons.attribute "FOC")}}selected{{/if}}>FOC</option>
+        <option value="CHA" {{#if (eq actor.system.skills.combat.projectileWeapons.attribute "CHA")}}selected{{/if}}>CHA</option>
+      </select>
+    </div>
+
+  </div>
+</div>
+
+ <!-- ===== Bio Detection Skills Column ===== -->
+<div class="sheet-col">
+  <div class="row sheet-skillgroup-detection">
+    <h3 class="section-subtitle">Bio Detection Skills</h3>
+
+    <div class="sheet-skill-header">
+      <span class="sheet-skill-spacer"></span>
+      <span class="sheet-skill-label">Skill</span>
+      <span class="sheet-skill-label">Level</span>
+      <span class="sheet-skill-label">XP</span>
+      <span class="sheet-skill-label">Attribute</span>
+    </div>
+
+    <div class="sheet-skill-entry">
+      <button type="button"
+              class="roll-skill"
+              data-group="skills.detection"
+              data-key="perception">
+        Perception
+      </button>
+      <input type="text" name="system.skills.detection.perception.label" value="Perception" readonly />
+      <input type="number" name="system.skills.detection.perception.level" value="{{actor.system.skills.detection.perception.level}}" min="0" />
+      <input type="number" name="system.skills.detection.perception.xp" value="{{actor.system.skills.detection.perception.xp}}" min="0" />
+      <select name="system.skills.detection.perception.attribute">
+        <option value="STR" {{#if (eq actor.system.skills.detection.perception.attribute "STR")}}selected{{/if}}>STR</option>
+        <option value="DEX" {{#if (eq actor.system.skills.detection.perception.attribute "DEX")}}selected{{/if}}>DEX</option>
+        <option value="CON" {{#if (eq actor.system.skills.detection.perception.attribute "CON")}}selected{{/if}}>CON</option>
+        <option value="INT" {{#if (eq actor.system.skills.detection.perception.attribute "INT")}}selected{{/if}}>INT</option>
+        <option value="FOC" {{#if (eq actor.system.skills.detection.perception.attribute "FOC")}}selected{{/if}}>FOC</option>
+        <option value="CHA" {{#if (eq actor.system.skills.detection.perception.attribute "CHA")}}selected{{/if}}>CHA</option>
+      </select>
+    </div>
+
+    <div class="sheet-skill-entry">
+      <button type="button"
+              class="roll-skill"
+              data-group="skills.detection"
+              data-key="intuition">
+        Intuition
+      </button>
+      <input type="text" name="system.skills.detection.intuition.label" value="Intuition" readonly />
+      <input type="number" name="system.skills.detection.intuition.level" value="{{actor.system.skills.detection.intuition.level}}" min="0" />
+      <input type="number" name="system.skills.detection.intuition.xp" value="{{actor.system.skills.detection.intuition.xp}}" min="0" />
+      <select name="system.skills.detection.intuition.attribute">
+        <option value="STR" {{#if (eq actor.system.skills.detection.intuition.attribute "STR")}}selected{{/if}}>STR</option>
+        <option value="DEX" {{#if (eq actor.system.skills.detection.intuition.attribute "DEX")}}selected{{/if}}>DEX</option>
+        <option value="CON" {{#if (eq actor.system.skills.detection.intuition.attribute "CON")}}selected{{/if}}>CON</option>
+        <option value="INT" {{#if (eq actor.system.skills.detection.intuition.attribute "INT")}}selected{{/if}}>INT</option>
+        <option value="FOC" {{#if (eq actor.system.skills.detection.intuition.attribute "FOC")}}selected{{/if}}>FOC</option>
+        <option value="CHA" {{#if (eq actor.system.skills.detection.intuition.attribute "CHA")}}selected{{/if}}>CHA</option>
+      </select>
+    </div>
+
+  </div>
+</div>
 
 <!-- ===== BIO TRAINING PACKAGES BLOCK ===== -->
 <div class="sheet-section-block sheet-theme-bio">
@@ -404,37 +497,53 @@
       <span>Carried</span>
     </div>
 
-    {{#each actor.system.weapons}}
-    <div class="sheet-weapon-entry">
-      <button type="button"
-              class="roll-weapon"
-              data-group="weapons"
-              data-index="{{@index}}">
-        {{this.name}}
-      </button>
-      <input type="text" name="system.weapons.{{@index}}.name" value="{{this.name}}" />
-      <select name="system.weapons.{{@index}}.skill">
-        <option value="Simple" {{#if (eq this.skill "Simple")}}selected{{/if}}>Simple</option>
-        <option value="Projectile" {{#if (eq this.skill "Projectile")}}selected{{/if}}>Projectile</option>
-      </select>
-      <input type="number" name="system.weapons.{{@index}}.atkBonus" value="{{this.atkBonus}}" />
-      <input type="text" name="system.weapons.{{@index}}.damage" value="{{this.damage}}" />
-      <input type="number" name="system.weapons.{{@index}}.spd" value="{{this.spd}}" />
-      <input type="number" name="system.weapons.{{@index}}.ammo" value="{{this.ammo}}" />
-      <input type="number" name="system.weapons.{{@index}}.mag" value="{{this.mag}}" />
-      <input type="text" name="system.weapons.{{@index}}.range" value="{{this.range}}" />
-      <input type="number" name="system.weapons.{{@index}}.hp" value="{{this.hp}}" />
-      <input type="number" name="system.weapons.{{@index}}.maxHp" value="{{this.maxHp}}" />
-      <input type="number" name="system.weapons.{{@index}}.weight" value="{{this.weight}}" />
-      <input type="number" name="system.weapons.{{@index}}.cost" value="{{this.cost}}" />
-      <input type="checkbox" name="system.weapons.{{@index}}.readied" {{#if this.readied}}checked{{/if}} />
-      <input type="checkbox" name="system.weapons.{{@index}}.carried" {{#if this.carried}}checked{{/if}} />
-      <textarea name="system.weapons.{{@index}}.notes">{{this.notes}}</textarea>
-    </div>
-    {{/each}}
+{{#each actor.system.weapons}}
+<div class="sheet-weapon-entry">
+  <button type="button"
+          class="roll-weapon"
+          data-group="weapons"
+          data-index="{{@index}}">
+    {{this.name}}
+  </button>
 
-  </div>
+  <input type="text" name="system.weapons.{{@index}}.name" value="{{this.name}}" />
+
+  <select name="system.weapons.{{@index}}.skill">
+    <option value="Simple" {{#if (eq this.skill "Simple")}}selected{{/if}}>Simple</option>
+    <option value="Projectile" {{#if (eq this.skill "Projectile")}}selected{{/if}}>Projectile</option>
+  </select>
+
+  <!-- NEW: Attribute selection -->
+  <select name="system.weapons.{{@index}}.attribute">
+    <option value="STR" {{#if (eq this.attribute "STR")}}selected{{/if}}>STR</option>
+    <option value="DEX" {{#if (eq this.attribute "DEX")}}selected{{/if}}>DEX</option>
+    <option value="CON" {{#if (eq this.attribute "CON")}}selected{{/if}}>CON</option>
+    <option value="INT" {{#if (eq this.attribute "INT")}}selected{{/if}}>INT</option>
+    <option value="FOC" {{#if (eq this.attribute "FOC")}}selected{{/if}}>FOC</option>
+    <option value="CHA" {{#if (eq this.attribute "CHA")}}selected{{/if}}>CHA</option>
+  </select>
+
+  <input type="number" name="system.weapons.{{@index}}.atkBonus" value="{{this.atkBonus}}" />
+  <input type="text" name="system.weapons.{{@index}}.damage" value="{{this.damage}}" />
+  <input type="number" name="system.weapons.{{@index}}.spd" value="{{this.spd}}" />
+  <input type="number" name="system.weapons.{{@index}}.ammo" value="{{this.ammo}}" />
+  <input type="number" name="system.weapons.{{@index}}.mag" value="{{this.mag}}" />
+  <input type="text" name="system.weapons.{{@index}}.range" value="{{this.range}}" />
+  <input type="number" name="system.weapons.{{@index}}.hp" value="{{this.hp}}" />
+  <input type="number" name="system.weapons.{{@index}}.maxHp" value="{{this.maxHp}}" />
+  <input type="number" name="system.weapons.{{@index}}.weight" value="{{this.weight}}" />
+  <input type="number" name="system.weapons.{{@index}}.cost" value="{{this.cost}}" />
+  <input type="checkbox" name="system.weapons.{{@index}}.readied" {{#if this.readied}}checked{{/if}} />
+  <input type="checkbox" name="system.weapons.{{@index}}.carried" {{#if this.carried}}checked{{/if}} />
+  <textarea name="system.weapons.{{@index}}.notes">{{this.notes}}</textarea>
 </div>
+{{/each}}
+
+<!-- Add Weapon Button -->
+<button type="button" class="add-weapon">
+  + Add Weapon
+</button>
+
 
 <!-- ===== BIO ARMOR BLOCK ===== -->
 <div class="sheet-section-block sheet-theme-bio">
@@ -453,23 +562,24 @@
       <span>Readied</span>
       <span>Carried</span>
     </div>
-
-    {{#each actor.system.armor}}
-    <div class="sheet-armor-entry">
-      <input type="text" name="system.armor.{{@index}}.name" value="{{this.name}}" />
-      <input type="number" name="system.armor.{{@index}}.max" value="{{this.max}}" />
-      <input type="number" name="system.armor.{{@index}}.current" value="{{this.current}}" />
-      <input type="number" name="system.armor.{{@index}}.spdPenalty" value="{{this.spdPenalty}}" />
-      <input type="number" name="system.armor.{{@index}}.weight" value="{{this.weight}}" />
-      <input type="text" name="system.armor.{{@index}}.cost" value="{{this.cost}}" />
-      <input type="checkbox" name="system.armor.{{@index}}.readied" {{#if this.readied}}checked{{/if}} />
-      <input type="checkbox" name="system.armor.{{@index}}.carried" {{#if this.carried}}checked{{/if}} />
-      <textarea name="system.armor.{{@index}}.notes">{{this.notes}}</textarea>
-    </div>
-    {{/each}}
-
-  </div>
+{{#each actor.system.armor}}
+<div class="sheet-armor-entry">
+  <input type="text" name="system.armor.{{@index}}.name" value="{{this.name}}" />
+  <input type="number" name="system.armor.{{@index}}.max" value="{{this.max}}" />
+  <input type="number" name="system.armor.{{@index}}.current" value="{{this.current}}" />
+  <input type="number" name="system.armor.{{@index}}.spdPenalty" value="{{this.spdPenalty}}" />
+  <input type="number" name="system.armor.{{@index}}.weight" value="{{this.weight}}" />
+  <input type="text" name="system.armor.{{@index}}.cost" value="{{this.cost}}" />
+  <input type="checkbox" name="system.armor.{{@index}}.readied" {{#if this.readied}}checked{{/if}} />
+  <input type="checkbox" name="system.armor.{{@index}}.carried" {{#if this.carried}}checked{{/if}} />
+  <textarea name="system.armor.{{@index}}.notes">{{this.notes}}</textarea>
 </div>
+{{/each}}
+
+<!-- Add Armor Button -->
+<button type="button" class="add-armor">
+  + Add Armor
+</button>
 
 <!-- ===== BIO ITEMS BLOCK ===== -->
 <div class="sheet-section-block sheet-theme-bio">
@@ -486,20 +596,23 @@
       <span>Readied</span>
       <span>Carried</span>
     </div>
-
-    {{#each actor.system.items}}
-    <div class="sheet-items-entry">
-      <input type="text" name="system.items.{{@index}}.name" value="{{this.name}}" />
-      <input type="number" name="system.items.{{@index}}.quantity" value="{{this.quantity}}" />
-      <input type="text" name="system.items.{{@index}}.location" value="{{this.location}}" />
-      <input type="number" name="system.items.{{@index}}.weight" value="{{this.weight}}" />
-      <input type="checkbox" name="system.items.{{@index}}.readied" {{#if this.readied}}checked{{/if}} />
-      <input type="checkbox" name="system.items.{{@index}}.carried" {{#if this.carried}}checked{{/if}} />
-      <textarea name="system.items.{{@index}}.notes">{{this.notes}}</textarea>
-    </div>
-    {{/each}}
-  </div>
+{{#each actor.system.items}}
+<div class="sheet-items-entry">
+  <input type="text" name="system.items.{{@index}}.name" value="{{this.name}}" />
+  <input type="number" name="system.items.{{@index}}.quantity" value="{{this.quantity}}" />
+  <input type="text" name="system.items.{{@index}}.location" value="{{this.location}}" />
+  <input type="number" name="system.items.{{@index}}.weight" value="{{this.weight}}" />
+  <input type="checkbox" name="system.items.{{@index}}.readied" {{#if this.readied}}checked{{/if}} />
+  <input type="checkbox" name="system.items.{{@index}}.carried" {{#if this.carried}}checked{{/if}} />
+  <textarea name="system.items.{{@index}}.notes">{{this.notes}}</textarea>
 </div>
+{{/each}}
+
+<!-- Add Item Button -->
+<button type="button" class="add-item">
+  + Add Item
+</button>
+
 
 <!-- ===== BIO NANITE BLOCK ===== -->
 <div class="sheet-section-block sheet-theme-bio">
@@ -517,28 +630,31 @@
       <span>Type</span>
     </div>
 
-    {{#each actor.system.nanite.catalysts}}
-    <div class="sheet-nanite-block">
-      <div class="sheet-nanite-entry sheet-nanite-accelerator">
-        <button type="button"
-                class="roll-nanite"
-                data-group="nanite.catalysts"
-                data-index="{{@index}}">
-          {{this.name}}
-        </button>
-        <input type="text" name="system.nanite.catalysts.{{@index}}.name" value="{{this.name}}" />
-        <select name="system.nanite.catalysts.{{@index}}.type">
-          <option value="1d4" {{#if (eq this.type "1d4")}}selected{{/if}}>Minor</option>
-          <option value="5d4" {{#if (eq this.type "5d4")}}selected{{/if}}>Major</option>
-        </select>
-      </div>
-      <div class="sheet-nanite-notes-row">
-        <textarea name="system.nanite.catalysts.{{@index}}.notes">{{this.notes}}</textarea>
-      </div>
-    </div>
-    {{/each}}
+{{#each actor.system.nanite.catalysts}}
+<div class="sheet-nanite-block">
+  <div class="sheet-nanite-entry sheet-nanite-accelerator">
+    <button type="button"
+            class="roll-nanite"
+            data-group="nanite.catalysts"
+            data-index="{{@index}}">
+      {{this.name}}
+    </button>
+    <input type="text" name="system.nanite.catalysts.{{@index}}.name" value="{{this.name}}" />
+    <select name="system.nanite.catalysts.{{@index}}.type">
+      <option value="1d4" {{#if (eq this.type "1d4")}}selected{{/if}}>Minor</option>
+      <option value="5d4" {{#if (eq this.type "5d4")}}selected{{/if}}>Major</option>
+    </select>
+  </div>
+  <div class="sheet-nanite-notes-row">
+    <textarea name="system.nanite.catalysts.{{@index}}.notes">{{this.notes}}</textarea>
   </div>
 </div>
+{{/each}}
+
+<!-- Add Nanite Accelerator Button -->
+<button type="button" class="add-nanite-catalyst">
+  + Add Nanite Accelerator
+</button>
 
  <!-- ===== Basic Nanite Tech ===== -->
 <div class="sheet-subsection-block sheet-nanite-group">
@@ -553,27 +669,31 @@
     <span>XP</span>
   </div>
 
-  {{#each actor.system.nanite.basicReactions}}
-  <div class="sheet-nanite-block">
-    <div class="sheet-basic-nanite-entry">
-      <button type="button"
-              class="roll-nanite"
-              data-group="nanite.basicReactions"
-              data-index="{{@index}}">
-        {{this.name}}
-      </button>
-      <input type="text" name="system.nanite.basicReactions.{{@index}}.name" value="{{this.name}}" />
-      <input type="number" name="system.nanite.basicReactions.{{@index}}.mp" value="{{this.mp}}" />
-      <input type="number" name="system.nanite.basicReactions.{{@index}}.spd" value="{{this.spd}}" />
-      <input type="number" name="system.nanite.basicReactions.{{@index}}.level" value="{{this.level}}" />
-      <input type="number" name="system.nanite.basicReactions.{{@index}}.xp" value="{{this.xp}}" />
-    </div>
-    <div class="sheet-basic-nanite-notes-row">
-      <textarea name="system.nanite.basicReactions.{{@index}}.notes">{{this.notes}}</textarea>
-    </div>
+ {{#each actor.system.nanite.basicReactions}}
+<div class="sheet-nanite-block">
+  <div class="sheet-basic-nanite-entry">
+    <button type="button"
+            class="roll-nanite"
+            data-group="nanite.basicReactions"
+            data-index="{{@index}}">
+      {{this.name}}
+    </button>
+    <input type="text" name="system.nanite.basicReactions.{{@index}}.name" value="{{this.name}}" />
+    <input type="number" name="system.nanite.basicReactions.{{@index}}.mp" value="{{this.mp}}" />
+    <input type="number" name="system.nanite.basicReactions.{{@index}}.spd" value="{{this.spd}}" />
+    <input type="number" name="system.nanite.basicReactions.{{@index}}.level" value="{{this.level}}" />
+    <input type="number" name="system.nanite.basicReactions.{{@index}}.xp" value="{{this.xp}}" />
   </div>
-  {{/each}}
+  <div class="sheet-basic-nanite-notes-row">
+    <textarea name="system.nanite.basicReactions.{{@index}}.notes">{{this.notes}}</textarea>
+  </div>
 </div>
+{{/each}}
+
+<!-- Add Basic Reaction Button -->
+<button type="button" class="add-nanite-basic">
+  + Add Basic Reaction
+</button>
 
   <!-- ===== Advanced Nanite Tech ===== -->
 <div class="sheet-subsection-block sheet-nanite-group">
@@ -589,28 +709,32 @@
     <span>Components</span>
   </div>
 
-  {{#each actor.system.nanite.advancedReactions}}
-  <div class="sheet-nanite-block">
-    <div class="sheet-advanced-nanite-entry">
-      <button type="button"
-              class="roll-nanite"
-              data-group="nanite.advancedReactions"
-              data-index="{{@index}}">
-        {{this.name}}
-      </button>
-      <input type="text" name="system.nanite.advancedReactions.{{@index}}.name" value="{{this.name}}" />
-      <input type="number" name="system.nanite.advancedReactions.{{@index}}.mp" value="{{this.mp}}" />
-      <input type="number" name="system.nanite.advancedReactions.{{@index}}.spd" value="{{this.spd}}" />
-      <input type="number" name="system.nanite.advancedReactions.{{@index}}.level" value="{{this.level}}" />
-      <input type="number" name="system.nanite.advancedReactions.{{@index}}.xp" value="{{this.xp}}" />
-      <input type="text" name="system.nanite.advancedReactions.{{@index}}.components" value="{{this.components}}" />
-    </div>
-    <div class="sheet-advanced-nanite-notes-row">
-      <textarea name="system.nanite.advancedReactions.{{@index}}.notes">{{this.notes}}</textarea>
-    </div>
+ {{#each actor.system.nanite.advancedReactions}}
+<div class="sheet-nanite-block">
+  <div class="sheet-advanced-nanite-entry">
+    <button type="button"
+            class="roll-nanite"
+            data-group="nanite.advancedReactions"
+            data-index="{{@index}}">
+      {{this.name}}
+    </button>
+    <input type="text" name="system.nanite.advancedReactions.{{@index}}.name" value="{{this.name}}" />
+    <input type="number" name="system.nanite.advancedReactions.{{@index}}.mp" value="{{this.mp}}" />
+    <input type="number" name="system.nanite.advancedReactions.{{@index}}.spd" value="{{this.spd}}" />
+    <input type="number" name="system.nanite.advancedReactions.{{@index}}.level" value="{{this.level}}" />
+    <input type="number" name="system.nanite.advancedReactions.{{@index}}.xp" value="{{this.xp}}" />
+    <input type="text" name="system.nanite.advancedReactions.{{@index}}.components" value="{{this.components}}" />
   </div>
-  {{/each}}
+  <div class="sheet-advanced-nanite-notes-row">
+    <textarea name="system.nanite.advancedReactions.{{@index}}.notes">{{this.notes}}</textarea>
+  </div>
 </div>
+{{/each}}
+
+<!-- Add Advanced Reaction Button -->
+<button type="button" class="add-nanite-advanced">
+  + Add Advanced Reaction
+</button>
 
 </div>
 
@@ -650,7 +774,6 @@
   </div>
 </div>
 
-
  <!-- ===== AI Section ===== -->
 <div class="sheet-section-block sheet-theme-ai">
   <div class="sheet-group-title">
@@ -660,37 +783,75 @@
   <div class="sheet-2colrow">
 
     <!-- ===== AI PRIMARY ATTRIBUTES ===== -->
-    <div class="sheet-col">
-      <div class="row sheet-primary-attributes-ai">
-        <h3 class="section-subtitle">Primary Attributes</h3>
-        <div class="sheet-attribute-wrapper">
-          <table class="sheet-attribute-table">
-            <thead>
-              <tr>
-                <th>Attribute</th>
-                <th>Score</th>
-                <th>Modifier</th>
-                <th>AP to Next</th>
-                <th>Total AP Spent</th>
-                <th>Temporary Modifier</th>
-              </tr>
-            </thead>
-            <tbody>
-              {{#each actor.system.attributesAI.primary}}
-              <tr>
-                <td>{{this.label}}</td>
-                <td><input type="number" name="system.attributesAI.primary.{{@key}}.score" value="{{this.score}}" /></td>
-                <td><input type="number" name="system.attributesAI.primary.{{@key}}.mod" value="{{this.mod}}" readonly /></td>
-                <td><input type="number" name="system.attributesAI.primary.{{@key}}.apToNext" value="{{this.apToNext}}" readonly /></td>
-                <td><input type="number" name="system.attributesAI.primary.{{@key}}.apTotal" value="{{this.apTotal}}" readonly /></td>
-                <td><input type="number" name="system.attributesAI.primary.{{@key}}.temp" value="{{this.temp}}" /></td>
-              </tr>
-              {{/each}}
-            </tbody>
-          </table>
-        </div>
-      </div>
+   <div class="sheet-col">
+  <div class="row sheet-primary-attributes-ai">
+    <h3 class="section-subtitle">Primary Attributes</h3>
+    <div class="sheet-attribute-wrapper">
+      <table class="sheet-attribute-table">
+        <thead>
+          <tr>
+            <th>Attribute</th>
+            <th>Score</th>
+            <th>Modifier</th>
+            <th>AP to Next</th>
+            <th>Total AP Spent</th>
+            <th>Temporary Modifier</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Processing</td>
+            <td><input type="number" name="system.attributesAI.primary.PRC.score" value="{{system.attributesAI.primary.PRC.score}}" /></td>
+            <td><input type="number" name="system.attributesAI.primary.PRC.mod" value="{{system.attributesAI.primary.PRC.mod}}" readonly /></td>
+            <td><input type="number" name="system.attributesAI.primary.PRC.apToNext" value="{{system.attributesAI.primary.PRC.apToNext}}" readonly /></td>
+            <td><input type="number" name="system.attributesAI.primary.PRC.apTotal" value="{{system.attributesAI.primary.PRC.apTotal}}" readonly /></td>
+            <td><input type="number" name="system.attributesAI.primary.PRC.temp" value="{{system.attributesAI.primary.PRC.temp}}" /></td>
+          </tr>
+          <tr>
+            <td>Sensor</td>
+            <td><input type="number" name="system.attributesAI.primary.SEN.score" value="{{system.attributesAI.primary.SEN.score}}" /></td>
+            <td><input type="number" name="system.attributesAI.primary.SEN.mod" value="{{system.attributesAI.primary.SEN.mod}}" readonly /></td>
+            <td><input type="number" name="system.attributesAI.primary.SEN.apToNext" value="{{system.attributesAI.primary.SEN.apToNext}}" readonly /></td>
+            <td><input type="number" name="system.attributesAI.primary.SEN.apTotal" value="{{system.attributesAI.primary.SEN.apTotal}}" readonly /></td>
+            <td><input type="number" name="system.attributesAI.primary.SEN.temp" value="{{system.attributesAI.primary.SEN.temp}}" /></td>
+          </tr>
+          <tr>
+            <td>Architecture</td>
+            <td><input type="number" name="system.attributesAI.primary.ARC.score" value="{{system.attributesAI.primary.ARC.score}}" /></td>
+            <td><input type="number" name="system.attributesAI.primary.ARC.mod" value="{{system.attributesAI.primary.ARC.mod}}" readonly /></td>
+            <td><input type="number" name="system.attributesAI.primary.ARC.apToNext" value="{{system.attributesAI.primary.ARC.apToNext}}" readonly /></td>
+            <td><input type="number" name="system.attributesAI.primary.ARC.apTotal" value="{{system.attributesAI.primary.ARC.apTotal}}" readonly /></td>
+            <td><input type="number" name="system.attributesAI.primary.ARC.temp" value="{{system.attributesAI.primary.ARC.temp}}" /></td>
+          </tr>
+          <tr>
+            <td>Logic</td>
+            <td><input type="number" name="system.attributesAI.primary.LOG.score" value="{{system.attributesAI.primary.LOG.score}}" /></td>
+            <td><input type="number" name="system.attributesAI.primary.LOG.mod" value="{{system.attributesAI.primary.LOG.mod}}" readonly /></td>
+            <td><input type="number" name="system.attributesAI.primary.LOG.apToNext" value="{{system.attributesAI.primary.LOG.apToNext}}" readonly /></td>
+            <td><input type="number" name="system.attributesAI.primary.LOG.apTotal" value="{{system.attributesAI.primary.LOG.apTotal}}" readonly /></td>
+            <td><input type="number" name="system.attributesAI.primary.LOG.temp" value="{{system.attributesAI.primary.LOG.temp}}" /></td>
+          </tr>
+          <tr>
+            <td>Core</td>
+            <td><input type="number" name="system.attributesAI.primary.COR.score" value="{{system.attributesAI.primary.COR.score}}" /></td>
+            <td><input type="number" name="system.attributesAI.primary.COR.mod" value="{{system.attributesAI.primary.COR.mod}}" readonly /></td>
+            <td><input type="number" name="system.attributesAI.primary.COR.apToNext" value="{{system.attributesAI.primary.COR.apToNext}}" readonly /></td>
+            <td><input type="number" name="system.attributesAI.primary.COR.apTotal" value="{{system.attributesAI.primary.COR.apTotal}}" readonly /></td>
+            <td><input type="number" name="system.attributesAI.primary.COR.temp" value="{{system.attributesAI.primary.COR.temp}}" /></td>
+          </tr>
+          <tr>
+            <td>Social</td>
+            <td><input type="number" name="system.attributesAI.primary.SOCIAL.score" value="{{system.attributesAI.primary.SOCIAL.score}}" /></td>
+            <td><input type="number" name="system.attributesAI.primary.SOCIAL.mod" value="{{system.attributesAI.primary.SOCIAL.mod}}" readonly /></td>
+            <td><input type="number" name="system.attributesAI.primary.SOCIAL.apToNext" value="{{system.attributesAI.primary.SOCIAL.apToNext}}" readonly /></td>
+            <td><input type="number" name="system.attributesAI.primary.SOCIAL.apTotal" value="{{system.attributesAI.primary.SOCIAL.apTotal}}" readonly /></td>
+            <td><input type="number" name="system.attributesAI.primary.SOCIAL.temp" value="{{system.attributesAI.primary.SOCIAL.temp}}" /></td>
+          </tr>
+        </tbody>
+      </table>
     </div>
+  </div>
+</div>
 
   <!-- ===== AI SECONDARY ATTRIBUTES ===== -->
 <div class="sheet-col">
@@ -708,37 +869,46 @@
           </tr>
         </thead>
         <tbody>
-          {{#each actor.system.attributesAI.secondary}}
           <tr>
-            <td>{{this.label}}</td>
-            <td><input type="number" name="system.attributesAI.secondary.{{@key}}.score" value="{{this.score}}" readonly /></td>
+            <td>Queue</td>
+            <td><input type="number" name="system.attributesAI.secondary.QUEUE.score" value="{{system.attributesAI.secondary.QUEUE.score}}" readonly /></td>
+            <td><input type="number" name="system.attributesAI.secondary.QUEUE.mod" value="{{system.attributesAI.secondary.QUEUE.mod}}" readonly /></td>
+            <td><input type="number" name="system.attributesAI.secondary.QUEUE.temp" value="{{system.attributesAI.secondary.QUEUE.temp}}" /></td>
             <td>
-              {{#if this.mod}}
-              <input type="number" name="system.attributesAI.secondary.{{@key}}.mod" value="{{this.mod}}" readonly />
-              {{/if}}
-            </td>
-            <td>
-              {{#if this.temp}}
-              <input type="number" name="system.attributesAI.secondary.{{@key}}.temp" value="{{this.temp}}" />
-              {{/if}}
-            </td>
-            <td>
-              {{#if this.hasRoll}}
               <button type="button"
                       class="roll-ai"
-                      data-roll="{{this.rollFormula}}"
-                      data-label="{{this.label}}">
+                      data-roll="{{system.attributesAI.secondary.QUEUE.rollFormula}}"
+                      data-label="Queue">
                 Roll
               </button>
-              {{/if}}
             </td>
           </tr>
-          {{/each}}
+          <tr>
+            <td>Learning</td>
+            <td><input type="number" name="system.attributesAI.secondary.LEARNING.score" value="{{system.attributesAI.secondary.LEARNING.score}}" readonly /></td>
+            <td><input type="number" name="system.attributesAI.secondary.LEARNING.mod" value="{{system.attributesAI.secondary.LEARNING.mod}}" readonly /></td>
+            <td><input type="number" name="system.attributesAI.secondary.LEARNING.temp" value="{{system.attributesAI.secondary.LEARNING.temp}}" /></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Cycles</td>
+            <td><input type="number" name="system.attributesAI.secondary.CYCLES.score" value="{{system.attributesAI.secondary.CYCLES.score}}" readonly /></td>
+            <td><input type="number" name="system.attributesAI.secondary.CYCLES.mod" value="{{system.attributesAI.secondary.CYCLES.mod}}" readonly /></td>
+            <td><input type="number" name="system.attributesAI.secondary.CYCLES.temp" value="{{system.attributesAI.secondary.CYCLES.temp}}" /></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Latency</td>
+            <td><input type="number" name="system.attributesAI.secondary.LATENCY.score" value="{{system.attributesAI.secondary.LATENCY.score}}" readonly /></td>
+            <td><input type="number" name="system.attributesAI.secondary.LATENCY.mod" value="{{system.attributesAI.secondary.LATENCY.mod}}" readonly /></td>
+            <td><input type="number" name="system.attributesAI.secondary.LATENCY.temp" value="{{system.attributesAI.secondary.LATENCY.temp}}" /></td>
+            <td></td>
+          </tr>
           <tr>
             <td>Likeness</td>
-            <td><input type="number" name="system.attributesAI.secondary.LIKE.score" value="{{actor.system.attributesAI.secondary.LIKE.score}}" min="3" max="30" /></td>
+            <td><input type="number" name="system.attributesAI.secondary.LIKE.score" value="{{system.attributesAI.secondary.LIKE.score}}" min="3" max="30" /></td>
             <td colspan="2">
-              <input type="text" name="system.attributesAI.secondary.LIKE.desc" value="{{actor.system.attributesAI.secondary.LIKE.desc}}" readonly />
+              <input type="text" name="system.attributesAI.secondary.LIKE.desc" value="{{system.attributesAI.secondary.LIKE.desc}}" readonly />
             </td>
             <td></td>
           </tr>
@@ -748,20 +918,15 @@
   </div>
 </div>
 
-       <!-- ===== AP Summary ===== -->
+<!-- ===== AP Summary ===== -->
 <div class="sheet-ap-summary">
   <span class="sheet-ap-label">Total AP Spent:
-    <input type="number" name="system.attributesAI.ap.totalSpent" value="{{actor.system.attributesAI.ap.totalSpent}}" readonly />
+    <input type="number" name="system.attributesAI.ap.totalSpent" value="{{system.attributesAI.ap.totalSpent}}" readonly />
   </span>
   <span class="sheet-ap-label">Unspent AP:
-    <input type="number" name="system.attributesAI.ap.unspent" value="{{actor.system.attributesAI.ap.unspent}}" />
+    <input type="number" name="system.attributesAI.ap.unspent" value="{{system.attributesAI.ap.unspent}}" />
   </span>
 </div>
-      </div>
-    </div>
-
-  </div> <!-- End .sheet-2colrow -->
-</div> <!-- End .sheet-section-block -->
 
 <div class="sheet-section-block sheet-theme-ai">
   <div class="sheet-group-title">
@@ -770,8 +935,7 @@
 
   <div class="sheet-3colrow sheet-vitals-wrapper">
 
-   <!-- ===== AI SAVING THROWS ===== -->
-<div class="sheet-col">
+ <div class="sheet-col">
   <div class="row sheet-saves-block-ai">
     <h3 class="section-subtitle">AI Saving Throws</h3>
     <div class="sheet-save-wrapper">
@@ -784,19 +948,34 @@
           </tr>
         </thead>
         <tbody>
-          {{#each actor.system.vitalsAI.saves}}
           <tr>
             <td>
-              <button type="button"
-                      class="roll-ai"
-                      data-label="{{this.label}}">
-                {{this.label}}
-              </button>
+              <button type="button" class="roll-ai" data-label="Overload">Overload</button>
             </td>
-            <td><input type="number" name="system.vitalsAI.saves.{{@key}}.score" value="{{this.score}}" readonly /></td>
-            <td><input type="number" name="system.vitalsAI.saves.{{@key}}.temp" value="{{this.temp}}" /></td>
+            <td><input type="number" name="system.vitalsAI.saves.OVERLOAD.score" value="{{actor.system.vitalsAI.saves.OVERLOAD.score}}" readonly /></td>
+            <td><input type="number" name="system.vitalsAI.saves.OVERLOAD.temp" value="{{actor.system.vitalsAI.saves.OVERLOAD.temp}}" /></td>
           </tr>
-          {{/each}}
+          <tr>
+            <td>
+              <button type="button" class="roll-ai" data-label="Integrity">Integrity</button>
+            </td>
+            <td><input type="number" name="system.vitalsAI.saves.INTEGRITY.score" value="{{actor.system.vitalsAI.saves.INTEGRITY.score}}" readonly /></td>
+            <td><input type="number" name="system.vitalsAI.saves.INTEGRITY.temp" value="{{actor.system.vitalsAI.saves.INTEGRITY.temp}}" /></td>
+          </tr>
+          <tr>
+            <td>
+              <button type="button" class="roll-ai" data-label="Bypass">Bypass</button>
+            </td>
+            <td><input type="number" name="system.vitalsAI.saves.BYPASS.score" value="{{actor.system.vitalsAI.saves.BYPASS.score}}" readonly /></td>
+            <td><input type="number" name="system.vitalsAI.saves.BYPASS.temp" value="{{actor.system.vitalsAI.saves.BYPASS.temp}}" /></td>
+          </tr>
+          <tr>
+            <td>
+              <button type="button" class="roll-ai" data-label="Firewall">Firewall</button>
+            </td>
+            <td><input type="number" name="system.vitalsAI.saves.FIREWALL.score" value="{{actor.system.vitalsAI.saves.FIREWALL.score}}" readonly /></td>
+            <td><input type="number" name="system.vitalsAI.saves.FIREWALL.temp" value="{{actor.system.vitalsAI.saves.FIREWALL.temp}}" /></td>
+          </tr>
         </tbody>
       </table>
     </div>
@@ -870,82 +1049,117 @@
 
   <div class="sheet-2colrow sheet-skills-wrapper">
 
-    <!-- ===== AI Combat Skills Column ===== -->
     <div class="sheet-col">
-      <div class="row sheet-skillgroup-combat-ai">
-        <h3 class="section-subtitle">AI Combat Skills</h3>
+  <div class="row sheet-skillgroup-combat-ai">
+    <h3 class="section-subtitle">AI Combat Skills</h3>
 
-        <div class="sheet-skill-header">
-          <span class="sheet-skill-spacer"></span>
-          <span class="sheet-skill-label">Skill</span>
-          <span class="sheet-skill-label">Level</span>
-          <span class="sheet-skill-label">XP</span>
-        </div>
-
-        {{#each actor.system.skillsAI.combat}}
-        <div class="sheet-skill-entry">
-          <button type="button"
-                  class="roll-ai-skill"
-                  data-group="skillsAI.combat"
-                  data-index="{{@index}}">
-            {{this.label}}
-          </button>
-          <input type="text" value="{{this.label}}" readonly />
-          <input type="number" name="system.skillsAI.combat.{{@index}}.level" value="{{this.level}}" min="0" />
-          <input type="number" name="system.skillsAI.combat.{{@index}}.xp" value="{{this.xp}}" min="0" />
-          <select name="system.skillsAI.combat.{{@index}}.attribute">
-            <option value="PRC" {{#if (eq this.attribute "PRC")}}selected{{/if}}>PRC</option>
-            <option value="SEN" {{#if (eq this.attribute "SEN")}}selected{{/if}}>SEN</option>
-            <option value="ARC" {{#if (eq this.attribute "ARC")}}selected{{/if}}>ARC</option>
-            <option value="LOG" {{#if (eq this.attribute "LOG")}}selected{{/if}}>LOG</option>
-            <option value="COR" {{#if (eq this.attribute "COR")}}selected{{/if}}>COR</option>
-            <option value="SOCIAL" {{#if (eq this.attribute "SOCIAL")}}selected{{/if}}>SOCIAL</option>
-          </select>
-        </div>
-        {{/each}}
-
-      </div>
+    <div class="sheet-skill-header">
+      <span class="sheet-skill-spacer"></span>
+      <span class="sheet-skill-label">Skill</span>
+      <span class="sheet-skill-label">Level</span>
+      <span class="sheet-skill-label">XP</span>
+      <span class="sheet-skill-label">Attribute</span>
     </div>
 
-    <!-- ===== AI Detection Skills Column ===== -->
-    <div class="sheet-col">
-      <div class="row sheet-skillgroup-detection-ai">
-        <h3 class="section-subtitle">AI Detection Skills</h3>
-
-        <div class="sheet-skill-header">
-          <span class="sheet-skill-spacer"></span>
-          <span class="sheet-skill-label">Skill</span>
-          <span class="sheet-skill-label">Level</span>
-          <span class="sheet-skill-label">XP</span>
-        </div>
-
-        {{#each actor.system.skillsAI.detection}}
-        <div class="sheet-skill-entry">
-          <button type="button"
-                  class="roll-ai-skill"
-                  data-group="skillsAI.detection"
-                  data-index="{{@index}}">
-            {{this.label}}
-          </button>
-          <input type="text" value="{{this.label}}" readonly />
-          <input type="number" name="system.skillsAI.detection.{{@index}}.level" value="{{this.level}}" min="0" />
-          <input type="number" name="system.skillsAI.detection.{{@index}}.xp" value="{{this.xp}}" min="0" />
-          <select name="system.skillsAI.detection.{{@index}}.attribute">
-            <option value="PRC" {{#if (eq this.attribute "PRC")}}selected{{/if}}>PRC</option>
-            <option value="SEN" {{#if (eq this.attribute "SEN")}}selected{{/if}}>SEN</option>
-            <option value="ARC" {{#if (eq this.attribute "ARC")}}selected{{/if}}>ARC</option>
-            <option value="LOG" {{#if (eq this.attribute "LOG")}}selected{{/if}}>LOG</option>
-            <option value="COR" {{#if (eq this.attribute "COR")}}selected{{/if}}>COR</option>
-            <option value="SOCIAL" {{#if (eq this.attribute "SOCIAL")}}selected{{/if}}>SOCIAL</option>
-          </select>
-        </div>
-        {{/each}}
-
-      </div>
+    <!-- Simple Weapon -->
+    <div class="sheet-skill-entry">
+      <button type="button"
+              class="roll-ai-skill"
+              data-group="skillsAI.combat"
+              data-key="SIMPLE_WEAPON">
+        Simple Weapon
+      </button>
+      <input type="text" value="Simple Weapon" readonly />
+      <input type="number" name="system.skillsAI.combat.SIMPLE_WEAPON.level" value="{{actor.system.skillsAI.combat.SIMPLE_WEAPON.level}}" min="0" />
+      <input type="number" name="system.skillsAI.combat.SIMPLE_WEAPON.xp" value="{{actor.system.skillsAI.combat.SIMPLE_WEAPON.xp}}" min="0" />
+      <select name="system.skillsAI.combat.SIMPLE_WEAPON.attribute">
+        <option value="PRC" {{#if (eq actor.system.skillsAI.combat.SIMPLE_WEAPON.attribute "PRC")}}selected{{/if}}>PRC</option>
+        <option value="SEN" {{#if (eq actor.system.skillsAI.combat.SIMPLE_WEAPON.attribute "SEN")}}selected{{/if}}>SEN</option>
+        <option value="ARC" {{#if (eq actor.system.skillsAI.combat.SIMPLE_WEAPON.attribute "ARC")}}selected{{/if}}>ARC</option>
+        <option value="LOG" {{#if (eq actor.system.skillsAI.combat.SIMPLE_WEAPON.attribute "LOG")}}selected{{/if}}>LOG</option>
+        <option value="COR" {{#if (eq actor.system.skillsAI.combat.SIMPLE_WEAPON.attribute "COR")}}selected{{/if}}>COR</option>
+        <option value="SOCIAL" {{#if (eq actor.system.skillsAI.combat.SIMPLE_WEAPON.attribute "SOCIAL")}}selected{{/if}}>SOCIAL</option>
+      </select>
     </div>
 
-  </div> <!-- End .sheet-2colrow -->
-</div> <!-- End .sheet-section-block -->
+    <!-- Projectile Weapon -->
+    <div class="sheet-skill-entry">
+      <button type="button"
+              class="roll-ai-skill"
+              data-group="skillsAI.combat"
+              data-key="PROJECTILE_WEAPON">
+        Projectile Weapon
+      </button>
+      <input type="text" value="Projectile Weapon" readonly />
+      <input type="number" name="system.skillsAI.combat.PROJECTILE_WEAPON.level" value="{{actor.system.skillsAI.combat.PROJECTILE_WEAPON.level}}" min="0" />
+      <input type="number" name="system.skillsAI.combat.PROJECTILE_WEAPON.xp" value="{{actor.system.skillsAI.combat.PROJECTILE_WEAPON.xp}}" min="0" />
+      <select name="system.skillsAI.combat.PROJECTILE_WEAPON.attribute">
+        <option value="PRC" {{#if (eq actor.system.skillsAI.combat.PROJECTILE_WEAPON.attribute "PRC")}}selected{{/if}}>PRC</option>
+        <option value="SEN" {{#if (eq actor.system.skillsAI.combat.PROJECTILE_WEAPON.attribute "SEN")}}selected{{/if}}>SEN</option>
+        <option value="ARC" {{#if (eq actor.system.skillsAI.combat.PROJECTILE_WEAPON.attribute "ARC")}}selected{{/if}}>ARC</option>
+        <option value="LOG" {{#if (eq actor.system.skillsAI.combat.PROJECTILE_WEAPON.attribute "LOG")}}selected{{/if}}>LOG</option>
+        <option value="COR" {{#if (eq actor.system.skillsAI.combat.PROJECTILE_WEAPON.attribute "COR")}}selected{{/if}}>COR</option>
+        <option value="SOCIAL" {{#if (eq actor.system.skillsAI.combat.PROJECTILE_WEAPON.attribute "SOCIAL")}}selected{{/if}}>SOCIAL</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+   <div class="sheet-col">
+  <div class="row sheet-skillgroup-detection-ai">
+    <h3 class="section-subtitle">AI Detection Skills</h3>
+
+    <div class="sheet-skill-header">
+      <span class="sheet-skill-spacer"></span>
+      <span class="sheet-skill-label">Skill</span>
+      <span class="sheet-skill-label">Level</span>
+      <span class="sheet-skill-label">XP</span>
+      <span class="sheet-skill-label">Attribute</span>
+    </div>
+
+    <!-- Perception -->
+    <div class="sheet-skill-entry">
+      <button type="button"
+              class="roll-ai-skill"
+              data-group="skillsAI.detection"
+              data-key="PERCEPTION">
+        Perception
+      </button>
+      <input type="text" value="Perception" readonly />
+      <input type="number" name="system.skillsAI.detection.PERCEPTION.level" value="{{actor.system.skillsAI.detection.PERCEPTION.level}}" min="0" />
+      <input type="number" name="system.skillsAI.detection.PERCEPTION.xp" value="{{actor.system.skillsAI.detection.PERCEPTION.xp}}" min="0" />
+      <select name="system.skillsAI.detection.PERCEPTION.attribute">
+        <option value="PRC" {{#if (eq actor.system.skillsAI.detection.PERCEPTION.attribute "PRC")}}selected{{/if}}>PRC</option>
+        <option value="SEN" {{#if (eq actor.system.skillsAI.detection.PERCEPTION.attribute "SEN")}}selected{{/if}}>SEN</option>
+        <option value="ARC" {{#if (eq actor.system.skillsAI.detection.PERCEPTION.attribute "ARC")}}selected{{/if}}>ARC</option>
+        <option value="LOG" {{#if (eq actor.system.skillsAI.detection.PERCEPTION.attribute "LOG")}}selected{{/if}}>LOG</option>
+        <option value="COR" {{#if (eq actor.system.skillsAI.detection.PERCEPTION.attribute "COR")}}selected{{/if}}>COR</option>
+        <option value="SOCIAL" {{#if (eq actor.system.skillsAI.detection.PERCEPTION.attribute "SOCIAL")}}selected{{/if}}>SOCIAL</option>
+      </select>
+    </div>
+
+    <!-- Intuition -->
+    <div class="sheet-skill-entry">
+      <button type="button"
+              class="roll-ai-skill"
+              data-group="skillsAI.detection"
+              data-key="INTUITION">
+        Intuition
+      </button>
+      <input type="text" value="Intuition" readonly />
+      <input type="number" name="system.skillsAI.detection.INTUITION.level" value="{{actor.system.skillsAI.detection.INTUITION.level}}" min="0" />
+      <input type="number" name="system.skillsAI.detection.INTUITION.xp" value="{{actor.system.skillsAI.detection.INTUITION.xp}}" min="0" />
+      <select name="system.skillsAI.detection.INTUITION.attribute">
+        <option value="PRC" {{#if (eq actor.system.skillsAI.detection.INTUITION.attribute "PRC")}}selected{{/if}}>PRC</option>
+        <option value="SEN" {{#if (eq actor.system.skillsAI.detection.INTUITION.attribute "SEN")}}selected{{/if}}>SEN</option>
+        <option value="ARC" {{#if (eq actor.system.skillsAI.detection.INTUITION.attribute "ARC")}}selected{{/if}}>ARC</option>
+        <option value="LOG" {{#if (eq actor.system.skillsAI.detection.INTUITION.attribute "LOG")}}selected{{/if}}>LOG</option>
+        <option value="COR" {{#if (eq actor.system.skillsAI.detection.INTUITION.attribute "COR")}}selected{{/if}}>COR</option>
+        <option value="SOCIAL" {{#if (eq actor.system.skillsAI.detection.INTUITION.attribute "SOCIAL")}}selected{{/if}}>SOCIAL</option>
+      </select>
+    </div>
+  </div>
+</div>
 
 <!-- ===== AI TRAINING PACKAGES BLOCK ===== -->
 <div class="sheet-section-block sheet-theme-ai">
@@ -990,7 +1204,6 @@
     </button>
   </div>
 </div>
-
 
 <!-- ===== AI GEAR BLOCK ===== -->
 <div class="sheet-section-block sheet-theme-ai">
@@ -1069,34 +1282,47 @@
       <span>Carried</span>
     </div>
 
-    {{#each actor.system.weaponsAI}}
-    <div class="sheet-weapon-entry">
-      <button type="button"
-              class="roll-ai-weapon"
-              data-group="weaponsAI"
-              data-index="{{@index}}">
-        {{this.name}}
-      </button>
-      <input type="text" name="system.weaponsAI.{{@index}}.name" value="{{this.name}}" />
-      <select name="system.weaponsAI.{{@index}}.skill">
-        <option value="Simple" {{#if (eq this.skill "Simple")}}selected{{/if}}>Simple</option>
-        <option value="Projectile" {{#if (eq this.skill "Projectile")}}selected{{/if}}>Projectile</option>
-      </select>
-      <input type="number" name="system.weaponsAI.{{@index}}.atkBonus" value="{{this.atkBonus}}" />
-      <input type="text" name="system.weaponsAI.{{@index}}.damage" value="{{this.damage}}" />
-      <input type="number" name="system.weaponsAI.{{@index}}.spd" value="{{this.spd}}" />
-      <input type="number" name="system.weaponsAI.{{@index}}.ammo" value="{{this.ammo}}" />
-      <input type="number" name="system.weaponsAI.{{@index}}.mag" value="{{this.mag}}" />
-      <input type="text" name="system.weaponsAI.{{@index}}.range" value="{{this.range}}" />
-      <input type="number" name="system.weaponsAI.{{@index}}.hp" value="{{this.hp}}" />
-      <input type="number" name="system.weaponsAI.{{@index}}.maxHp" value="{{this.maxHp}}" />
-      <input type="number" name="system.weaponsAI.{{@index}}.weight" value="{{this.weight}}" />
-      <input type="number" name="system.weaponsAI.{{@index}}.cost" value="{{this.cost}}" />
-      <input type="checkbox" name="system.weaponsAI.{{@index}}.readied" {{#if this.readied}}checked{{/if}} />
-      <input type="checkbox" name="system.weaponsAI.{{@index}}.carried" {{#if this.carried}}checked{{/if}} />
-      <textarea name="system.weaponsAI.{{@index}}.notes">{{this.notes}}</textarea>
-    </div>
-    {{/each}}
+{{#each actor.system.weaponsAI}}
+<div class="sheet-weapon-entry">
+  <button type="button"
+          class="roll-ai-weapon"
+          data-group="weaponsAI"
+          data-index="{{@index}}">
+    {{this.name}}
+  </button>
+
+  <input type="text" name="system.weaponsAI.{{@index}}.name" value="{{this.name}}" />
+
+  <select name="system.weaponsAI.{{@index}}.skill">
+    <option value="Simple" {{#if (eq this.skill "Simple")}}selected{{/if}}>Simple</option>
+    <option value="Projectile" {{#if (eq this.skill "Projectile")}}selected{{/if}}>Projectile</option>
+  </select>
+
+  <!-- NEW: Attribute selection -->
+  <select name="system.weaponsAI.{{@index}}.attribute">
+    <option value="PRC" {{#if (eq this.attribute "PRC")}}selected{{/if}}>PRC</option>
+    <option value="SEN" {{#if (eq this.attribute "SEN")}}selected{{/if}}>SEN</option>
+    <option value="ARC" {{#if (eq this.attribute "ARC")}}selected{{/if}}>ARC</option>
+    <option value="LOG" {{#if (eq this.attribute "LOG")}}selected{{/if}}>LOG</option>
+    <option value="COR" {{#if (eq this.attribute "COR")}}selected{{/if}}>COR</option>
+    <option value="SOCIAL" {{#if (eq this.attribute "SOCIAL")}}selected{{/if}}>SOCIAL</option>
+  </select>
+
+  <input type="number" name="system.weaponsAI.{{@index}}.atkBonus" value="{{this.atkBonus}}" />
+  <input type="text" name="system.weaponsAI.{{@index}}.damage" value="{{this.damage}}" />
+  <input type="number" name="system.weaponsAI.{{@index}}.spd" value="{{this.spd}}" />
+  <input type="number" name="system.weaponsAI.{{@index}}.ammo" value="{{this.ammo}}" />
+  <input type="number" name="system.weaponsAI.{{@index}}.mag" value="{{this.mag}}" />
+  <input type="text" name="system.weaponsAI.{{@index}}.range" value="{{this.range}}" />
+  <input type="number" name="system.weaponsAI.{{@index}}.hp" value="{{this.hp}}" />
+  <input type="number" name="system.weaponsAI.{{@index}}.maxHp" value="{{this.maxHp}}" />
+  <input type="number" name="system.weaponsAI.{{@index}}.weight" value="{{this.weight}}" />
+  <input type="number" name="system.weaponsAI.{{@index}}.cost" value="{{this.cost}}" />
+  <input type="checkbox" name="system.weaponsAI.{{@index}}.readied" {{#if this.readied}}checked{{/if}} />
+  <input type="checkbox" name="system.weaponsAI.{{@index}}.carried" {{#if this.carried}}checked{{/if}} />
+  <textarea name="system.weaponsAI.{{@index}}.notes">{{this.notes}}</textarea>
+</div>
+{{/each}}
 
     <!-- Optional: Add Weapon Button -->
     <button type="button" class="add-ai-weapon">
@@ -1198,10 +1424,11 @@
 
     {{#each actor.system.naniteAI.catalysts}}
     <div class="sheet-nanite-entry">
-      <button type="button"
-              class="roll-ai-nanite"
-              data-group="naniteAI.catalysts"
-              data-index="{{@index}}">
+      <button
+        type="button"
+        class="roll-ai-nanite"
+        data-group="naniteAI.catalysts"
+        data-index="{{@index}}">
         {{this.name}}
       </button>
       <input type="text" name="system.naniteAI.catalysts.{{@index}}.name" value="{{this.name}}" />

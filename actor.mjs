@@ -1,170 +1,82 @@
 export class T4DActor extends Actor {
   prepareData() {
     super.prepareData();
-    const system = this.system ?? this.data.data;
+    const system = this.system ?? {};
 
     console.log("==== T4DActor prepareData ====");
     console.log("System:", system);
 
     // === BIO ATTRIBUTES ===
-    if (!system.attributes) system.attributes = {};
+    system.attributes ??= {};
 
-    // BIO Primary
-    if (!system.attributes.primary) {
-      system.attributes.primary = {
-        STR: {
-          score: 10,
-          label: "STR",
-          mod: 0,
-          temp: 0,
-          apToNext: 0,
-          apTotal: 0,
-        },
-        DEX: {
-          score: 10,
-          label: "DEX",
-          mod: 0,
-          temp: 0,
-          apToNext: 0,
-          apTotal: 0,
-        },
-        CON: {
-          score: 10,
-          label: "CON",
-          mod: 0,
-          temp: 0,
-          apToNext: 0,
-          apTotal: 0,
-        },
-        INT: {
-          score: 10,
-          label: "INT",
-          mod: 0,
-          temp: 0,
-          apToNext: 0,
-          apTotal: 0,
-        },
-        FOC: {
-          score: 10,
-          label: "FOC",
-          mod: 0,
-          temp: 0,
-          apToNext: 0,
-          apTotal: 0,
-        },
-        CHA: {
-          score: 10,
-          label: "CHA",
-          mod: 0,
-          temp: 0,
-          apToNext: 0,
-          apTotal: 0,
-        },
-      };
-    }
-
-    // Make a safe array for Handlebars iteration
-    system.attributes.primaryArray = Object.entries(
-      system.attributes.primary
-    ).map(([key, data]) => {
-      return { key, ...data };
-    });
-
-    console.log("Primary Array:", system.attributes.primaryArray);
-
+    // BIO Primary Attributes
+    system.attributes.primary ??= {};
     const bioPrimaryKeys = ["STR", "DEX", "CON", "INT", "FOC", "CHA"];
-    for (let attr of bioPrimaryKeys) {
-      const data = system.attributes.primary[attr];
-      if (data) {
-        if (data.label === undefined) data.label = attr;
-        if (data.mod === undefined) data.mod = 0;
-        if (data.apToNext === undefined) data.apToNext = 0;
-        if (data.apTotal === undefined) data.apTotal = 0;
-        if (data.temp === undefined) data.temp = 0;
-      }
+    for (const attr of bioPrimaryKeys) {
+      const data = (system.attributes.primary[attr] ??= {});
+      data.label ??= attr;
+      data.score ??= 1;
+      data.mod ??= 0;
+      data.temp ??= 0;
+      data.apToNext ??= 0;
+      data.apTotal ??= 1;
     }
 
-    // BIO Secondary (ONLY mechanical)
-    if (!system.attributes.secondary) {
-      system.attributes.secondary = {
-        INIT: { score: 0 },
-        EDU: { score: 0 },
-        SPD: { score: 0 },
-        MVMT: { score: 0 },
-      };
-    }
+    // BIO Secondary Attributes
+    system.attributes.secondary ??= {};
     const bioSecondaryKeys = ["INIT", "EDU", "SPD", "MVMT"];
-    for (let attr of bioSecondaryKeys) {
-      const data = system.attributes.secondary[attr];
-      if (data) {
-        if (data.label === undefined) data.label = attr;
-        if (data.mod === undefined) data.mod = 0;
-        if (data.temp === undefined) data.temp = 0;
-      }
+    for (const attr of bioSecondaryKeys) {
+      const data = (system.attributes.secondary[attr] ??= {});
+      data.label ??= attr;
+      data.score ??= 0;
+      data.mod ??= 0;
+      data.temp ??= 0;
     }
 
-    // Appearance decoupled
-    if (!system.attributes.appearance) {
-      system.attributes.appearance = { score: 3 };
-    }
-    const appScore = parseInt(system.attributes.appearance.score || 3);
-    const appIndex = Math.max(0, appScore - 3);
-    system.attributes.appearance.desc =
-      this.constructor.HumanAppTable?.[appIndex] || "Unknown";
+    // Appearance
+    const appearance = (system.attributes.appearance ??= {});
+    appearance.score = Math.max(3, parseInt(appearance.score ?? "3") || 3);
+    const appIndex = Math.min(
+      Math.max(0, appearance.score - 3),
+      (this.constructor.HumanAppTable?.length ?? 1) - 1
+    );
+    appearance.desc = this.constructor.HumanAppTable?.[appIndex] || "Unknown";
 
     // === AI ATTRIBUTES ===
-    if (!system.attributesAI) system.attributesAI = {};
+    system.attributesAI ??= {};
 
-    // AI Primary
-    if (!system.attributesAI.primary) {
-      system.attributesAI.primary = {
-        PRC: { score: 10 },
-        SEN: { score: 10 },
-        ARC: { score: 10 },
-        LOG: { score: 10 },
-        COR: { score: 10 },
-        SOCIAL: { score: 10 },
-      };
-    }
+    // AI Primary Attributes
+    system.attributesAI.primary ??= {};
     const aiPrimaryKeys = ["PRC", "SEN", "ARC", "LOG", "COR", "SOCIAL"];
-    for (let attr of aiPrimaryKeys) {
-      const data = system.attributesAI.primary[attr];
-      if (data) {
-        if (data.label === undefined) data.label = attr;
-        if (data.mod === undefined) data.mod = 0;
-        if (data.apToNext === undefined) data.apToNext = 0;
-        if (data.apTotal === undefined) data.apTotal = 0;
-        if (data.temp === undefined) data.temp = 0;
-      }
+    for (const attr of aiPrimaryKeys) {
+      const data = (system.attributesAI.primary[attr] ??= {});
+      data.label ??= attr;
+      data.score ??= 10;
+      data.mod ??= 0;
+      data.apToNext ??= 0;
+      data.apTotal ??= 0;
+      data.temp ??= 0;
     }
 
-    // AI Secondary
-    if (!system.attributesAI.secondary) {
-      system.attributesAI.secondary = {
-        QUEUE: { score: 0 },
-        LEA: { score: 0 },
-        CYC: { score: 0 },
-        LATN: { score: 0 },
-      };
-    }
-    const aiSecondaryKeys = ["QUEUE", "LEA", "CYC", "LATN"];
-    for (let attr of aiSecondaryKeys) {
-      const data = system.attributesAI.secondary[attr];
-      if (data) {
-        if (data.label === undefined) data.label = attr;
-        if (data.mod === undefined) data.mod = 0;
-        if (data.temp === undefined) data.temp = 0;
-      }
+    // AI Secondary Attributes
+    system.attributesAI.secondary ??= {};
+    const aiSecondaryKeys = ["QUEUE", "LEARNING", "CYCLES", "LATENCY"];
+    for (const attr of aiSecondaryKeys) {
+      const data = (system.attributesAI.secondary[attr] ??= {});
+      data.label ??= attr;
+      data.score ??= 0;
+      data.mod ??= 0;
+      data.temp ??= 0;
     }
 
-    // Likeness decoupled
-    if (!system.attributesAI.likeness) {
-      system.attributesAI.likeness = { score: 3 };
-    }
-    const likeScore = parseInt(system.attributesAI.likeness.score || 3);
-    const likeIndex = Math.max(0, likeScore - 3);
-    system.attributesAI.likeness.desc =
-      this.constructor.LikeTable?.[likeIndex] || "Unknown";
+    // AI Likeness
+    const like = (system.attributesAI.secondary.LIKE ??= {});
+    like.score = Math.max(3, parseInt(like.score ?? "3") || 3);
+    const likeIndex = Math.min(
+      Math.max(0, like.score - 3),
+      (this.constructor.LikeTable?.length ?? 1) - 1
+    );
+    like.desc = this.constructor.LikeTable?.[likeIndex] || "Unknown";
 
     // === Compute BIO AP thresholds ===
     const statToAPT = {
@@ -175,34 +87,52 @@ export class T4DActor extends Actor {
       FOC: "FOCAPT",
       CHA: "CHAAPT",
     };
-    for (let [stat, field] of Object.entries(statToAPT)) {
-      const val = parseInt(system.attributes?.primary?.[stat]?.score || 1);
+
+    for (const [stat, field] of Object.entries(statToAPT)) {
+      const val =
+        parseInt(system.attributes.primary?.[stat]?.score ?? "1") || 1;
       system.attributes.primary[field] =
-        this.constructor.ApTable?.[val - 1] || "1";
+        this.constructor.ApTable?.[Math.max(0, val - 1)] ?? "1";
     }
 
     // === Compute BIO Modifiers and AP to Next ===
     const bioStats = ["STR", "DEX", "CON", "INT", "FOC", "CHA"];
-    for (let stat of bioStats) {
-      const score = parseInt(system.attributes.primary[stat]?.score || 1);
-      const temp = parseInt(system.attributes.primary[stat]?.temp || 0);
+    for (const stat of bioStats) {
+      const score =
+        parseInt(system.attributes.primary?.[stat]?.score ?? "1") || 1;
+      const temp =
+        parseInt(system.attributes.primary?.[stat]?.temp ?? "0") || 0;
       const mod = Math.floor(score / 5) - 2 + temp;
-      system.attributes.primary[stat + "Mod"] = mod;
-      system.attributes.primary[stat + "APN"] = mod + 3;
+
+      const data = system.attributes.primary[stat];
+      data.mod = mod;
+      data.apToNext = mod + 3;
+
+      // Also store in STRMod/STRAPN for compatibility
+      system.attributes.primary[`${stat}Mod`] = mod;
+      system.attributes.primary[`${stat}APN`] = mod + 3;
     }
 
     // === Compute AI Modifiers and AP to Next ===
     const aiStats = ["PRC", "SEN", "ARC", "LOG", "COR", "SOCIAL"];
-    for (let stat of aiStats) {
-      const score = parseInt(system.attributesAI.primary[stat]?.score || 1);
-      const temp = parseInt(system.attributesAI.primary[stat]?.temp || 0);
+    for (const stat of aiStats) {
+      const score =
+        parseInt(system.attributesAI.primary?.[stat]?.score ?? "1") || 1;
+      const temp =
+        parseInt(system.attributesAI.primary?.[stat]?.temp ?? "0") || 0;
       const mod = Math.floor(score / 5) - 2 + temp;
-      system.attributesAI.primary[stat + "Mod"] = mod;
-      system.attributesAI.primary[stat + "APN"] = mod + 3;
+
+      const data = system.attributesAI.primary[stat];
+      data.mod = mod;
+      data.apToNext = mod + 3;
+
+      system.attributesAI.primary[`${stat}Mod`] = mod;
+      system.attributesAI.primary[`${stat}APN`] = mod + 3;
     }
 
-    // === Compute Gear Weight Totals ===
-    system.gear = {};
+    // === Compute BIO Gear Weight Totals ===
+    system.gear ??= {};
+
     const items = Array.isArray(system.items) ? system.items : [];
     const weapons = Array.isArray(system.weapons) ? system.weapons : [];
     const armor = Array.isArray(system.armor) ? system.armor : [];
@@ -221,12 +151,15 @@ export class T4DActor extends Actor {
     );
     system.gear.carriedWeight =
       system.gear.itemTotal + system.gear.weaponTotal + system.gear.armorTotal;
-    system.gear.readiedTotal = [...items, ...weapons, ...armor].filter(
-      (e) => e.readied
+
+    // For template compatibility
+    system.gear.readied ??= {};
+    system.gear.readied.total = [...items, ...weapons, ...armor].filter(
+      (e) => e?.readied
     ).length;
 
     // === Compute AI Gear Sums ===
-    system.gearAI = {};
+    system.gearAI ??= {};
 
     const itemsAI = Array.isArray(system.itemsAI) ? system.itemsAI : [];
     const weaponsAI = Array.isArray(system.weaponsAI) ? system.weaponsAI : [];
@@ -249,13 +182,16 @@ export class T4DActor extends Actor {
       system.gearAI.weaponTotal +
       system.gearAI.armorTotal;
 
+    // For template compatibility
     system.gearAI.readiedTotal = [...itemsAI, ...weaponsAI, ...armorAI].filter(
-      (e) => e.readied
+      (e) => e?.readied
     ).length;
 
     // === Compute BIO Encumbrance Thresholds (based on STR) ===
-    const strScore = parseInt(system.attributes?.primary?.STR?.score || 1);
+    const strScore =
+      parseInt(system.attributes.primary?.STR?.score ?? "1") || 1;
     const baseEnc = Math.floor(strScore / 5) - 2 + 5;
+
     system.gear.encumbranceThresholds = {
       light: baseEnc,
       moderate: baseEnc * 2,
@@ -264,9 +200,11 @@ export class T4DActor extends Actor {
       pushDrag: baseEnc * 5,
     };
 
-    // === AI Encumbrance (based on PRC) ===
-    const prcScore = parseInt(system.attributesAI?.primary?.PRC?.score || 1);
+    // === Compute AI Encumbrance Thresholds (based on PRC) ===
+    const prcScore =
+      parseInt(system.attributesAI.primary?.PRC?.score ?? "1") || 1;
     const baseEncAI = Math.floor(prcScore / 5) - 2 + 5;
+
     system.gearAI.thresholds = {
       light: baseEncAI,
       moderate: baseEncAI * 2,
@@ -276,130 +214,154 @@ export class T4DActor extends Actor {
     };
 
     // === Compute BIO Derived Secondary Attributes ===
-    system.attributes.secondary = system.attributes.secondary || {};
-
-    // Extract relevant primary scores
-    const foc = parseInt(system.attributes.primary?.FOC?.score || 1);
-    const dex = parseInt(system.attributes.primary?.DEX?.score || 1);
-    const int = parseInt(system.attributes.primary?.INT?.score || 1);
-    const strB = parseInt(system.attributes.primary?.STR?.score || 1);
+    const foc = parseInt(system.attributes.primary?.FOC?.score ?? "1") || 1;
+    const dex = parseInt(system.attributes.primary?.DEX?.score ?? "1") || 1;
+    const int = parseInt(system.attributes.primary?.INT?.score ?? "1") || 1;
+    const strB = parseInt(system.attributes.primary?.STR?.score ?? "1") || 1;
 
     // Initiative
-    const initScore = Math.floor((foc + dex) / 2);
-    const initTemp = parseInt(system.attributes.secondary?.INIT?.temp || 0);
-    const initMod = Math.floor(initScore / 5) - 2 + initTemp;
-    system.attributes.secondary.INIT.score = initScore;
-    system.attributes.secondary.INIT.mod = initMod;
+    {
+      const base = Math.floor((foc + dex) / 2);
+      const temp =
+        parseInt(system.attributes.secondary?.INIT?.temp ?? "0") || 0;
+      const mod = Math.floor(base / 5) - 2 + temp;
+      const data = system.attributes.secondary.INIT;
+      data.score = base;
+      data.mod = mod;
+    }
 
     // Education
-    const eduScore = Math.floor((foc + int) / 2);
-    const eduTemp = parseInt(system.attributes.secondary?.EDU?.temp || 0);
-    const eduMod = Math.floor(eduScore / 5) - 2 + eduTemp;
-    system.attributes.secondary.EDU.score = eduScore;
-    system.attributes.secondary.EDU.mod = eduMod;
+    {
+      const base = Math.floor((foc + int) / 2);
+      const temp = parseInt(system.attributes.secondary?.EDU?.temp ?? "0") || 0;
+      const mod = Math.floor(base / 5) - 2 + temp;
+      const data = system.attributes.secondary.EDU;
+      data.score = base;
+      data.mod = mod;
+    }
 
     // Speed
-    const spdScore = Math.floor((strB + dex) / 2);
-    const spdTemp = parseInt(system.attributes.secondary?.SPD?.temp || 0);
-    const spdMod = Math.floor(spdScore / 5) - 2 + spdTemp;
-    system.attributes.secondary.SPD.score = spdScore;
-    system.attributes.secondary.SPD.mod = spdMod;
-
-    // === Movement ===
     {
-      const mvmtTemp = parseInt(system.attributes.secondary?.MVMT?.temp || 0);
-      const mvmtScore = spdScore * 2;
-      system.attributes.secondary.MVMT.score = mvmtScore;
-      system.attributes.secondary.MVMT.mod = mvmtTemp;
+      const base = Math.floor((strB + dex) / 2);
+      const temp = parseInt(system.attributes.secondary?.SPD?.temp ?? "0") || 0;
+      const mod = Math.floor(base / 5) - 2 + temp;
+      const data = system.attributes.secondary.SPD;
+      data.score = base;
+      data.mod = mod;
+    }
+
+    // Movement
+    {
+      const temp =
+        parseInt(system.attributes.secondary?.MVMT?.temp ?? "0") || 0;
+      const data = system.attributes.secondary.MVMT;
+      data.score = system.attributes.secondary.SPD.score * 2;
+      data.mod = temp;
     }
 
     // === AI Derived Secondary Attributes ===
-    system.attributesAI.secondary = system.attributesAI.secondary || {};
+    system.attributesAI.secondary ??= {};
 
-    // AI Primary Scores
-    const cor = parseInt(system.attributesAI.primary?.COR?.score || 1);
-    const sen = parseInt(system.attributesAI.primary?.SEN?.score || 1);
-    const log = parseInt(system.attributesAI.primary?.LOG?.score || 1);
-    const prcA = parseInt(system.attributesAI.primary?.PRC?.score || 1);
-    const arc = parseInt(system.attributesAI.primary?.ARC?.score || 1);
-    const social = parseInt(system.attributesAI.primary?.SOCIAL?.score || 1);
+    const cor = parseInt(system.attributesAI.primary?.COR?.score ?? "1") || 1;
+    const sen = parseInt(system.attributesAI.primary?.SEN?.score ?? "1") || 1;
+    const log = parseInt(system.attributesAI.primary?.LOG?.score ?? "1") || 1;
+    const prcA = parseInt(system.attributesAI.primary?.PRC?.score ?? "1") || 1;
+    const arc = parseInt(system.attributesAI.primary?.ARC?.score ?? "1") || 1;
+    const social =
+      parseInt(system.attributesAI.primary?.SOCIAL?.score ?? "1") || 1;
 
     // Queue
     {
-      const queueScore = Math.floor((cor + sen) / 2);
-      const queueTemp = parseInt(
-        system.attributesAI.secondary?.QUEUE?.temp || 0
-      );
-      const queueMod = Math.floor(queueScore / 5) - 2 + queueTemp;
-      system.attributesAI.secondary.QUEUE.score = queueScore;
-      system.attributesAI.secondary.QUEUE.mod = queueMod;
+      const base = Math.floor((cor + sen) / 2);
+      const temp =
+        parseInt(system.attributesAI.secondary?.QUEUE?.temp ?? "0") || 0;
+      const mod = Math.floor(base / 5) - 2 + temp;
+      const data = system.attributesAI.secondary.QUEUE;
+      data.score = base;
+      data.mod = mod;
     }
 
     // Learning
     {
-      const leaScore = Math.floor((cor + log) / 2);
-      const leaTemp = parseInt(system.attributesAI.secondary?.LEA?.temp || 0);
-      const leaMod = Math.floor(leaScore / 5) - 2 + leaTemp;
-      system.attributesAI.secondary.LEA.score = leaScore;
-      system.attributesAI.secondary.LEA.mod = leaMod;
+      const base = Math.floor((cor + log) / 2);
+      const temp =
+        parseInt(system.attributesAI.secondary?.LEARNING?.temp ?? "0") || 0;
+      const mod = Math.floor(base / 5) - 2 + temp;
+      const data = system.attributesAI.secondary.LEARNING;
+      data.score = base;
+      data.mod = mod;
     }
 
     // Cycles
-    const cycScore = Math.floor((prcA + sen) / 2);
-    const cycTemp = parseInt(system.attributesAI.secondary?.CYC?.temp || 0);
-    const cycMod = Math.floor(cycScore / 5) - 2 + cycTemp;
-    system.attributesAI.secondary.CYC.score = cycScore;
-    system.attributesAI.secondary.CYC.mod = cycMod;
+    {
+      const base = Math.floor((prcA + sen) / 2);
+      const temp =
+        parseInt(system.attributesAI.secondary?.CYCLES?.temp ?? "0") || 0;
+      const mod = Math.floor(base / 5) - 2 + temp;
+      const data = system.attributesAI.secondary.CYCLES;
+      data.score = base;
+      data.mod = mod;
+    }
 
     // Latency
-    const latnTemp = parseInt(system.attributesAI.secondary?.LATN?.temp || 0);
-    const latnScore = cycScore * 2;
-    system.attributesAI.secondary.LATN.score = latnScore;
-    system.attributesAI.secondary.LATN.mod = latnTemp;
+    {
+      const temp =
+        parseInt(system.attributesAI.secondary?.LATENCY?.temp ?? "0") || 0;
+      const data = system.attributesAI.secondary.LATENCY;
+      data.score = system.attributesAI.secondary.CYCLES.score * 2;
+      data.mod = temp;
+    }
 
     // === BIO Saving Throws ===
-    system.saves = system.saves || {};
+    system.saves ??= {};
 
-    const con = parseInt(system.attributes.primary?.CON?.score || 1);
-    const cha = parseInt(system.attributes.primary?.CHA?.score || 1);
+    const con = parseInt(system.attributes.primary?.CON?.score ?? "1") || 1;
+    const cha = parseInt(system.attributes.primary?.CHA?.score ?? "1") || 1;
 
-    system.saves.PHYS =
-      Math.floor((strB + con) / 4) + parseInt(system.saves?.PhysTemp || 0);
-    system.saves.MENT =
-      Math.floor((int + foc) / 4) + parseInt(system.saves?.MentTemp || 0);
-    system.saves.EVAS =
-      Math.floor((foc + dex) / 4) + parseInt(system.saves?.EvasTemp || 0);
-    system.saves.SOC =
-      Math.floor((cha + int) / 4) + parseInt(system.saves?.SocTemp || 0);
+    system.saves.PHYSICAL =
+      Math.floor((strB + con) / 4) +
+      (parseInt(system.saves?.PhysTemp ?? "0") || 0);
+
+    system.saves.MENTAL =
+      Math.floor((int + foc) / 4) +
+      (parseInt(system.saves?.MentTemp ?? "0") || 0);
+
+    system.saves.EVASION =
+      Math.floor((foc + dex) / 4) +
+      (parseInt(system.saves?.EvasTemp ?? "0") || 0);
+
+    system.saves.SOCIAL =
+      Math.floor((cha + int) / 4) +
+      (parseInt(system.saves?.SocTemp ?? "0") || 0);
 
     // === Compute BIO Status ===
-    system.status = system.status || {};
-    system.status.hp = system.status.hp || {};
-    system.status.mp = system.status.mp || {};
+    system.status ??= {};
+    system.status.hp ??= {};
+    system.status.mp ??= {};
 
     // HP
     {
-      const hpTemp = parseInt(system.status.hp?.temp || 0);
-      system.status.hp.max = Math.floor((strB + con) / 2) + hpTemp;
-      system.status.hp.min = (system.saves.PHYS || 0) * -1;
+      const temp = parseInt(system.status.hp?.temp ?? "0") || 0;
+      system.status.hp.max = Math.floor((strB + con) / 2) + temp;
+      system.status.hp.min = -1 * (system.saves.PHYSICAL ?? 0);
     }
 
     // MP
     {
-      const mpTemp = parseInt(system.status.mp?.temp || 0);
-      system.status.mp.max = Math.floor((con + foc) / 2) + mpTemp;
-      system.status.mp.min = (system.saves.MENT || 0) * -1;
+      const temp = parseInt(system.status.mp?.temp ?? "0") || 0;
+      system.status.mp.max = Math.floor((con + foc) / 2) + temp;
+      system.status.mp.min = -1 * (system.saves.MENTAL ?? 0);
     }
 
     // === Compute AI Saving Throws ===
-    system.vitalsAI = system.vitalsAI || {};
-    system.vitalsAI.saves = system.vitalsAI.saves || {};
+    system.vitalsAI ??= {};
+    system.vitalsAI.saves ??= {};
 
     {
-      const overTemp = parseInt(system.vitalsAI.saves?.OverTemp || 0);
-      const inteTemp = parseInt(system.vitalsAI.saves?.InteTemp || 0);
-      const bypaTemp = parseInt(system.vitalsAI.saves?.BypaTemp || 0);
-      const firTemp = parseInt(system.vitalsAI.saves?.FirTemp || 0);
+      const overTemp = parseInt(system.vitalsAI.saves?.OverTemp ?? "0") || 0;
+      const inteTemp = parseInt(system.vitalsAI.saves?.InteTemp ?? "0") || 0;
+      const bypaTemp = parseInt(system.vitalsAI.saves?.BypaTemp ?? "0") || 0;
+      const firTemp = parseInt(system.vitalsAI.saves?.FirTemp ?? "0") || 0;
 
       system.vitalsAI.saves.OVER = Math.floor((prcA + arc) / 4) + overTemp;
       system.vitalsAI.saves.INTE = Math.floor((log + cor) / 4) + inteTemp;
@@ -408,32 +370,31 @@ export class T4DActor extends Actor {
     }
 
     // === Compute AI Status ===
-    system.vitalsAI.status = system.vitalsAI.status || {};
-    system.vitalsAI.status.IP = system.vitalsAI.status.IP || {};
-    system.vitalsAI.status.PP = system.vitalsAI.status.PP || {};
+    system.vitalsAI.status ??= {};
+    system.vitalsAI.status.IP ??= {};
+    system.vitalsAI.status.PP ??= {};
 
     // IP
     {
-      const ipTemp = parseInt(system.vitalsAI.status.IP?.temp || 0);
-      system.vitalsAI.status.IP.max = Math.floor((prcA + arc) / 2) + ipTemp;
-      system.vitalsAI.status.IP.min = (system.vitalsAI.saves.OVER || 0) * -1;
+      const temp = parseInt(system.vitalsAI.status.IP?.temp ?? "0") || 0;
+      system.vitalsAI.status.IP.max = Math.floor((prcA + arc) / 2) + temp;
+      system.vitalsAI.status.IP.min = -1 * (system.vitalsAI.saves.OVER ?? 0);
     }
 
     // PP
     {
-      const ppTemp = parseInt(system.vitalsAI.status.PP?.temp || 0);
-      system.vitalsAI.status.PP.max = Math.floor((arc + cor) / 2) + ppTemp;
-      system.vitalsAI.status.PP.min = (system.vitalsAI.saves.INTE || 0) * -1;
+      const temp = parseInt(system.vitalsAI.status.PP?.temp ?? "0") || 0;
+      system.vitalsAI.status.PP.max = Math.floor((arc + cor) / 2) + temp;
+      system.vitalsAI.status.PP.min = -1 * (system.vitalsAI.saves.INTE ?? 0);
     }
 
     // === Mark attributes that support rolls ===
-    system.attributes.secondary = system.attributes.secondary || {};
-    system.attributes.secondary.INIT = system.attributes.secondary.INIT || {};
+    system.attributes.secondary ??= {};
+    system.attributes.secondary.INIT ??= {};
     system.attributes.secondary.INIT.hasRoll = true;
 
-    system.attributesAI.secondary = system.attributesAI.secondary || {};
-    system.attributesAI.secondary.QUEUE =
-      system.attributesAI.secondary.QUEUE || {};
+    system.attributesAI.secondary ??= {};
+    system.attributesAI.secondary.QUEUE ??= {};
     system.attributesAI.secondary.QUEUE.hasRoll = true;
 
     // === Populate labels for BIO Skills ===
@@ -443,10 +404,10 @@ export class T4DActor extends Actor {
       system.skills?.trainingPackages,
     ];
     for (const group of bioSkillGroups) {
-      if (!Array.isArray(group)) continue;
+      if (!group || !Array.isArray(group)) continue;
       for (const skill of group) {
-        skill.label = skill.label || skill.name || "Skill";
-        skill.attribute = skill.attribute || "DEX"; // Default BIO attribute
+        skill.label ??= skill.name ?? "Skill";
+        skill.attribute ??= "DEX";
       }
     }
 
@@ -457,16 +418,17 @@ export class T4DActor extends Actor {
       system.skillsAI?.trainingPackages,
     ];
     for (const group of aiSkillGroups) {
-      if (!Array.isArray(group)) continue;
+      if (!group || !Array.isArray(group)) continue;
       for (const skill of group) {
-        skill.label = skill.label || skill.name || "Skill";
-        skill.attribute = skill.attribute || "PRC"; // Default AI attribute
+        skill.label ??= skill.name ?? "Skill";
+        skill.attribute ??= "PRC";
       }
     }
   }
 
   // === Static lookup tables ===
   static ApTable = [
+    // Index = attribute score - 1
     "1",
     "2",
     "3",
@@ -638,8 +600,7 @@ export class T4DActorSheet extends ActorSheet {
   }
 
   getData() {
-    const data = super.getData();
-    return data;
+    return super.getData();
   }
 
   activateListeners(html) {
@@ -660,10 +621,6 @@ export class T4DActorSheet extends ActorSheet {
     html.find(".roll-ai-nanite").click(this._onAINaniteReactionRoll.bind(this));
   }
 
-  // =====================
-  // Skill Rolls
-  // =====================
-
   /**
    * Handle rolling a Bio Skill
    */
@@ -674,19 +631,24 @@ export class T4DActorSheet extends ActorSheet {
     const index = parseInt(button.dataset.index);
     const actor = this.actor;
 
-    const skill = getProperty(actor.system, group)?.[index];
+    const skillList = getProperty(actor.system, group);
+    if (!Array.isArray(skillList)) {
+      ui.notifications.error(`Could not find skill group: ${group}`);
+      return;
+    }
+    const skill = skillList[index];
     if (!skill) {
-      ui.notifications.error(
-        `Could not find skill in ${group} at index ${index}.`
-      );
+      ui.notifications.error(`Could not find skill at index ${index}.`);
       return;
     }
 
-    const attribute = skill.attribute || "DEX";
+    const attribute = skill.attribute ?? "DEX";
     const attrMod =
       getProperty(actor.system.attributes.primary, `${attribute}Mod`) ?? 0;
     const stressPenalty = actor.system.stress?.penalty ?? 0;
+    const skillLevel = skill.level ?? 0;
 
+    // Prompt for other modifiers
     const otherMod = await new Promise((resolve) => {
       new Dialog({
         title: `Other Modifiers: ${skill.label}`,
@@ -711,7 +673,7 @@ export class T4DActorSheet extends ActorSheet {
 
     if (otherMod === null) return;
 
-    const formula = `1d20 + ${skill.level} + ${attrMod} + ${stressPenalty} + ${otherMod}`;
+    const formula = `1d20 + ${skillLevel} + ${attrMod} + ${stressPenalty} + ${otherMod}`;
     const roll = await new Roll(formula).roll({ async: true });
 
     await roll.toMessage({
@@ -730,18 +692,22 @@ export class T4DActorSheet extends ActorSheet {
     const index = parseInt(button.dataset.index);
     const actor = this.actor;
 
-    const skill = getProperty(actor.system, group)?.[index];
+    const skillList = getProperty(actor.system, group);
+    if (!Array.isArray(skillList)) {
+      ui.notifications.error(`Could not find AI skill group: ${group}`);
+      return;
+    }
+    const skill = skillList[index];
     if (!skill) {
-      ui.notifications.error(
-        `Could not find AI skill in ${group} at index ${index}.`
-      );
+      ui.notifications.error(`Could not find AI skill at index ${index}.`);
       return;
     }
 
-    const attribute = skill.attribute || "PRC";
+    const attribute = skill.attribute ?? "PRC";
     const attrMod =
       getProperty(actor.system.attributesAI.primary, `${attribute}Mod`) ?? 0;
     const fragmentPenalty = actor.system.vitalsAI?.fragmentation?.penalty ?? 0;
+    const skillLevel = skill.level ?? 0;
 
     const otherMod = await new Promise((resolve) => {
       new Dialog({
@@ -767,7 +733,7 @@ export class T4DActorSheet extends ActorSheet {
 
     if (otherMod === null) return;
 
-    const formula = `1d20 + ${skill.level} + ${attrMod} + ${fragmentPenalty} + ${otherMod}`;
+    const formula = `1d20 + ${skillLevel} + ${attrMod} + ${fragmentPenalty} + ${otherMod}`;
     const roll = await new Roll(formula).roll({ async: true });
 
     await roll.toMessage({
@@ -775,10 +741,6 @@ export class T4DActorSheet extends ActorSheet {
       flavor: `${skill.label} AI Skill Check`,
     });
   }
-
-  // =====================
-  // Save Rolls
-  // =====================
 
   /**
    * Handle rolling a Bio Save
@@ -789,13 +751,28 @@ export class T4DActorSheet extends ActorSheet {
     const label = button.dataset.label;
     const actor = this.actor;
 
-    const saveKey = label?.toUpperCase();
-    const saveValue = actor.system.saves?.[saveKey];
+    // Map labels to keys
+    const labelMap = {
+      Physical: "PHYSICAL",
+      Mental: "MENTAL",
+      Evasion: "EVASION",
+      Social: "SOCIAL",
+    };
 
-    if (saveValue === undefined) {
+    const saveKey = labelMap[label];
+    if (!saveKey) {
+      ui.notifications.error(`Invalid save label: ${label}`);
+      return;
+    }
+
+    const saveData = actor.system.saves?.[saveKey];
+    if (!saveData || saveData.score === undefined) {
       ui.notifications.error(`Could not find Bio save: ${label}`);
       return;
     }
+
+    const saveScore = saveData.score ?? 0;
+    const saveTemp = saveData.temp ?? 0;
 
     const stressPenalty = actor.system.stress?.penalty ?? 0;
 
@@ -823,7 +800,8 @@ export class T4DActorSheet extends ActorSheet {
 
     if (otherMod === null) return;
 
-    const formula = `1d20 + ${saveValue} + ${stressPenalty} + ${otherMod}`;
+    const totalSave = saveScore + saveTemp;
+    const formula = `1d20 + ${totalSave} + ${stressPenalty} + ${otherMod}`;
     const roll = await new Roll(formula).roll({ async: true });
 
     await roll.toMessage({
@@ -841,13 +819,28 @@ export class T4DActorSheet extends ActorSheet {
     const label = button.dataset.label;
     const actor = this.actor;
 
-    const saveKey = label?.toUpperCase();
-    const saveValue = actor.system.vitalsAI.saves?.[saveKey];
+    // Map label text to data keys
+    const labelMap = {
+      Overload: "OVERLOAD",
+      Integrity: "INTEGRITY",
+      Bypass: "BYPASS",
+      Firewall: "FIREWALL",
+    };
 
-    if (saveValue === undefined) {
+    const saveKey = labelMap[label];
+    if (!saveKey) {
+      ui.notifications.error(`Invalid AI save label: ${label}`);
+      return;
+    }
+
+    const saveData = actor.system.vitalsAI.saves?.[saveKey];
+    if (!saveData || saveData.score === undefined) {
       ui.notifications.error(`Could not find AI save: ${label}`);
       return;
     }
+
+    const saveScore = saveData.score ?? 0;
+    const saveTemp = saveData.temp ?? 0;
 
     const fragmentPenalty = actor.system.vitalsAI?.fragmentation?.penalty ?? 0;
 
@@ -875,7 +868,8 @@ export class T4DActorSheet extends ActorSheet {
 
     if (otherMod === null) return;
 
-    const formula = `1d20 + ${saveValue} + ${fragmentPenalty} + ${otherMod}`;
+    const totalSave = saveScore + saveTemp;
+    const formula = `1d20 + ${totalSave} + ${fragmentPenalty} + ${otherMod}`;
     const roll = await new Roll(formula).roll({ async: true });
 
     await roll.toMessage({
@@ -902,10 +896,8 @@ export class T4DActorSheet extends ActorSheet {
       return;
     }
 
-    // Determine attribute
-    let attribute = "DEX";
-    if (weapon.skill === "Simple") attribute = "STR";
-
+    // Use selected attribute (default to DEX)
+    const attribute = weapon.attribute ?? "DEX";
     const attrMod = actor.system.attributes.primary?.[`${attribute}Mod`] ?? 0;
     const stressPenalty = actor.system.stress?.penalty ?? 0;
 
@@ -938,7 +930,7 @@ export class T4DActorSheet extends ActorSheet {
 
     await roll.toMessage({
       speaker: ChatMessage.getSpeaker({ actor }),
-      flavor: `${weapon.name} Attack`,
+      flavor: `${weapon.name} Attack (${attribute})`,
     });
   }
 
@@ -960,10 +952,8 @@ export class T4DActorSheet extends ActorSheet {
       return;
     }
 
-    // Determine attribute
-    let attribute = "PRC";
-    if (weapon.skill === "Simple") attribute = "COR";
-
+    // Use selected attribute (default to PRC)
+    const attribute = weapon.attribute ?? "PRC";
     const attrMod = actor.system.attributesAI.primary?.[`${attribute}Mod`] ?? 0;
     const fragPenalty = actor.system.vitalsAI?.fragmentation?.penalty ?? 0;
 
@@ -996,23 +986,85 @@ export class T4DActorSheet extends ActorSheet {
 
     await roll.toMessage({
       speaker: ChatMessage.getSpeaker({ actor }),
-      flavor: `${weapon.name} AI Attack`,
+      flavor: `${weapon.name} AI Attack (${attribute})`,
     });
   }
 
   /**
-   * Handle rolling a Nanite Roll
+   * Handle rolling a Bio Nanite Catalyst
    */
   async _onNaniteRoll(event) {
     event.preventDefault();
     const button = event.currentTarget;
-    const { label } = button.dataset;
+    const group = button.dataset.group;
+    const index = Number(button.dataset.index);
     const actor = this.actor;
+
+    const catalyst = getProperty(actor.system, group)?.[index];
+    if (!catalyst) {
+      ui.notifications.error(
+        `Could not find Nanite catalyst in ${group} at index ${index}.`
+      );
+      return;
+    }
+
+    const dieType = catalyst.type ?? "1d4";
+
+    // Prompt for other modifiers
+    const otherMod = await new Promise((resolve) => {
+      new Dialog({
+        title: `Other Modifiers: ${catalyst.name}`,
+        content: `
+        <p>Enter any additional modifiers:</p>
+        <input type="number" name="otherMod" value="0"/>
+      `,
+        buttons: {
+          ok: {
+            label: "Roll",
+            callback: (html) =>
+              resolve(Number(html.find("[name=otherMod]").val()) || 0),
+          },
+          cancel: {
+            label: "Cancel",
+            callback: () => resolve(null),
+          },
+        },
+        default: "ok",
+      }).render(true);
+    });
+    if (otherMod === null) return;
+
+    const formula = `${dieType} + ${otherMod}`;
+    const roll = await new Roll(formula).roll({ async: true });
+
+    await roll.toMessage({
+      speaker: ChatMessage.getSpeaker({ actor }),
+      flavor: `${catalyst.name} Nanite Roll (${dieType})`,
+    });
+  }
+
+  /**
+   * Handle rolling an AI Nanite Catalyst
+   */
+  async _onAINaniteRoll(event) {
+    event.preventDefault();
+    const button = event.currentTarget;
+    const group = button.dataset.group;
+    const index = Number(button.dataset.index);
+    const actor = this.actor;
+
+    const catalyst = getProperty(actor.system, group)?.[index];
+    if (!catalyst) {
+      ui.notifications.error(
+        `Could not find AI Nanite catalyst in ${group} at index ${index}.`
+      );
+      return;
+    }
 
     // Prompt for die type
     const dieType = await new Promise((resolve) => {
       new Dialog({
-        title: `Choose Die Type for ${label}`,
+        title: `Choose Die Type for ${catalyst.name}`,
         content: `
         <p>Select Nanite potency:</p>
         <select name="die">
@@ -1038,9 +1090,11 @@ export class T4DActorSheet extends ActorSheet {
     // Prompt for other modifiers
     const otherMod = await new Promise((resolve) => {
       new Dialog({
-        title: `Other Modifiers: ${label}`,
-        content: `<p>Enter any additional modifiers:</p>
-                <input type="number" name="otherMod" value="0"/>`,
+        title: `Other Modifiers: ${catalyst.name}`,
+        content: `
+        <p>Enter any additional modifiers:</p>
+        <input type="number" name="otherMod" value="0"/>
+      `,
         buttons: {
           ok: {
             label: "Roll",
@@ -1059,9 +1113,10 @@ export class T4DActorSheet extends ActorSheet {
 
     const formula = `${dieType} + ${otherMod}`;
     const roll = await new Roll(formula).roll({ async: true });
+
     await roll.toMessage({
       speaker: ChatMessage.getSpeaker({ actor }),
-      flavor: `${label} Nanite Roll`,
+      flavor: `${catalyst.name} AI Nanite Roll`,
     });
   }
 
@@ -1071,14 +1126,14 @@ export class T4DActorSheet extends ActorSheet {
   async _onNaniteReactionRoll(event) {
     event.preventDefault();
     const button = event.currentTarget;
-    const { group, index } = button.dataset;
+    const group = button.dataset.group;
+    const index = Number(button.dataset.index);
     const actor = this.actor;
-    const idx = Number(index);
 
-    const reaction = getProperty(actor.system, group)?.[idx];
+    const reaction = getProperty(actor.system, group)?.[index];
     if (!reaction) {
       ui.notifications.error(
-        `Could not find reaction in ${group} at index ${idx}.`
+        `Could not find reaction in ${group} at index ${index}.`
       );
       return;
     }
@@ -1117,8 +1172,10 @@ export class T4DActorSheet extends ActorSheet {
     const otherMod = await new Promise((resolve) => {
       new Dialog({
         title: `Other Modifiers: ${reaction.name}`,
-        content: `<p>Enter any other modifiers:</p>
-                <input type="number" name="otherMod" value="0"/>`,
+        content: `
+        <p>Enter any other modifiers:</p>
+        <input type="number" name="otherMod" value="0"/>
+      `,
         buttons: {
           ok: {
             label: "OK",
@@ -1137,13 +1194,14 @@ export class T4DActorSheet extends ActorSheet {
 
     const attrMod = actor.system.attributes.primary?.[`${attribute}Mod`] ?? 0;
     const stressPenalty = actor.system.stress?.penalty ?? 0;
+    const level = reaction.level ?? 0;
 
-    const formula = `1d20 + ${reaction.level} + ${attrMod} + ${stressPenalty} + ${otherMod}`;
+    const formula = `1d20 + ${level} + ${attrMod} + ${stressPenalty} + ${otherMod}`;
     const roll = await new Roll(formula).roll({ async: true });
 
     await roll.toMessage({
       speaker: ChatMessage.getSpeaker({ actor }),
-      flavor: `${reaction.name} Nanite Reaction`,
+      flavor: `${reaction.name} Nanite Reaction (${attribute})`,
     });
   }
 
@@ -1153,14 +1211,14 @@ export class T4DActorSheet extends ActorSheet {
   async _onAINaniteReactionRoll(event) {
     event.preventDefault();
     const button = event.currentTarget;
-    const { group, index } = button.dataset;
+    const group = button.dataset.group;
+    const index = Number(button.dataset.index);
     const actor = this.actor;
-    const idx = Number(index);
 
-    const reaction = getProperty(actor.system, group)?.[idx];
+    const reaction = getProperty(actor.system, group)?.[index];
     if (!reaction) {
       ui.notifications.error(
-        `Could not find AI reaction in ${group} at index ${idx}.`
+        `Could not find AI reaction in ${group} at index ${index}.`
       );
       return;
     }
@@ -1204,13 +1262,16 @@ export class T4DActorSheet extends ActorSheet {
     const attrMod = actor.system.attributesAI.primary?.[`${attribute}Mod`] ?? 0;
     const fragmentationPenalty =
       actor.system.vitalsAI?.fragmentation?.penalty ?? 0;
+    const level = reaction.level ?? 0;
 
     // Prompt for other modifiers
     const otherMod = await new Promise((resolve) => {
       new Dialog({
         title: `Other Modifiers: ${reaction.name}`,
-        content: `<p>Enter any other modifiers:</p>
-                <input type="number" name="otherMod" value="0"/>`,
+        content: `
+        <p>Enter any other modifiers:</p>
+        <input type="number" name="otherMod" value="0"/>
+      `,
         buttons: {
           ok: {
             label: "Roll",
@@ -1227,25 +1288,30 @@ export class T4DActorSheet extends ActorSheet {
     });
     if (otherMod === null) return;
 
-    const formula = `1d20 + ${reaction.level} + ${attrMod} + ${fragmentationPenalty} + ${otherMod}`;
+    const formula = `1d20 + ${level} + ${attrMod} + ${fragmentationPenalty} + ${otherMod}`;
     const roll = await new Roll(formula).roll({ async: true });
 
     await roll.toMessage({
       speaker: ChatMessage.getSpeaker({ actor }),
-      flavor: `${reaction.name} AI Nanite Reaction`,
+      flavor: `${reaction.name} AI Nanite Reaction (${attribute})`,
     });
   }
 
-  // Handle rolling Bio Initiative
+  /**
+   * Handle rolling Bio Initiative
+   */
   async _onInitRoll(event) {
     event.preventDefault();
     const actor = this.actor;
 
+    // Prompt for action speed modifier
     const actionSpeed = await new Promise((resolve) => {
       new Dialog({
         title: "Action Speed Modifier",
-        content: `<p>Enter any action speed modifier:</p>
-                <input type="number" name="actionSpeed" value="0"/>`,
+        content: `
+        <p>Enter any action speed modifier:</p>
+        <input type="number" name="actionSpeed" value="0"/>
+      `,
         buttons: {
           ok: {
             label: "Roll",
@@ -1262,16 +1328,18 @@ export class T4DActorSheet extends ActorSheet {
     });
     if (actionSpeed === null) return;
 
+    // You can pick whichever property is your actual data
     const initMod =
-      getProperty(actor.system, "attributes.secondary.INITMod") ?? 0;
+      getProperty(actor.system, "attributes.secondary.INITMod") ??
+      getProperty(actor.system, "attributes.secondary.INIT.mod") ??
+      0;
 
-    // Lower is better: subtract INITMod, add action speed
     const formula = `2d4 - ${initMod} + ${actionSpeed}`;
     const roll = await new Roll(formula).roll({ async: true });
 
     await roll.toMessage({
       speaker: ChatMessage.getSpeaker({ actor }),
-      flavor: "Initiative Roll",
+      flavor: "Initiative Roll (lower is better)",
     });
 
     const combatant = game.combat?.combatants?.find(
@@ -1282,16 +1350,21 @@ export class T4DActorSheet extends ActorSheet {
     }
   }
 
-  // Handle rolling AI Initiative (Queue Roll)
+  /**
+   * Handle rolling AI Initiative (Queue Roll)
+   */
   async _onQueueRoll(event) {
     event.preventDefault();
     const actor = this.actor;
 
+    // Prompt for action cycles modifier
     const actionCycles = await new Promise((resolve) => {
       new Dialog({
         title: "Action Cycles Modifier",
-        content: `<p>Enter any action cycles modifier:</p>
-                <input type="number" name="actionCycles" value="0"/>`,
+        content: `
+        <p>Enter any action cycles modifier:</p>
+        <input type="number" name="actionCycles" value="0"/>
+      `,
         buttons: {
           ok: {
             label: "Roll",
@@ -1309,15 +1382,16 @@ export class T4DActorSheet extends ActorSheet {
     if (actionCycles === null) return;
 
     const queueMod =
-      getProperty(actor.system, "attributesAI.secondary.QUEUEMod") ?? 0;
+      getProperty(actor.system, "attributesAI.secondary.QUEUEMod") ??
+      getProperty(actor.system, "attributesAI.secondary.QUEUE.mod") ??
+      0;
 
-    // Lower is better: subtract QUEUEMod, add action cycles
     const formula = `2d4 - ${queueMod} + ${actionCycles}`;
     const roll = await new Roll(formula).roll({ async: true });
 
     await roll.toMessage({
       speaker: ChatMessage.getSpeaker({ actor }),
-      flavor: "AI Initiative (Queue) Roll",
+      flavor: "AI Initiative (Queue) Roll (lower is better)",
     });
 
     const combatant = game.combat?.combatants?.find(
