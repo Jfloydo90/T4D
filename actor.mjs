@@ -617,79 +617,27 @@ export class T4DActorSheet extends ActorSheet {
       template: "systems/T4D/templates/sheets/actor-FoundryAIBIO.html",
       width: 800,
       height: 1000,
-      // Add tabs if they are used in your HTML, as per previous discussion
-      // tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "description" }]
     });
   }
 
-  // actor.mjs (within T4DActorSheet class)
-
   /** @override */
   getData() {
-    // This method is called to prepare the data object that is passed to your HTML template.
-    // Ensure that this.actor.system is properly defined here, it should be from prepareData().
     const data = super.getData();
-
-    // !!! ADD THIS NEW LOG !!!
-    // This will show what data object is *actually* being passed to your HTML template for STR.score.
-    console.log(
-      "[DEBUG] getData() - STR.score for template:",
-      data.actor.system.attributes.primary.STR.score
-    );
-
-    // If you need to add any additional computed properties *just for the template*, do it here.
-    // For example:
-    // data.isGM = game.user.isGM;
     return data;
   }
-
-  // actor.mjs (within T4DActorSheet class)
 
   /** @override */
   activateListeners(html) {
     super.activateListeners(html);
 
-    // Everything below here is only needed if the sheet is editable
     if (!this.options.editable) return;
 
-    const strScoreInput = html.find(
-      'input[name="system.attributes.primary.STR.score"]'
-    );
+    // Instead of re-rendering, simply auto-submit changes when inputs lose focus
+    html
+      .find("input, select, textarea")
+      .on("change", this._onChangeInput.bind(this));
 
-    strScoreInput.on("change", async (event) => {
-      const currentVal = event.currentTarget.value;
-      console.log(
-        `[DEBUG] STR.score 'change' event fired. Value: ${currentVal}.`
-      );
-
-      // Log the DOM value *before* submit/render
-      const domValueBeforeRender = strScoreInput.val();
-      console.log(`[DEBUG] DOM value BEFORE render: ${domValueBeforeRender}`);
-
-      // Explicitly submit the form to trigger the data save
-      await this.submit();
-
-      // Now, re-render the sheet to display the newly saved data
-      this.render(true);
-
-      // After a slight delay, check the DOM value again
-      // This delay is crucial because render() is async and takes a moment
-      setTimeout(() => {
-        // Re-find the element as it might have been re-created by render()
-        const updatedStrScoreInput = this.element.find(
-          'input[name="system.attributes.primary.STR.score"]'
-        );
-        const domValueAfterRender = updatedStrScoreInput.val();
-        console.log(`[DEBUG] DOM value AFTER render: ${domValueAfterRender}`);
-
-        // Also check the actor's actual data
-        console.log(
-          `[DEBUG] Actor data after render: ${this.actor.system.attributes.primary.STR.score}`
-        );
-      }, 50); // A small delay (50ms) to allow render to complete
-    });
-
-    // Your existing listeners for roll buttons:
+    // Your roll handlers
     html.find(".roll-skill").click(this._onSkillRoll.bind(this));
     html.find(".roll-ai-skill").click(this._onAISkillRoll.bind(this));
     html.find(".roll-save").click(this._onSaveRoll.bind(this));
@@ -703,6 +651,21 @@ export class T4DActorSheet extends ActorSheet {
       .find(".roll-nanite-reaction")
       .click(this._onNaniteReactionRoll.bind(this));
     html.find(".roll-ai-nanite").click(this._onAINaniteReactionRoll.bind(this));
+  }
+
+  /**
+   * Called when an input changes.
+   * We submit the form to save data without triggering manual re-render.
+   */
+  async _onChangeInput(event) {
+    event.preventDefault();
+    await this.submit();
+  }
+
+  /** @override */
+  async _updateObject(event, formData) {
+    // Apply the update
+    await this.object.update(formData);
   }
 
   /**
@@ -764,35 +727,6 @@ export class T4DActorSheet extends ActorSheet {
       speaker: ChatMessage.getSpeaker({ actor }),
       flavor: `${skill.label} Skill Check`,
     });
-  }
-
-  /** @override */
-  async _updateObject(event, formData) {
-    // Log the event that triggered the update
-    console.log("== _updateObject triggered ==");
-    console.log("Event:", event);
-
-    // Log the form data received
-    console.log("FormData:", formData);
-
-    // Log the current actor data before update
-    console.log(
-      "Actor data BEFORE update:",
-      this.actor.system.attributes.primary.STR.score
-    );
-
-    // Call the parent method to perform the actual update
-    const result = await super._updateObject(event, formData);
-
-    // Log the actor data AFTER update (optional, but useful)
-    // Note: this.actor.system might not reflect the update immediately here depending on async nature
-    console.log(
-      "Actor data AFTER update (check console for confirmation):",
-      this.actor.system.attributes.primary.STR.score
-    );
-
-    // console.log("Update result:", result);
-    return result;
   }
 
   /**
