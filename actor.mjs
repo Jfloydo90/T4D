@@ -1,10 +1,19 @@
+// actor.mjs (This is the T4DActor class, the one that extends Actor, NOT the sheet class)
+
 export class T4DActor extends Actor {
   prepareData() {
     super.prepareData();
     const system = this.system ?? {};
 
     console.log("==== T4DActor prepareData ====");
-    console.log("System:", system);
+    console.log("System (at start of prepareData):", system); // Log the whole system object
+
+    // !!! ADD THIS NEW LOG !!!
+    // This shows the STR.score value *before* any of your default assignments (`??=`)
+    console.log(
+      "STR.score in prepareData (before defaults):",
+      system.attributes?.primary?.STR?.score
+    );
 
     // === BIO ATTRIBUTES ===
     system.attributes ??= {};
@@ -15,12 +24,21 @@ export class T4DActor extends Actor {
     for (const attr of bioPrimaryKeys) {
       const data = (system.attributes.primary[attr] ??= {});
       data.label ??= attr;
-      data.score ??= 1;
+      // The `??=` operator only assigns if `data.score` is null or undefined.
+      // So, if it already has a number (like 5), this line should NOT change it.
+      data.score ??= 1; // This line should not overwrite an existing value
       data.mod ??= 0;
       data.temp ??= 0;
       data.apToNext ??= 0;
       data.apTotal ??= 1;
     }
+
+    // !!! ADD THIS NEW LOG !!!
+    // This shows the STR.score value *after* your default assignments (`??=`)
+    console.log(
+      "STR.score in prepareData (after defaults):",
+      system.attributes?.primary?.STR?.score
+    );
 
     // BIO Secondary Attributes
     system.attributes.secondary ??= {};
@@ -604,22 +622,26 @@ export class T4DActorSheet extends ActorSheet {
     });
   }
 
+  // actor.mjs (within T4DActorSheet class)
+
   /** @override */
   getData() {
     // This method is called to prepare the data object that is passed to your HTML template.
     // Ensure that this.actor.system is properly defined here, it should be from prepareData().
     const data = super.getData();
+
+    // !!! ADD THIS NEW LOG !!!
+    // This will show what data object is *actually* being passed to your HTML template for STR.score.
+    console.log(
+      "[DEBUG] getData() - STR.score for template:",
+      data.actor.system.attributes.primary.STR.score
+    );
+
     // If you need to add any additional computed properties *just for the template*, do it here.
     // For example:
     // data.isGM = game.user.isGM;
     return data;
   }
-
-  // actor.mjs (within T4DActorSheet class)
-
-  // actor.mjs (within T4DActorSheet class)
-
-  // actor.mjs (within T4DActorSheet class)
 
   // actor.mjs (within T4DActorSheet class)
 
