@@ -617,6 +617,8 @@ export class T4DActorSheet extends ActorSheet {
 
   // actor.mjs (within T4DActorSheet class)
 
+  // actor.mjs (within T4DActorSheet class)
+
   /** @override */
   activateListeners(html) {
     super.activateListeners(html);
@@ -625,22 +627,33 @@ export class T4DActorSheet extends ActorSheet {
     if (!this.options.editable) return;
 
     // --- REVISED PATCH START ---
-    // Listener to ensure the sheet's data is saved and then the sheet is re-rendered
-    // TARGETING ONLY THE STR.SCORE FIELD FOR DEBUGGING PURPOSES
     html
       .find('input[name="system.attributes.primary.STR.score"]')
       .on("change", async (event) => {
-        // CHANGED SELECTOR
         const currentVal = event.currentTarget.value;
         console.log(
           `[DEBUG] STR.score 'change' event fired. Value: ${currentVal}.`
         );
 
+        // Get the specific input element that triggered the change
+        const inputElement = event.currentTarget;
+        // Store its value *before* rendering, as a fallback
+        const storedValue = inputElement.value;
+
         // Explicitly submit the form to trigger the data save
+        // This will call _updateObject and save the data to the actor
         await this.submit();
 
-        // Now, re-render the sheet to display the newly saved data
-        this.render(true);
+        // After submit, the actor data should be updated.
+        // Now, attempt to re-render. Try with render(false) first as it's less aggressive.
+        // If render(false) works, it's more performant.
+        // If the value still disappears, it might indicate that render(false)
+        // isn't sufficient to re-populate the specific field.
+        this.render(false); // Try render(false) for a more targeted update
+
+        // OPTIONAL: If the value still disappears, you could try to manually re-set it
+        // This is a hacky fallback if nothing else works, but good for testing.
+        // inputElement.value = storedValue; // This would only work if the element itself wasn't recreated
       });
     // --- REVISED PATCH END ---
 
@@ -659,6 +672,8 @@ export class T4DActorSheet extends ActorSheet {
       .click(this._onNaniteReactionRoll.bind(this));
     html.find(".roll-ai-nanite").click(this._onAINaniteReactionRoll.bind(this));
   }
+
+  // ... (Keep your _onSkillRoll and _updateObject methods as they are) ...
 
   // ... (Keep your _onSkillRoll and _updateObject methods as they are) ...
   /**
