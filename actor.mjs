@@ -174,30 +174,30 @@ export class T4DActor extends Actor {
     // === Compute BIO Gear Weight Totals ===
     system.gear ??= {};
 
-    const itemArray = Array.isArray(system.items) ? system.items : [];
-    const weaponArray = Array.isArray(system.weapons) ? system.weapons : [];
-    const armorArray = Array.isArray(system.armor) ? system.armor : [];
+    const items = this.items.filter((i) => i.type === "item");
+    const weapons = this.items.filter((i) => i.type === "weapon");
+    const armor = this.items.filter((i) => i.type === "armor");
 
     system.gear.itemTotal = items.reduce(
-      (sum, i) => sum + (parseFloat(i.weight) || 0),
+      (sum, i) => sum + (parseFloat(i.system.weight) || 0),
       0
     );
     system.gear.weaponTotal = weapons.reduce(
-      (sum, w) => sum + (parseFloat(w.weight) || 0),
+      (sum, w) => sum + (parseFloat(w.system.weight) || 0),
       0
     );
     system.gear.armorTotal = armor.reduce(
-      (sum, a) => sum + (parseFloat(a.weight) || 0),
+      (sum, a) => sum + (parseFloat(a.system.weight) || 0),
       0
     );
     system.gear.carriedWeight =
       system.gear.itemTotal + system.gear.weaponTotal + system.gear.armorTotal;
 
     // For template compatibility
-    system.gear.readied ??= {};
-    system.gear.readied.total = [...items, ...weapons, ...armor].filter(
-      (e) => e?.readied
-    ).length;
+    system.gear.readied = {
+      total: [...items, ...weapons, ...armor].filter((e) => e.system?.readied)
+        .length,
+    };
 
     // === Compute AI Gear Sums ===
     system.gearAI ??= {};
