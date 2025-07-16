@@ -589,6 +589,8 @@ export class T4DActor extends Actor {
   ];
 }
 
+// actor.mjs
+
 export class T4DActorSheet extends ActorSheet {
   /** @override */
   static get defaultOptions() {
@@ -604,7 +606,13 @@ export class T4DActorSheet extends ActorSheet {
 
   /** @override */
   getData() {
-    return super.getData();
+    // This method is called to prepare the data object that is passed to your HTML template.
+    // Ensure that this.actor.system is properly defined here, it should be from prepareData().
+    const data = super.getData();
+    // If you need to add any additional computed properties *just for the template*, do it here.
+    // For example:
+    // data.isGM = game.user.isGM;
+    return data;
   }
 
   /** @override */
@@ -614,17 +622,18 @@ export class T4DActorSheet extends ActorSheet {
     // Everything below here is only needed if the sheet is editable
     if (!this.options.editable) return;
 
-    // --- PATCH START ---
+    // --- REVISED PATCH START ---
 
-    // Listener to force re-render of the sheet when a number input changes.
-    // This ensures the displayed value updates with the saved data.
-    html.find('input[type="number"]').on("change", (event) => {
-      // Foundry's default _updateObject will handle saving the data when the input blurs or changes.
-      // We just need to ensure the sheet visually updates after that change.
-      this.render(true); // Forces a full re-render of the sheet
+    // Listener to force re-render of the sheet immediately as a number input changes.
+    // This ensures the displayed value updates with the saved data, even with rapid updates.
+    // Using 'input' event for immediate feedback and 'render(false)' for a more targeted update.
+    html.find('input[type="number"]').on("input", (event) => {
+      // The default Foundry _updateObject (triggered by blur/change) will save the data.
+      // We just need to ensure the sheet visually updates as the user types.
+      this.render(false); // Forces a re-render without a full application redraw
     });
 
-    // --- PATCH END ---
+    // --- REVISED PATCH END ---
 
     // Your existing listeners for roll buttons:
     html.find(".roll-skill").click(this._onSkillRoll.bind(this));
