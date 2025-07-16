@@ -651,6 +651,37 @@ export class T4DActorSheet extends ActorSheet {
     html.find(".roll-ai-nanite").click(this._onAINaniteReactionRoll.bind(this));
   }
 
+  // actor.mjs (within T4DActorSheet class, add this method)
+
+  /** @override */
+  async _updateObject(event, formData) {
+    // Log the event that triggered the update
+    console.log("== _updateObject triggered ==");
+    console.log("Event:", event);
+
+    // Log the form data received
+    console.log("FormData:", formData);
+
+    // Log the current actor data before update
+    console.log(
+      "Actor data BEFORE update:",
+      this.actor.system.attributes.primary.STR.score
+    );
+
+    // Call the parent method to perform the actual update
+    const result = await super._updateObject(event, formData);
+
+    // Log the actor data AFTER update (optional, but useful)
+    // Note: this.actor.system might not reflect the update immediately here depending on async nature
+    console.log(
+      "Actor data AFTER update (check console for confirmation):",
+      this.actor.system.attributes.primary.STR.score
+    );
+
+    // console.log("Update result:", result);
+    return result;
+  }
+
   /**
    * Handle rolling a Bio Skill
    */
