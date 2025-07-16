@@ -621,6 +621,8 @@ export class T4DActorSheet extends ActorSheet {
 
   // actor.mjs (within T4DActorSheet class)
 
+  // actor.mjs (within T4DActorSheet class)
+
   /** @override */
   activateListeners(html) {
     super.activateListeners(html);
@@ -628,23 +630,42 @@ export class T4DActorSheet extends ActorSheet {
     // Everything below here is only needed if the sheet is editable
     if (!this.options.editable) return;
 
-    // --- REVISED PATCH START ---
-    html
-      .find('input[name="system.attributes.primary.STR.score"]')
-      .on("change", async (event) => {
-        const currentVal = event.currentTarget.value;
-        console.log(
-          `[DEBUG] STR.score 'change' event fired. Value: ${currentVal}.`
+    const strScoreInput = html.find(
+      'input[name="system.attributes.primary.STR.score"]'
+    );
+
+    strScoreInput.on("change", async (event) => {
+      const currentVal = event.currentTarget.value;
+      console.log(
+        `[DEBUG] STR.score 'change' event fired. Value: ${currentVal}.`
+      );
+
+      // Log the DOM value *before* submit/render
+      const domValueBeforeRender = strScoreInput.val();
+      console.log(`[DEBUG] DOM value BEFORE render: ${domValueBeforeRender}`);
+
+      // Explicitly submit the form to trigger the data save
+      await this.submit();
+
+      // Now, re-render the sheet to display the newly saved data
+      this.render(true);
+
+      // After a slight delay, check the DOM value again
+      // This delay is crucial because render() is async and takes a moment
+      setTimeout(() => {
+        // Re-find the element as it might have been re-created by render()
+        const updatedStrScoreInput = this.element.find(
+          'input[name="system.attributes.primary.STR.score"]'
         );
+        const domValueAfterRender = updatedStrScoreInput.val();
+        console.log(`[DEBUG] DOM value AFTER render: ${domValueAfterRender}`);
 
-        // Explicitly submit the form to trigger the data save
-        await this.submit();
-
-        // Now, re-render the sheet to display the newly saved data
-        // Trying render(true) again for a full redraw
-        this.render(true); // Changed back to render(true)
-      });
-    // --- REVISED PATCH END ---
+        // Also check the actor's actual data
+        console.log(
+          `[DEBUG] Actor data after render: ${this.actor.system.attributes.primary.STR.score}`
+        );
+      }, 50); // A small delay (50ms) to allow render to complete
+    });
 
     // Your existing listeners for roll buttons:
     html.find(".roll-skill").click(this._onSkillRoll.bind(this));
