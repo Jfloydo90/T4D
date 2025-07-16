@@ -8,13 +8,6 @@ export class T4DActor extends Actor {
     console.log("==== T4DActor prepareData ====");
     console.log("System (at start of prepareData):", system); // Log the whole system object
 
-    // !!! ADD THIS NEW LOG !!!
-    // This shows the STR.score value *before* any of your default assignments (`??=`)
-    console.log(
-      "STR.score in prepareData (before defaults):",
-      system.attributes?.primary?.STR?.score
-    );
-
     // === BIO ATTRIBUTES ===
     system.attributes ??= {};
 
@@ -22,38 +15,48 @@ export class T4DActor extends Actor {
     system.attributes.primary ??= {};
     const bioPrimaryKeys = ["STR", "DEX", "CON", "INT", "FOC", "CHA"];
     for (const attr of bioPrimaryKeys) {
-      const data = (system.attributes.primary[attr] ??= {});
-      data.label ??= attr;
-      // The `??=` operator only assigns if `data.score` is null or undefined.
-      // So, if it already has a number (like 5), this line should NOT change it.
-      data.score ??= 1; // This line should not overwrite an existing value
-      data.mod ??= 0;
-      data.temp ??= 0;
-      data.apToNext ??= 0;
-      data.apTotal ??= 1;
+      system.attributes.primary[attr] = foundry.utils.mergeObject(
+        {
+          label: attr,
+          score: 1,
+          mod: 0,
+          temp: 0,
+          apToNext: 0,
+          apTotal: 1,
+        },
+        system.attributes.primary?.[attr] ?? {},
+        { overwrite: false }
+      );
     }
-
-    // !!! ADD THIS NEW LOG !!!
-    // This shows the STR.score value *after* your default assignments (`??=`)
-    console.log(
-      "STR.score in prepareData (after defaults):",
-      system.attributes?.primary?.STR?.score
-    );
 
     // BIO Secondary Attributes
     system.attributes.secondary ??= {};
     const bioSecondaryKeys = ["INIT", "EDU", "SPD", "MVMT"];
     for (const attr of bioSecondaryKeys) {
-      const data = (system.attributes.secondary[attr] ??= {});
-      data.label ??= attr;
-      data.score ??= 0;
-      data.mod ??= 0;
-      data.temp ??= 0;
+      system.attributes.secondary[attr] = foundry.utils.mergeObject(
+        {
+          label: attr,
+          score: 0,
+          mod: 0,
+          temp: 0,
+        },
+        system.attributes.secondary?.[attr] ?? {},
+        { overwrite: false }
+      );
     }
 
-    // Appearance
     const appearance = (system.attributes.appearance ??= {});
-    appearance.score = Math.max(3, parseInt(appearance.score ?? "3") || 3);
+
+    // If no value, default to 3
+    let rawAppearanceScore = appearance.score ?? 3;
+
+    // Parse to integer
+    rawAppearanceScore = parseInt(rawAppearanceScore) || 3;
+
+    // Clamp between 3 and 30
+    appearance.score = Math.max(3, Math.min(rawAppearanceScore, 30));
+
+    // Lookup description
     const appIndex = Math.min(
       Math.max(0, appearance.score - 3),
       (this.constructor.HumanAppTable?.length ?? 1) - 1
@@ -67,29 +70,47 @@ export class T4DActor extends Actor {
     system.attributesAI.primary ??= {};
     const aiPrimaryKeys = ["PRC", "SEN", "ARC", "LOG", "COR", "SOCIAL"];
     for (const attr of aiPrimaryKeys) {
-      const data = (system.attributesAI.primary[attr] ??= {});
-      data.label ??= attr;
-      data.score ??= 10;
-      data.mod ??= 0;
-      data.apToNext ??= 0;
-      data.apTotal ??= 0;
-      data.temp ??= 0;
+      system.attributesAI.primary[attr] = foundry.utils.mergeObject(
+        {
+          label: attr,
+          score: 10,
+          mod: 0,
+          apToNext: 0,
+          apTotal: 0,
+          temp: 0,
+        },
+        system.attributesAI.primary?.[attr] ?? {},
+        { overwrite: false }
+      );
     }
 
     // AI Secondary Attributes
     system.attributesAI.secondary ??= {};
     const aiSecondaryKeys = ["QUEUE", "LEARNING", "CYCLES", "LATENCY"];
     for (const attr of aiSecondaryKeys) {
-      const data = (system.attributesAI.secondary[attr] ??= {});
-      data.label ??= attr;
-      data.score ??= 0;
-      data.mod ??= 0;
-      data.temp ??= 0;
+      system.attributesAI.secondary[attr] = foundry.utils.mergeObject(
+        {
+          label: attr,
+          score: 0,
+          mod: 0,
+          temp: 0,
+        },
+        system.attributesAI.secondary?.[attr] ?? {},
+        { overwrite: false }
+      );
     }
 
     // AI Likeness
     const like = (system.attributesAI.secondary.LIKE ??= {});
-    like.score = Math.max(3, parseInt(like.score ?? "3") || 3);
+
+    // If no score, default to 3
+    let rawLikeScore = like.score ?? 3;
+
+    // Parse and clamp
+    rawLikeScore = parseInt(rawLikeScore) || 3;
+    like.score = Math.max(3, Math.min(rawLikeScore, 30));
+
+    // Description
     const likeIndex = Math.min(
       Math.max(0, like.score - 3),
       (this.constructor.LikeTable?.length ?? 1) - 1
@@ -113,20 +134,20 @@ export class T4DActor extends Actor {
         this.constructor.ApTable?.[Math.max(0, val - 1)] ?? "1";
     }
 
-    // === Compute BIO Modifiers and AP to Next ===
+    // === Compute Bio Modifiers and AP to Next ===
     const bioStats = ["STR", "DEX", "CON", "INT", "FOC", "CHA"];
     for (const stat of bioStats) {
-      const score =
-        parseInt(system.attributes.primary?.[stat]?.score ?? "1") || 1;
-      const temp =
-        parseInt(system.attributes.primary?.[stat]?.temp ?? "0") || 0;
+      let rawScore = system.attributes.primary?.[stat]?.score ?? "1";
+      let rawTemp = system.attributes.primary?.[stat]?.temp ?? "0";
+
+      const score = parseInt(rawScore) || 1;
+      const temp = parseInt(rawTemp) || 0;
       const mod = Math.floor(score / 5) - 2 + temp;
 
       const data = system.attributes.primary[stat];
       data.mod = mod;
       data.apToNext = mod + 3;
 
-      // Also store in STRMod/STRAPN for compatibility
       system.attributes.primary[`${stat}Mod`] = mod;
       system.attributes.primary[`${stat}APN`] = mod + 3;
     }
@@ -134,10 +155,12 @@ export class T4DActor extends Actor {
     // === Compute AI Modifiers and AP to Next ===
     const aiStats = ["PRC", "SEN", "ARC", "LOG", "COR", "SOCIAL"];
     for (const stat of aiStats) {
-      const score =
-        parseInt(system.attributesAI.primary?.[stat]?.score ?? "1") || 1;
-      const temp =
-        parseInt(system.attributesAI.primary?.[stat]?.temp ?? "0") || 0;
+      const rawScore = system.attributesAI.primary?.[stat]?.score ?? "1";
+      const rawTemp = system.attributesAI.primary?.[stat]?.temp ?? "0";
+
+      const score = parseInt(rawScore) || 1;
+      const temp = parseInt(rawTemp) || 0;
+
       const mod = Math.floor(score / 5) - 2 + temp;
 
       const data = system.attributesAI.primary[stat];
@@ -151,9 +174,9 @@ export class T4DActor extends Actor {
     // === Compute BIO Gear Weight Totals ===
     system.gear ??= {};
 
-    const items = Array.isArray(system.items) ? system.items : [];
-    const weapons = Array.isArray(system.weapons) ? system.weapons : [];
-    const armor = Array.isArray(system.armor) ? system.armor : [];
+    const itemArray = Array.isArray(system.items) ? system.items : [];
+    const weaponArray = Array.isArray(system.weapons) ? system.weapons : [];
+    const armorArray = Array.isArray(system.armor) ? system.armor : [];
 
     system.gear.itemTotal = items.reduce(
       (sum, i) => sum + (parseFloat(i.weight) || 0),
