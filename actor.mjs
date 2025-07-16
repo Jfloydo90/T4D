@@ -615,6 +615,8 @@ export class T4DActorSheet extends ActorSheet {
     return data;
   }
 
+  // actor.mjs (within T4DActorSheet class)
+
   /** @override */
   activateListeners(html) {
     super.activateListeners(html);
@@ -624,18 +626,22 @@ export class T4DActorSheet extends ActorSheet {
 
     // --- REVISED PATCH START ---
     // Listener to ensure the sheet's data is saved and then the sheet is re-rendered
-    html.find('input[type="number"]').on("change", async (event) => {
-      const currentVal = event.currentTarget.value;
-      console.log(`[DEBUG] Input 'change' event fired. Value: ${currentVal}.`);
+    // TARGETING ONLY THE STR.SCORE FIELD FOR DEBUGGING PURPOSES
+    html
+      .find('input[name="system.attributes.primary.STR.score"]')
+      .on("change", async (event) => {
+        // CHANGED SELECTOR
+        const currentVal = event.currentTarget.value;
+        console.log(
+          `[DEBUG] STR.score 'change' event fired. Value: ${currentVal}.`
+        );
 
-      // Explicitly submit the form to trigger the data save
-      // This will call _updateObject and save the data to the actor
-      await this.submit(); // Force the form to submit and save data
+        // Explicitly submit the form to trigger the data save
+        await this.submit();
 
-      // Now, re-render the sheet to display the newly saved data
-      // If it works without, we can remove this line later.
-      this.render(true); // Forces a full re-render of the sheet with updated data
-    });
+        // Now, re-render the sheet to display the newly saved data
+        this.render(true);
+      });
     // --- REVISED PATCH END ---
 
     // Your existing listeners for roll buttons:
@@ -654,6 +660,7 @@ export class T4DActorSheet extends ActorSheet {
     html.find(".roll-ai-nanite").click(this._onAINaniteReactionRoll.bind(this));
   }
 
+  // ... (Keep your _onSkillRoll and _updateObject methods as they are) ...
   /**
    * Handle rolling a Bio Skill
    */
