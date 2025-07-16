@@ -19,17 +19,15 @@ export class T4DActor extends Actor {
     system.attributes ??= {};
 
     // BIO Primary Attributes
-    system.attributes.primary ??= {};
-    const bioPrimaryKeys = ["STR", "DEX", "CON", "INT", "FOC", "CHA"];
     for (const attr of bioPrimaryKeys) {
-      // Make sure the attribute object exists
-      const data = (system.attributes.primary[attr] ??= {});
-
-      data.label ??= attr;
-      data.mod ??= 0;
-      data.temp ??= 0;
-      data.apToNext ??= 0;
-      data.apTotal ??= 1;
+      const data = system.attributes.primary[attr] ?? {};
+      data.label = data.label ?? attr;
+      if (data.score === undefined) data.score = 1;
+      if (data.mod === undefined) data.mod = 0;
+      if (data.temp === undefined) data.temp = 0;
+      if (data.apToNext === undefined) data.apToNext = 0;
+      if (data.apTotal === undefined) data.apTotal = 1;
+      system.attributes.primary[attr] = data;
     }
 
     // BIO Secondary Attributes
