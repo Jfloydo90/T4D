@@ -590,22 +590,43 @@ export class T4DActor extends Actor {
 }
 
 export class T4DActorSheet extends ActorSheet {
+  /** @override */
   static get defaultOptions() {
     return foundry.utils.mergeObject(super.defaultOptions, {
       classes: ["t4d", "sheet", "actor"],
       template: "systems/T4D/templates/sheets/actor-FoundryAIBIO.html",
       width: 800,
       height: 1000,
+      // Add tabs if they are used in your HTML, as per previous discussion
+      // tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "description" }]
     });
   }
 
+  /** @override */
   getData() {
     return super.getData();
   }
 
+  /** @override */
   activateListeners(html) {
     super.activateListeners(html);
 
+    // Everything below here is only needed if the sheet is editable
+    if (!this.options.editable) return;
+
+    // --- PATCH START ---
+
+    // Listener to force re-render of the sheet when a number input changes.
+    // This ensures the displayed value updates with the saved data.
+    html.find('input[type="number"]').on("change", (event) => {
+      // Foundry's default _updateObject will handle saving the data when the input blurs or changes.
+      // We just need to ensure the sheet visually updates after that change.
+      this.render(true); // Forces a full re-render of the sheet
+    });
+
+    // --- PATCH END ---
+
+    // Your existing listeners for roll buttons:
     html.find(".roll-skill").click(this._onSkillRoll.bind(this));
     html.find(".roll-ai-skill").click(this._onAISkillRoll.bind(this));
     html.find(".roll-save").click(this._onSaveRoll.bind(this));
