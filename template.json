@@ -1,48 +1,17 @@
 {
   "attributes": {
     "primary": {
-      "primary": {
-        "STR": {
-          "score": 10,
-          "mod": 0,
-          "temp": 0,
-          "apToNext": 0,
-          "apTotal": 0
-        },
-        "DEX": {
-          "score": 10,
-          "mod": 0,
-          "temp": 0,
-          "apToNext": 0,
-          "apTotal": 0
-        },
-        "CON": {
-          "score": 10,
-          "mod": 0,
-          "temp": 0,
-          "apToNext": 0,
-          "apTotal": 0
-        },
-        "INT": {
-          "score": 10,
-          "mod": 0,
-          "temp": 0,
-          "apToNext": 0,
-          "apTotal": 0
-        },
-        "FOC": {
-          "score": 10,
-          "mod": 0,
-          "temp": 0,
-          "apToNext": 0,
-          "apTotal": 0
-        },
-        "CHA": { "score": 10, "mod": 0, "temp": 0, "apToNext": 0, "apTotal": 0 }
-      }
+      "STR": { "score": 10, "mod": 0, "temp": 0, "apToNext": 0, "apTotal": 0 },
+      "DEX": { "score": 10, "mod": 0, "temp": 0, "apToNext": 0, "apTotal": 0 },
+      "CON": { "score": 10, "mod": 0, "temp": 0, "apToNext": 0, "apTotal": 0 },
+      "INT": { "score": 10, "mod": 0, "temp": 0, "apToNext": 0, "apTotal": 0 },
+      "FOC": { "score": 10, "mod": 0, "temp": 0, "apToNext": 0, "apTotal": 0 },
+      "CHA": { "score": 10, "mod": 0, "temp": 0, "apToNext": 0, "apTotal": 0 }
     },
     "secondary": {},
     "appearance": { "score": 10, "desc": "" }
   },
+
   "attributesAI": {
     "primary": {},
     "secondary": {},
