@@ -19,6 +19,7 @@ export class T4DActor extends Actor {
     system.attributes ??= {};
 
     // BIO Primary Attributes
+    const bioPrimaryKeys = ["STR", "DEX", "CON", "INT", "FOC", "CHA"];
     for (const attr of bioPrimaryKeys) {
       const data = system.attributes.primary[attr] ?? {};
       data.label = data.label ?? attr;
