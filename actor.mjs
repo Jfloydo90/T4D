@@ -6,7 +6,7 @@ export class T4DActor extends Actor {
     const system = this.system ?? {};
 
     console.log("==== T4DActor prepareData ====");
-    console.log("System (at start of prepareData):", system); // Log the whole system object
+    console.log("System (at start of prepareData):", system);
 
     // === BIO ATTRIBUTES ===
     system.attributes ??= {};
@@ -15,18 +15,20 @@ export class T4DActor extends Actor {
     system.attributes.primary ??= {};
     const bioPrimaryKeys = ["STR", "DEX", "CON", "INT", "FOC", "CHA"];
     for (const attr of bioPrimaryKeys) {
-      system.attributes.primary[attr] = foundry.utils.mergeObject(
-        {
-          label: attr,
-          score: 1,
-          mod: 0,
-          temp: 0,
-          apToNext: 0,
-          apTotal: 1,
-        },
-        system.attributes.primary?.[attr] ?? {},
-        { overwrite: false }
-      );
+      // Make sure the attribute object exists
+      const data = (system.attributes.primary[attr] ??= {});
+
+      // Only assign label if missing
+      data.label ??= attr;
+
+      // IMPORTANT: DO NOT assign score here
+      // This ensures the value stays as whatever the user typed ("5", "", etc.)
+
+      // Assign other defaults safely
+      data.mod ??= 0;
+      data.temp ??= 0;
+      data.apToNext ??= 0;
+      data.apTotal ??= 1;
     }
 
     // BIO Secondary Attributes
