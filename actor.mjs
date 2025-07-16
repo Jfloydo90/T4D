@@ -5,6 +5,13 @@ export class T4DActor extends Actor {
     super.prepareData();
     const system = this.system ?? {};
 
+    function parseIntSafe(value, fallback = 1) {
+      if (value === "" || value === null || value === undefined)
+        return fallback;
+      const parsed = parseInt(value);
+      return isNaN(parsed) ? fallback : parsed;
+    }
+
     console.log("==== T4DActor prepareData ====");
     console.log("System (at start of prepareData):", system);
 
@@ -18,13 +25,7 @@ export class T4DActor extends Actor {
       // Make sure the attribute object exists
       const data = (system.attributes.primary[attr] ??= {});
 
-      // Only assign label if missing
       data.label ??= attr;
-
-      // IMPORTANT: DO NOT assign score here
-      // This ensures the value stays as whatever the user typed ("5", "", etc.)
-
-      // Assign other defaults safely
       data.mod ??= 0;
       data.temp ??= 0;
       data.apToNext ??= 0;
@@ -47,18 +48,12 @@ export class T4DActor extends Actor {
       );
     }
 
+    // Appearance
     const appearance = (system.attributes.appearance ??= {});
-
-    // If no value, default to 3
     let rawAppearanceScore = appearance.score ?? 3;
-
-    // Parse to integer
-    rawAppearanceScore = parseInt(rawAppearanceScore) || 3;
-
-    // Clamp between 3 and 30
+    rawAppearanceScore = parseIntSafe(rawAppearanceScore, 3);
     appearance.score = Math.max(3, Math.min(rawAppearanceScore, 30));
 
-    // Lookup description
     const appIndex = Math.min(
       Math.max(0, appearance.score - 3),
       (this.constructor.HumanAppTable?.length ?? 1) - 1
@@ -108,8 +103,8 @@ export class T4DActor extends Actor {
     // If no score, default to 3
     let rawLikeScore = like.score ?? 3;
 
-    // Parse and clamp
-    rawLikeScore = parseInt(rawLikeScore) || 3;
+    // Parse and clamp safely
+    rawLikeScore = parseIntSafe(rawLikeScore, 3);
     like.score = Math.max(3, Math.min(rawLikeScore, 30));
 
     // Description
@@ -130,8 +125,7 @@ export class T4DActor extends Actor {
     };
 
     for (const [stat, field] of Object.entries(statToAPT)) {
-      const val =
-        parseInt(system.attributes.primary?.[stat]?.score ?? "1") || 1;
+      const val = parseIntSafe(system.attributes.primary?.[stat]?.score, 1);
       system.attributes.primary[field] =
         this.constructor.ApTable?.[Math.max(0, val - 1)] ?? "1";
     }
@@ -139,11 +133,8 @@ export class T4DActor extends Actor {
     // === Compute Bio Modifiers and AP to Next ===
     const bioStats = ["STR", "DEX", "CON", "INT", "FOC", "CHA"];
     for (const stat of bioStats) {
-      let rawScore = system.attributes.primary?.[stat]?.score ?? "1";
-      let rawTemp = system.attributes.primary?.[stat]?.temp ?? "0";
-
-      const score = parseInt(rawScore) || 1;
-      const temp = parseInt(rawTemp) || 0;
+      const score = parseIntSafe(system.attributes.primary?.[stat]?.score, 1);
+      const temp = parseIntSafe(system.attributes.primary?.[stat]?.temp, 0);
       const mod = Math.floor(score / 5) - 2 + temp;
 
       const data = system.attributes.primary[stat];
@@ -157,12 +148,8 @@ export class T4DActor extends Actor {
     // === Compute AI Modifiers and AP to Next ===
     const aiStats = ["PRC", "SEN", "ARC", "LOG", "COR", "SOCIAL"];
     for (const stat of aiStats) {
-      const rawScore = system.attributesAI.primary?.[stat]?.score ?? "1";
-      const rawTemp = system.attributesAI.primary?.[stat]?.temp ?? "0";
-
-      const score = parseInt(rawScore) || 1;
-      const temp = parseInt(rawTemp) || 0;
-
+      const score = parseIntSafe(system.attributesAI.primary?.[stat]?.score, 1);
+      const temp = parseIntSafe(system.attributesAI.primary?.[stat]?.temp, 0);
       const mod = Math.floor(score / 5) - 2 + temp;
 
       const data = system.attributesAI.primary[stat];
@@ -231,8 +218,7 @@ export class T4DActor extends Actor {
     ).length;
 
     // === Compute BIO Encumbrance Thresholds (based on STR) ===
-    const strScore =
-      parseInt(system.attributes.primary?.STR?.score ?? "1") || 1;
+    const strScore = parseIntSafe(system.attributes.primary?.STR?.score, 1);
     const baseEnc = Math.floor(strScore / 5) - 2 + 5;
 
     system.gear.encumbranceThresholds = {
@@ -244,8 +230,7 @@ export class T4DActor extends Actor {
     };
 
     // === Compute AI Encumbrance Thresholds (based on PRC) ===
-    const prcScore =
-      parseInt(system.attributesAI.primary?.PRC?.score ?? "1") || 1;
+    const prcScore = parseIntSafe(system.attributesAI.primary?.PRC?.score, 1);
     const baseEncAI = Math.floor(prcScore / 5) - 2 + 5;
 
     system.gearAI.thresholds = {
@@ -257,16 +242,15 @@ export class T4DActor extends Actor {
     };
 
     // === Compute BIO Derived Secondary Attributes ===
-    const foc = parseInt(system.attributes.primary?.FOC?.score ?? "1") || 1;
-    const dex = parseInt(system.attributes.primary?.DEX?.score ?? "1") || 1;
-    const int = parseInt(system.attributes.primary?.INT?.score ?? "1") || 1;
-    const strB = parseInt(system.attributes.primary?.STR?.score ?? "1") || 1;
+    const foc = parseIntSafe(system.attributes.primary?.FOC?.score, 1);
+    const dex = parseIntSafe(system.attributes.primary?.DEX?.score, 1);
+    const int = parseIntSafe(system.attributes.primary?.INT?.score, 1);
+    const strB = parseIntSafe(system.attributes.primary?.STR?.score, 1);
 
     // Initiative
     {
       const base = Math.floor((foc + dex) / 2);
-      const temp =
-        parseInt(system.attributes.secondary?.INIT?.temp ?? "0") || 0;
+      const temp = parseIntSafe(system.attributes.secondary?.INIT?.temp, 0);
       const mod = Math.floor(base / 5) - 2 + temp;
       const data = system.attributes.secondary.INIT;
       data.score = base;
@@ -276,7 +260,7 @@ export class T4DActor extends Actor {
     // Education
     {
       const base = Math.floor((foc + int) / 2);
-      const temp = parseInt(system.attributes.secondary?.EDU?.temp ?? "0") || 0;
+      const temp = parseIntSafe(system.attributes.secondary?.EDU?.temp, 0);
       const mod = Math.floor(base / 5) - 2 + temp;
       const data = system.attributes.secondary.EDU;
       data.score = base;
@@ -286,7 +270,7 @@ export class T4DActor extends Actor {
     // Speed
     {
       const base = Math.floor((strB + dex) / 2);
-      const temp = parseInt(system.attributes.secondary?.SPD?.temp ?? "0") || 0;
+      const temp = parseIntSafe(system.attributes.secondary?.SPD?.temp, 0);
       const mod = Math.floor(base / 5) - 2 + temp;
       const data = system.attributes.secondary.SPD;
       data.score = base;
@@ -295,8 +279,7 @@ export class T4DActor extends Actor {
 
     // Movement
     {
-      const temp =
-        parseInt(system.attributes.secondary?.MVMT?.temp ?? "0") || 0;
+      const temp = parseIntSafe(system.attributes.secondary?.MVMT?.temp, 0);
       const data = system.attributes.secondary.MVMT;
       data.score = system.attributes.secondary.SPD.score * 2;
       data.mod = temp;
@@ -305,19 +288,17 @@ export class T4DActor extends Actor {
     // === AI Derived Secondary Attributes ===
     system.attributesAI.secondary ??= {};
 
-    const cor = parseInt(system.attributesAI.primary?.COR?.score ?? "1") || 1;
-    const sen = parseInt(system.attributesAI.primary?.SEN?.score ?? "1") || 1;
-    const log = parseInt(system.attributesAI.primary?.LOG?.score ?? "1") || 1;
-    const prcA = parseInt(system.attributesAI.primary?.PRC?.score ?? "1") || 1;
-    const arc = parseInt(system.attributesAI.primary?.ARC?.score ?? "1") || 1;
-    const social =
-      parseInt(system.attributesAI.primary?.SOCIAL?.score ?? "1") || 1;
+    const cor = parseIntSafe(system.attributesAI.primary?.COR?.score, 1);
+    const sen = parseIntSafe(system.attributesAI.primary?.SEN?.score, 1);
+    const log = parseIntSafe(system.attributesAI.primary?.LOG?.score, 1);
+    const prcA = parseIntSafe(system.attributesAI.primary?.PRC?.score, 1);
+    const arc = parseIntSafe(system.attributesAI.primary?.ARC?.score, 1);
+    const social = parseIntSafe(system.attributesAI.primary?.SOCIAL?.score, 1);
 
     // Queue
     {
       const base = Math.floor((cor + sen) / 2);
-      const temp =
-        parseInt(system.attributesAI.secondary?.QUEUE?.temp ?? "0") || 0;
+      const temp = parseIntSafe(system.attributesAI.secondary?.QUEUE?.temp, 0);
       const mod = Math.floor(base / 5) - 2 + temp;
       const data = system.attributesAI.secondary.QUEUE;
       data.score = base;
@@ -327,8 +308,10 @@ export class T4DActor extends Actor {
     // Learning
     {
       const base = Math.floor((cor + log) / 2);
-      const temp =
-        parseInt(system.attributesAI.secondary?.LEARNING?.temp ?? "0") || 0;
+      const temp = parseIntSafe(
+        system.attributesAI.secondary?.LEARNING?.temp,
+        0
+      );
       const mod = Math.floor(base / 5) - 2 + temp;
       const data = system.attributesAI.secondary.LEARNING;
       data.score = base;
@@ -338,18 +321,18 @@ export class T4DActor extends Actor {
     // Cycles
     {
       const base = Math.floor((prcA + sen) / 2);
-      const temp =
-        parseInt(system.attributesAI.secondary?.CYCLES?.temp ?? "0") || 0;
+      const temp = parseIntSafe(system.attributesAI.secondary?.CYCLES?.temp, 0);
       const mod = Math.floor(base / 5) - 2 + temp;
       const data = system.attributesAI.secondary.CYCLES;
       data.score = base;
       data.mod = mod;
     }
-
     // Latency
     {
-      const temp =
-        parseInt(system.attributesAI.secondary?.LATENCY?.temp ?? "0") || 0;
+      const temp = parseIntSafe(
+        system.attributesAI.secondary?.LATENCY?.temp,
+        0
+      );
       const data = system.attributesAI.secondary.LATENCY;
       data.score = system.attributesAI.secondary.CYCLES.score * 2;
       data.mod = temp;
@@ -358,24 +341,20 @@ export class T4DActor extends Actor {
     // === BIO Saving Throws ===
     system.saves ??= {};
 
-    const con = parseInt(system.attributes.primary?.CON?.score ?? "1") || 1;
-    const cha = parseInt(system.attributes.primary?.CHA?.score ?? "1") || 1;
+    const con = parseIntSafe(system.attributes.primary?.CON?.score, 1);
+    const cha = parseIntSafe(system.attributes.primary?.CHA?.score, 1);
 
     system.saves.PHYSICAL =
-      Math.floor((strB + con) / 4) +
-      (parseInt(system.saves?.PhysTemp ?? "0") || 0);
+      Math.floor((strB + con) / 4) + parseIntSafe(system.saves?.PhysTemp, 0);
 
     system.saves.MENTAL =
-      Math.floor((int + foc) / 4) +
-      (parseInt(system.saves?.MentTemp ?? "0") || 0);
+      Math.floor((int + foc) / 4) + parseIntSafe(system.saves?.MentTemp, 0);
 
     system.saves.EVASION =
-      Math.floor((foc + dex) / 4) +
-      (parseInt(system.saves?.EvasTemp ?? "0") || 0);
+      Math.floor((foc + dex) / 4) + parseIntSafe(system.saves?.EvasTemp, 0);
 
     system.saves.SOCIAL =
-      Math.floor((cha + int) / 4) +
-      (parseInt(system.saves?.SocTemp ?? "0") || 0);
+      Math.floor((cha + int) / 4) + parseIntSafe(system.saves?.SocTemp, 0);
 
     // === Compute BIO Status ===
     system.status ??= {};
@@ -384,14 +363,14 @@ export class T4DActor extends Actor {
 
     // HP
     {
-      const temp = parseInt(system.status.hp?.temp ?? "0") || 0;
+      const temp = parseIntSafe(system.status.hp?.temp, 0);
       system.status.hp.max = Math.floor((strB + con) / 2) + temp;
       system.status.hp.min = -1 * (system.saves.PHYSICAL ?? 0);
     }
 
     // MP
     {
-      const temp = parseInt(system.status.mp?.temp ?? "0") || 0;
+      const temp = parseIntSafe(system.status.mp?.temp, 0);
       system.status.mp.max = Math.floor((con + foc) / 2) + temp;
       system.status.mp.min = -1 * (system.saves.MENTAL ?? 0);
     }
@@ -401,10 +380,10 @@ export class T4DActor extends Actor {
     system.vitalsAI.saves ??= {};
 
     {
-      const overTemp = parseInt(system.vitalsAI.saves?.OverTemp ?? "0") || 0;
-      const inteTemp = parseInt(system.vitalsAI.saves?.InteTemp ?? "0") || 0;
-      const bypaTemp = parseInt(system.vitalsAI.saves?.BypaTemp ?? "0") || 0;
-      const firTemp = parseInt(system.vitalsAI.saves?.FirTemp ?? "0") || 0;
+      const overTemp = parseIntSafe(system.vitalsAI.saves?.OverTemp, 0);
+      const inteTemp = parseIntSafe(system.vitalsAI.saves?.InteTemp, 0);
+      const bypaTemp = parseIntSafe(system.vitalsAI.saves?.BypaTemp, 0);
+      const firTemp = parseIntSafe(system.vitalsAI.saves?.FirTemp, 0);
 
       system.vitalsAI.saves.OVER = Math.floor((prcA + arc) / 4) + overTemp;
       system.vitalsAI.saves.INTE = Math.floor((log + cor) / 4) + inteTemp;
@@ -419,14 +398,14 @@ export class T4DActor extends Actor {
 
     // IP
     {
-      const temp = parseInt(system.vitalsAI.status.IP?.temp ?? "0") || 0;
+      const temp = parseIntSafe(system.vitalsAI.status.IP?.temp, 0);
       system.vitalsAI.status.IP.max = Math.floor((prcA + arc) / 2) + temp;
       system.vitalsAI.status.IP.min = -1 * (system.vitalsAI.saves.OVER ?? 0);
     }
 
     // PP
     {
-      const temp = parseInt(system.vitalsAI.status.PP?.temp ?? "0") || 0;
+      const temp = parseIntSafe(system.vitalsAI.status.PP?.temp, 0);
       system.vitalsAI.status.PP.max = Math.floor((arc + cor) / 2) + temp;
       system.vitalsAI.status.PP.min = -1 * (system.vitalsAI.saves.INTE ?? 0);
     }
