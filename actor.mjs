@@ -658,9 +658,9 @@ export class T4DActorSheet extends ActorSheet {
     if (!this.options.editable) return;
 
     // Instead of re-rendering, simply auto-submit changes when inputs lose focus
-    html
-      .find("input, select, textarea")
-      .on("change", this._onChangeInput.bind(this));
+    //html
+    //.find("input, select, textarea")
+    //.on("change", this._onChangeInput.bind(this));
 
     // Your roll handlers
     html.find(".roll-skill").click(this._onSkillRoll.bind(this));
@@ -682,10 +682,10 @@ export class T4DActorSheet extends ActorSheet {
    * Called when an input changes.
    * We submit the form to save data without triggering manual re-render.
    */
-  async _onChangeInput(event) {
-    event.preventDefault();
-    await this.submit();
-  }
+  //async _onChangeInput(event) {
+  //event.preventDefault();
+  //await this.submit();
+  // }
 
   /** @override */
   async _updateObject(event, formData) {
