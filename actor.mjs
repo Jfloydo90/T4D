@@ -662,7 +662,14 @@ export class T4DActorSheet extends ActorSheet {
    */
   async _onChangeInput(event) {
     event.preventDefault();
-    await this.submit();
+    try {
+      await this.submit();
+    } catch (err) {
+      console.error("Failed to save actor sheet input:", err);
+      ui.notifications.error(
+        "Failed to save changes to the actor. See console for details."
+      );
+    }
   }
 
   /** @override */
