@@ -674,8 +674,32 @@ export class T4DActorSheet extends ActorSheet {
 
   /** @override */
   async _updateObject(event, formData) {
-    // Apply the update
-    await this.object.update(formData);
+    // The default form submits partial data. Expand and deep-merge the
+    // submitted `system` data into the actor's existing `system` object
+    // so a single-field submit doesn't replace sibling keys.
+    try {
+      // Expand dotted keys into a nested object (e.g. system.attributes.primary.STR.score)
+      const expanded = foundry.utils.expandObject(formData || {});
+
+      // If the submission contains `system` data, merge it into the current system
+      if (expanded.system) {
+        const mergedSystem = foundry.utils.mergeObject(
+          this.object.system ?? {},
+          expanded.system,
+          { inplace: false }
+        );
+
+        await this.object.update({ system: mergedSystem });
+      } else {
+        // Fallback: nothing under `system`, just pass through
+        await this.object.update(expanded);
+      }
+    } catch (err) {
+      console.error("Error updating actor from sheet:", err, formData);
+      ui.notifications.error(
+        "Failed to save actor changes. See console for details."
+      );
+    }
   }
 
   /**
